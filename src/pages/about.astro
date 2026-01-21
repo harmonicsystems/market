@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="About">
+  <!-- Hero -->
+  <section class="bg-cream py-10">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h1 class="font-display font-bold text-4xl md:text-5xl text-black mb-4">
+        About the Market
+      </h1>
+      <p class="text-black/70 text-lg">
+        One of the oldest farmers markets in Columbia County, serving our community for over two decades.
+      </p>
+    </div>
+  </section>
+
+  <!-- Accolades -->
+  <section class="bg-orange text-white py-6">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="flex flex-wrap justify-center gap-6 text-center">
+        <div class="flex items-center gap-2">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clip-rule="evenodd" />
+          </svg>
+          <span class="font-display font-bold">Best Farmers Market 2019</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clip-rule="evenodd" />
+          </svg>
+          <span class="font-display font-bold">Finalist 2022</span>
+        </div>
+        <div class="text-white/80 text-sm">Best of Columbia County</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="bg-white py-10">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div>
+          <p class="font-display font-bold text-4xl text-teal">20+</p>
+          <p class="text-black/70 text-sm">Years Running</p>
+        </div>
+        <div>
+          <p class="font-display font-bold text-4xl text-orange">10,000+</p>
+          <p class="text-black/70 text-sm">Visitors per Season</p>
+        </div>
+        <div>
+          <p class="font-display font-bold text-4xl text-lime">50</p>
+          <p class="text-black/70 text-sm">Mile Vendor Radius</p>
+        </div>
+        <div>
+          <p class="font-display font-bold text-4xl text-teal">100%</p>
+          <p class="text-black/70 text-sm">Volunteer-Run</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="bg-cream py-12">
+    <div class="max-w-4xl mx-auto px-4">
+      <!-- Our Story -->
+      <div class="bg-white rounded-2xl shadow-md p-6 md:p-8 mb-8">
+        <h2 class="font-display font-bold text-2xl text-black mb-4">Our Story</h2>
+        <p class="text-black/70 mb-4">
+          The Kinderhook Farmers Market is a welcoming space where individuals and families meet and participate in community events while accessing fresh local food, handmade goods, and more. It is one of the oldest farmers markets in Columbia County, operating in Kinderhook's historic Village Square for more than two decades.
+        </p>
+        <p class="text-black/70 mb-4">
+          Over the years, the market has played a key role in strengthening the local agricultural economy by providing an affordable outlet for small family farmers and food producers to expand their customer base. Vendors come from within a 50-mile radius of Kinderhook, and one of the hallmarks of the market is the commitment of our family of farmers to environmentally responsible farming practices.
+        </p>
+        <p class="text-black/70">
+          The market also plays a central role in the village's overall economy by providing a seasonal destination for both residents and visitors. Market goers are invited to discover not only what market vendors have to offer but also the goods and services of the village's shops, galleries, recreational sites, and historic assets.
+        </p>
+      </div>
+
+      <!-- Volunteer-Run -->
+      <div class="bg-lime/10 rounded-2xl p-6 md:p-8 mb-8">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 bg-lime rounded-full flex items-center justify-center shrink-0">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-xl text-black mb-2">Organized by Volunteers</h3>
+            <p class="text-black/70">
+              The Kinderhook Farmers Market is organized and managed entirely by volunteers who dedicate their time to making Saturday mornings special for our community. Rain or shine, our volunteers are there to welcome visitors, support vendors, and keep the market running smoothly.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Community Partners / Nonprofits -->
+      <div class="bg-teal/10 rounded-2xl p-6 md:p-8 mb-8">
+        <h2 class="font-display font-bold text-2xl text-black mb-4">Supporting Our Community</h2>
+        <p class="text-black/70 mb-4">
+          In an ongoing commitment to local nonprofit organizations, the market provides free space for organizations to do public outreach. Among those nonprofits are local and regional organizations that advocate for:
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+          <span class="bg-white px-3 py-2 rounded-lg text-sm text-black/80">Environmental sustainability</span>
+          <span class="bg-white px-3 py-2 rounded-lg text-sm text-black/80">Food sustainability</span>
+          <span class="bg-white px-3 py-2 rounded-lg text-sm text-black/80">History & literacy education</span>
+          <span class="bg-white px-3 py-2 rounded-lg text-sm text-black/80">The arts</span>
+          <span class="bg-white px-3 py-2 rounded-lg text-sm text-black/80">Healthy food & nutrition</span>
+          <span class="bg-white px-3 py-2 rounded-lg text-sm text-black/80">Emergency response</span>
+          <span class="bg-white px-3 py-2 rounded-lg text-sm text-black/80">Wildlife conservation</span>
+          <span class="bg-white px-3 py-2 rounded-lg text-sm text-black/80">Animal welfare</span>
+          <span class="bg-white px-3 py-2 rounded-lg text-sm text-black/80">Foster-care advocacy</span>
+        </div>
+        <div class="bg-white rounded-xl p-4 border-l-4 border-teal">
+          <p class="text-black/80">
+            <strong class="text-teal">Valatie Ecumenical Food Pantry:</strong> The market is especially proud to host a twice-monthly food-donation table that benefits the Valatie Food Pantry in their mission to provide essential assistance to nearly <strong>500 individuals and families</strong> experiencing food insecurity throughout Columbia County.
+          </p>
+        </div>
+      </div>
+
+      <!-- It's OK! History -->
+      <div class="bg-black text-white rounded-2xl p-6 md:p-8 mb-8">
+        <div class="flex flex-wrap items-center gap-4 mb-6">
+          <span class="bg-white text-black font-accent text-2xl px-4 py-2 rounded-full">It's OK!</span>
+          <h2 class="font-display font-bold text-2xl">The Story Behind "OK"</h2>
+        </div>
+        <p class="text-white/90 mb-4">
+          Kinderhook holds a unique place in American history as the birthplace and home of Martin Van Buren, the 8th President of the United States. Van Buren was known by the nickname "Old Kinderhook," which supporters abbreviated to "OK" during his 1840 presidential campaign.
+        </p>
+        <p class="text-white/90 mb-4">
+          "OK Clubs" sprang up across the country, and the phrase "OK" entered the American lexicon. While linguists debate the exact origins of "okay," many believe our little village played a significant role in popularizing one of the most widely used words in the English language.
+        </p>
+        <p class="text-white/70 text-sm">
+          So when you visit Kinderhook—it really is OK!
+        </p>
+      </div>
+
+      <!-- Dutch Heritage -->
+      <div class="bg-white rounded-2xl shadow-md p-6 md:p-8 mb-8">
+        <h2 class="font-display font-bold text-2xl text-black mb-4">Dutch Heritage</h2>
+        <p class="text-black/70 mb-4">
+          The name "Kinderhook" comes from the Dutch "Kinderhoek," meaning "children's corner." The village was settled by Dutch colonists in the 17th century, and that heritage is still visible today in the architecture, place names, and community character.
+        </p>
+        <p class="text-black/70">
+          The rolling farmland of Columbia County has been cultivated for over 300 years, and our farmers' market continues a tradition of agricultural commerce that stretches back to the earliest days of European settlement in the Hudson Valley.
+        </p>
+      </div>
+
+      <!-- Sponsor -->
+      <div class="bg-orange/10 rounded-2xl p-6 md:p-8">
+        <h2 class="font-display font-bold text-2xl text-black mb-4">Our Sponsor</h2>
+        <p class="text-black/70 mb-4">
+          The Kinderhook Farmers Market is a project of the <strong>Kinderhook Business and Professional Association (KBPA)</strong>. The KBPA works to support local businesses, promote economic development, and enhance the quality of life in our community.
+        </p>
+        <p class="text-black/70">
+          Through events like the farmers' market, the KBPA brings residents and visitors together while supporting the local economy and celebrating everything that makes Kinderhook special.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allVendors = await getCollection('vendors');
+const regularVendors = allVendors.filter(v => v.data.vendorType === 'regular');
+const guestVendors = allVendors.filter(v => v.data.vendorType === 'guest');
+
+// Category labels
+const base = import.meta.env.BASE_URL;
+
+const categoryLabels: Record<string, string> = {
+  'baked-goods': 'Baked Goods',
+  'sweets': 'Sweets',
+  'honey': 'Honey',
+  'specialty-foods': 'Specialty Foods',
+  'crafts': 'Crafts',
+  'pottery': 'Pottery',
+  'home-goods': 'Home Goods',
+  'prepared-foods': 'Prepared Foods',
+  'bbq': 'BBQ',
+  'international': 'International',
+  'produce': 'Produce',
+  'farm': 'Farm Fresh',
+};
+---
+
+<BaseLayout title="Our Vendors">
+  <section class="bg-cream py-12">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-black mb-4">
+          Our Vendors
+        </h1>
+        <p class="text-black/70 text-lg max-w-2xl mx-auto">
+          Meet the farmers, artisans, and makers who bring the best of the Hudson Valley to Kinderhook every Saturday.
+        </p>
+      </div>
+
+      <!-- Regular Vendors -->
+      <div class="mb-16">
+        <h2 class="font-display font-bold text-2xl text-black mb-6 flex items-center gap-3">
+          <span class="bg-lime text-white text-sm px-3 py-1 rounded-full">Weekly</span>
+          Regular Vendors
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {regularVendors.map((vendor) => (
+            <article class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+              <div class="h-48 bg-gradient-to-br from-lime/20 to-teal/20 flex items-center justify-center">
+                <span class="text-6xl opacity-50">🌻</span>
+              </div>
+              <div class="p-6">
+                <h3 class="font-display font-bold text-xl text-black mb-1">
+                  {vendor.data.name}
+                </h3>
+                <p class="text-teal text-sm font-medium mb-3">{vendor.data.tagline}</p>
+                <p class="text-black/70 text-sm mb-4">{vendor.data.description}</p>
+                <div class="flex flex-wrap gap-2">
+                  {vendor.data.categories.map((cat: string) => (
+                    <span class="bg-cream text-black/70 text-xs px-2 py-1 rounded-full">
+                      {categoryLabels[cat] || cat}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <!-- Guest Vendors -->
+      <div>
+        <h2 class="font-display font-bold text-2xl text-black mb-6 flex items-center gap-3">
+          <span class="bg-orange text-white text-sm px-3 py-1 rounded-full">Rotating</span>
+          Guest Vendors
+        </h2>
+        <p class="text-black/70 mb-6">
+          These talented vendors join us on select Saturdays throughout the season. Check our weekly announcements to see who's coming!
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {guestVendors.map((vendor) => (
+            <article class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow border-2 border-orange/20">
+              <div class="h-48 bg-gradient-to-br from-orange/20 to-cream flex items-center justify-center">
+                <span class="text-6xl opacity-50">✨</span>
+              </div>
+              <div class="p-6">
+                <h3 class="font-display font-bold text-xl text-black mb-1">
+                  {vendor.data.name}
+                </h3>
+                <p class="text-orange text-sm font-medium mb-3">{vendor.data.tagline}</p>
+                <p class="text-black/70 text-sm mb-4">{vendor.data.description}</p>
+                <div class="flex flex-wrap gap-2">
+                  {vendor.data.categories.map((cat: string) => (
+                    <span class="bg-cream text-black/70 text-xs px-2 py-1 rounded-full">
+                      {categoryLabels[cat] || cat}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <!-- Become a Vendor CTA -->
+      <div class="mt-16 bg-white rounded-2xl p-8 text-center shadow-md">
+        <h2 class="font-display font-bold text-2xl text-black mb-4">
+          Interested in Becoming a Vendor?
+        </h2>
+        <p class="text-black/70 mb-6 max-w-xl mx-auto">
+          We're always looking for local farmers, artisans, and food producers to join our market family.
+        </p>
+        <a href={`${base}/contact`} class="inline-block bg-orange text-white font-display font-bold px-6 py-3 rounded-full hover:bg-orange/90 transition-colors">
+          Apply to Vend
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+const allRecipes = await getCollection('recipes');
+
+const difficultyColors: Record<string, string> = {
+  easy: 'bg-lime text-white',
+  medium: 'bg-orange text-white',
+  hard: 'bg-teal text-white',
+};
+
+const seasonColors: Record<string, string> = {
+  spring: 'bg-lime/20 text-lime',
+  summer: 'bg-orange/20 text-orange',
+  fall: 'bg-teal/20 text-teal',
+  winter: 'bg-black/20 text-black',
+};
+---
+
+<BaseLayout title="Recipes">
+  <section class="bg-cream py-12">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-black mb-4">
+          Seasonal Recipes
+        </h1>
+        <p class="text-black/70 text-lg max-w-2xl mx-auto">
+          Delicious recipes featuring fresh produce from the Kinderhook Farmers Market. Cook with the seasons!
+        </p>
+      </div>
+
+      {allRecipes.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {allRecipes.map((recipe) => (
+            <article class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+              <div class="h-48 bg-gradient-to-br from-lime/20 to-orange/20 flex items-center justify-center">
+                <span class="text-6xl">🥗</span>
+              </div>
+              <div class="p-6">
+                <div class="flex flex-wrap gap-2 mb-3">
+                  {recipe.data.season?.map((s: string) => (
+                    <span class={`text-xs px-2 py-1 rounded-full font-medium ${seasonColors[s] || 'bg-cream text-black/70'}`}>
+                      {s.charAt(0).toUpperCase() + s.slice(1)}
+                    </span>
+                  ))}
+                  {recipe.data.difficulty && (
+                    <span class={`text-xs px-2 py-1 rounded-full font-medium ${difficultyColors[recipe.data.difficulty]}`}>
+                      {recipe.data.difficulty.charAt(0).toUpperCase() + recipe.data.difficulty.slice(1)}
+                    </span>
+                  )}
+                </div>
+                <h2 class="font-display font-bold text-xl text-black mb-2">
+                  <a href={`${base}/recipes/${recipe.data.slug}`} class="hover:text-orange transition-colors">
+                    {recipe.data.title}
+                  </a>
+                </h2>
+                <div class="flex flex-wrap gap-4 text-sm text-black/60 mb-4">
+                  {recipe.data.prepTime && (
+                    <span class="flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Prep: {recipe.data.prepTime}
+                    </span>
+                  )}
+                  {recipe.data.cookTime && (
+                    <span class="flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                      </svg>
+                      Cook: {recipe.data.cookTime}
+                    </span>
+                  )}
+                  {recipe.data.servings && (
+                    <span class="flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      Serves {recipe.data.servings}
+                    </span>
+                  )}
+                </div>
+                {recipe.data.produce && recipe.data.produce.length > 0 && (
+                  <div class="flex flex-wrap gap-1">
+                    {recipe.data.produce.map((item: string) => (
+                      <span class="bg-cream text-black/70 text-xs px-2 py-1 rounded-full">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <a
+                  href={`${base}/recipes/${recipe.data.slug}`}
+                  class="inline-block mt-4 text-teal font-semibold hover:underline"
+                >
+                  View Recipe →
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-12">
+          <p class="text-black/60">Recipes coming soon!</p>
+        </div>
+      )}
+
+      <!-- Submit Recipe CTA -->
+      <div class="mt-12 bg-white rounded-2xl p-8 text-center shadow-md">
+        <h2 class="font-display font-bold text-2xl text-black mb-4">
+          Share Your Recipe!
+        </h2>
+        <p class="text-black/70 mb-6 max-w-xl mx-auto">
+          Have a favorite recipe using produce from the market? We'd love to feature it in our community collection.
+        </p>
+        <a href={`${base}/contact`} class="inline-block bg-orange text-white font-display font-bold px-6 py-3 rounded-full hover:bg-orange/90 transition-colors">
+          Submit a Recipe
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

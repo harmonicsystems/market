@@ -18,15 +18,15 @@ A modern, community-centered website for the Kinderhook Farmers' Market in Kinde
   /* Primary */
   --kinderhook-orange: #F26A2A;      /* Warm orange - primary accent, CTAs, badges */
   --kinderhook-teal: #2AAFCE;        /* Teal/turquoise - headers, links, highlights */
-
+  
   /* Secondary */
   --kinderhook-lime: #B8BF3D;        /* Lime green - botanical accents, fresh/seasonal */
   --kinderhook-black: #1A1A1A;       /* Rich black - text, contrast elements */
-
+  
   /* Neutrals */
   --kinderhook-cream: #FFF9F0;       /* Warm cream - backgrounds */
   --kinderhook-white: #FFFFFF;       /* Pure white - cards, content areas */
-
+  
   /* Semantic */
   --color-primary: var(--kinderhook-orange);
   --color-secondary: var(--kinderhook-teal);
@@ -150,7 +150,7 @@ name: "Samascott Orchards"
 slug: "samascott-orchards"
 tagline: "Family-owned since 1821"
 image: "/images/vendors/samascott.jpg"
-categories:
+categories: 
   - produce
   - fruit
   - cider
@@ -195,7 +195,7 @@ image: "/images/recipes/squash-salad.jpg"
 prepTime: "15 minutes"
 cookTime: "0 minutes"
 servings: 4
-season:
+season: 
   - summer
 produce:
   - zucchini
@@ -405,7 +405,7 @@ tags:
 ## Accessibility Requirements
 
 - Skip navigation link
-- Proper heading hierarchy (h1 -> h2 -> h3)
+- Proper heading hierarchy (h1 → h2 → h3)
 - Alt text on all images
 - Sufficient color contrast (check orange on white!)
 - Keyboard navigable

@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+/* Kinderhook Farmers' Market Design Tokens */
+@theme {
+  /* Primary Colors */
+  --color-orange: #F26A2A;
+  --color-teal: #2AAFCE;
+
+  /* Secondary Colors */
+  --color-lime: #B8BF3D;
+  --color-black: #1A1A1A;
+
+  /* Neutrals */
+  --color-cream: #FFF9F0;
+  --color-white: #FFFFFF;
+
+  /* Font Families */
+  --font-display: 'Nunito', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-accent: 'Caveat', cursive;
+}
+
+/* Base styles */
+html {
+  font-family: var(--font-body);
+  background-color: var(--color-cream);
+  color: var(--color-black);
+}
+
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-black);
+  color: var(--color-white);
+  padding: 8px;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

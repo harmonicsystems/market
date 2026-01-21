@@ -1,0 +1,130 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Kinderhook Farmers' Market - Fresh local produce, artisan goods, and community spirit every Saturday in Kinderhook, NY" } = Astro.props;
+
+// Get base URL for all internal links
+const base = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <title>{title} | Kinderhook Farmers' Market</title>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Design Preview Disclaimer -->
+    <div class="bg-teal text-white text-center py-2 px-4 text-sm">
+      <p>
+        <strong>Design Preview</strong> — This site is under development. Vendors, events, and details shown are examples only and will be updated once confirmed with the Kinderhook Farmers' Market.
+      </p>
+    </div>
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+      <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+        <a href={base} class="flex items-center gap-2">
+          <span class="font-display font-bold text-2xl text-orange">Kinderhook</span>
+          <span class="bg-black text-white text-xs font-bold px-2 py-1 rounded-full">It's OK!</span>
+        </a>
+
+        <ul class="hidden md:flex items-center gap-6 font-display font-semibold text-black">
+          <li><a href={`${base}/vendors`} class="hover:text-orange transition-colors">Vendors</a></li>
+          <li><a href={`${base}/whats-fresh`} class="hover:text-orange transition-colors">What's Fresh</a></li>
+          <li><a href={`${base}/visit`} class="hover:text-orange transition-colors">Visit</a></li>
+          <li><a href={`${base}/about`} class="hover:text-orange transition-colors">About</a></li>
+          <li><a href={`${base}/contact`} class="bg-orange text-white px-4 py-2 rounded-full hover:bg-orange/90 transition-colors">Contact</a></li>
+        </ul>
+
+        <button class="md:hidden p-2" aria-label="Open menu" id="mobile-menu-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </nav>
+
+      <!-- Mobile menu -->
+      <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+        <ul class="flex flex-col p-4 gap-4 font-display font-semibold">
+          <li><a href={`${base}/vendors`} class="block py-2 hover:text-orange">Vendors</a></li>
+          <li><a href={`${base}/whats-fresh`} class="block py-2 hover:text-orange">What's Fresh</a></li>
+          <li><a href={`${base}/visit`} class="block py-2 hover:text-orange">Visit</a></li>
+          <li><a href={`${base}/about`} class="block py-2 hover:text-orange">About</a></li>
+          <li><a href={`${base}/contact`} class="block py-2 text-orange font-bold">Contact</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="bg-black text-white mt-auto">
+      <div class="max-w-6xl mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="font-display font-bold text-xl mb-4">Kinderhook Farmers' Market</h3>
+            <p class="text-white/80 mb-2">Village Green, Broad Street</p>
+            <p class="text-white/80 mb-2">Kinderhook, NY 12106</p>
+            <p class="text-white/80">Saturdays 8:30am - 12:30pm</p>
+            <p class="text-white/60 text-sm mt-2">May through October</p>
+          </div>
+
+          <div>
+            <h3 class="font-display font-bold text-xl mb-4">Quick Links</h3>
+            <ul class="space-y-2 text-white/80">
+              <li><a href={`${base}/vendors`} class="hover:text-orange transition-colors">Our Vendors</a></li>
+              <li><a href={`${base}/whats-fresh`} class="hover:text-orange transition-colors">What's Fresh</a></li>
+              <li><a href={`${base}/recipes`} class="hover:text-orange transition-colors">Recipes</a></li>
+              <li><a href={`${base}/visit`} class="hover:text-orange transition-colors">Plan Your Visit</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-display font-bold text-xl mb-4">Connect</h3>
+            <a
+              href="https://www.facebook.com/KinderhookFarmersMarket"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 text-white/80 hover:text-orange transition-colors"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+              </svg>
+              Follow us on Facebook
+            </a>
+            <p class="mt-4 text-white/60 text-sm">
+              Sponsored by the Kinderhook Business and Professional Association
+            </p>
+          </div>
+        </div>
+
+        <div class="border-t border-white/20 mt-8 pt-8 text-center text-white/60 text-sm">
+          <p>&copy; {new Date().getFullYear()} Kinderhook Farmers' Market. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const menuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      menuBtn?.addEventListener('click', () => {
+        mobileMenu?.classList.toggle('hidden');
+      });
+    </script>
+  </body>
+</html>

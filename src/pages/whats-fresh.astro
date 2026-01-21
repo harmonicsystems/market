@@ -1,0 +1,206 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL;
+
+// Seasonal produce data
+const seasons = {
+  spring: {
+    name: "Spring",
+    months: "May - June",
+    color: "lime",
+    produce: [
+      { name: "Asparagus", peak: true },
+      { name: "Rhubarb", peak: true },
+      { name: "Spring Greens", peak: true },
+      { name: "Radishes", peak: true },
+      { name: "Spinach", peak: true },
+      { name: "Peas", peak: false },
+      { name: "Strawberries", peak: false },
+      { name: "Herbs", peak: false },
+    ]
+  },
+  summer: {
+    name: "Summer",
+    months: "July - August",
+    color: "orange",
+    produce: [
+      { name: "Tomatoes", peak: true },
+      { name: "Sweet Corn", peak: true },
+      { name: "Berries", peak: true },
+      { name: "Zucchini", peak: true },
+      { name: "Cucumbers", peak: true },
+      { name: "Peppers", peak: true },
+      { name: "Green Beans", peak: false },
+      { name: "Eggplant", peak: false },
+      { name: "Melons", peak: false },
+      { name: "Peaches", peak: false },
+    ]
+  },
+  fall: {
+    name: "Fall",
+    months: "September - October",
+    color: "teal",
+    produce: [
+      { name: "Apples", peak: true },
+      { name: "Pumpkins", peak: true },
+      { name: "Winter Squash", peak: true },
+      { name: "Brussels Sprouts", peak: true },
+      { name: "Sweet Potatoes", peak: true },
+      { name: "Kale", peak: false },
+      { name: "Cauliflower", peak: false },
+      { name: "Broccoli", peak: false },
+      { name: "Pears", peak: false },
+      { name: "Late Tomatoes", peak: false },
+    ]
+  }
+};
+
+// Determine current season based on month
+const now = new Date();
+const month = now.getMonth(); // 0-11
+let currentSeason = 'spring';
+if (month >= 6 && month <= 7) currentSeason = 'summer';
+else if (month >= 8 && month <= 9) currentSeason = 'fall';
+---
+
+<BaseLayout title="What's Fresh">
+  <section class="bg-cream py-12">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-black mb-4">
+          What's Fresh
+        </h1>
+        <p class="text-black/70 text-lg max-w-2xl mx-auto">
+          Discover what's in season at the Kinderhook Farmers' Market. Our vendors bring the freshest local produce picked at peak ripeness.
+        </p>
+      </div>
+
+      <!-- Season Tabs -->
+      <div class="flex flex-wrap justify-center gap-4 mb-12">
+        {Object.entries(seasons).map(([key, season]) => (
+          <button
+            class={`px-6 py-3 rounded-full font-display font-bold transition-colors season-tab ${
+              key === currentSeason
+                ? `bg-${season.color} text-white`
+                : 'bg-white text-black hover:bg-black/5'
+            }`}
+            data-season={key}
+          >
+            {season.name}
+            <span class="text-sm font-normal ml-2 opacity-80">{season.months}</span>
+          </button>
+        ))}
+      </div>
+
+      <!-- Season Content -->
+      {Object.entries(seasons).map(([key, season]) => (
+        <div
+          class={`season-content ${key !== currentSeason ? 'hidden' : ''}`}
+          data-season={key}
+        >
+          <div class="bg-white rounded-2xl shadow-md p-8 mb-8">
+            <h2 class="font-display font-bold text-2xl text-black mb-6 flex items-center gap-3">
+              <span class={`w-4 h-4 rounded-full bg-${season.color}`}></span>
+              {season.name} Harvest
+            </h2>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {season.produce.map((item) => (
+                <div class={`p-4 rounded-xl ${item.peak ? `bg-${season.color}/10 border-2 border-${season.color}/30` : 'bg-cream'}`}>
+                  <p class="font-display font-semibold text-black">{item.name}</p>
+                  {item.peak && (
+                    <span class={`text-xs text-${season.color} font-medium`}>Peak Season</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Tips -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-2xl shadow-md p-6">
+              <h3 class="font-display font-bold text-lg text-black mb-3">Shopping Tips</h3>
+              <ul class="space-y-2 text-black/70">
+                <li class="flex items-start gap-2">
+                  <span class="text-lime">•</span>
+                  Arrive early for the best selection
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-lime">•</span>
+                  Ask vendors about their growing practices
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-lime">•</span>
+                  Bring a cooler for perishables on warm days
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-lime">•</span>
+                  Try something new each week!
+                </li>
+              </ul>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md p-6">
+              <h3 class="font-display font-bold text-lg text-black mb-3">Storage Tips</h3>
+              <ul class="space-y-2 text-black/70">
+                <li class="flex items-start gap-2">
+                  <span class="text-orange">•</span>
+                  Most produce keeps best unwashed until ready to use
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-orange">•</span>
+                  Store tomatoes at room temperature for best flavor
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-orange">•</span>
+                  Keep herbs in water like a bouquet
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-orange">•</span>
+                  Freeze berries for year-round enjoyment
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      <!-- Recipes CTA -->
+      <div class="mt-12 bg-gradient-to-r from-orange to-teal rounded-2xl p-8 text-center text-white">
+        <h2 class="font-display font-bold text-2xl mb-4">
+          Looking for Recipe Ideas?
+        </h2>
+        <p class="text-white/90 mb-6 max-w-xl mx-auto">
+          Check out our collection of seasonal recipes submitted by community members and local chefs.
+        </p>
+        <a href={`${base}/recipes`} class="inline-block bg-white text-black font-display font-bold px-6 py-3 rounded-full hover:bg-white/90 transition-colors">
+          Browse Recipes
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Simple tab switching
+    document.querySelectorAll('.season-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const season = tab.getAttribute('data-season');
+
+        // Update tabs
+        document.querySelectorAll('.season-tab').forEach(t => {
+          t.classList.remove('bg-lime', 'bg-orange', 'bg-teal', 'text-white');
+          t.classList.add('bg-white', 'text-black');
+        });
+        tab.classList.remove('bg-white', 'text-black');
+        const colors = { spring: 'bg-lime', summer: 'bg-orange', fall: 'bg-teal' };
+        tab.classList.add(colors[season as keyof typeof colors], 'text-white');
+
+        // Update content
+        document.querySelectorAll('.season-content').forEach(content => {
+          content.classList.add('hidden');
+        });
+        document.querySelector(`.season-content[data-season="${season}"]`)?.classList.remove('hidden');
+      });
+    });
+  </script>
+</BaseLayout>

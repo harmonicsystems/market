@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+
+export async function getStaticPaths() {
+  const recipes = await getCollection('recipes');
+  return recipes.map((recipe) => ({
+    params: { slug: recipe.data.slug },
+    props: { recipe },
+  }));
+}
+
+const { recipe } = Astro.props;
+const { Content } = await render(recipe);
+
+const difficultyColors: Record<string, string> = {
+  easy: 'bg-lime text-white',
+  medium: 'bg-orange text-white',
+  hard: 'bg-teal text-white',
+};
+---
+
+<BaseLayout title={recipe.data.title}>
+  <article class="bg-cream py-12">
+    <div class="max-w-3xl mx-auto px-4">
+      <!-- Back link -->
+      <a href={`${base}/recipes`} class="inline-flex items-center gap-2 text-teal font-semibold hover:underline mb-6">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        All Recipes
+      </a>
+
+      <!-- Header -->
+      <header class="mb-8">
+        <div class="flex flex-wrap gap-2 mb-4">
+          {recipe.data.season?.map((s: string) => (
+            <span class="bg-lime/20 text-lime text-sm px-3 py-1 rounded-full font-medium">
+              {s.charAt(0).toUpperCase() + s.slice(1)}
+            </span>
+          ))}
+          {recipe.data.difficulty && (
+            <span class={`text-sm px-3 py-1 rounded-full font-medium ${difficultyColors[recipe.data.difficulty]}`}>
+              {recipe.data.difficulty.charAt(0).toUpperCase() + recipe.data.difficulty.slice(1)}
+            </span>
+          )}
+        </div>
+        <h1 class="font-display font-bold text-3xl md:text-4xl text-black mb-4">
+          {recipe.data.title}
+        </h1>
+        {recipe.data.contributor && (
+          <p class="text-black/60">
+            Recipe by <span class="font-semibold text-black">{recipe.data.contributor}</span>
+          </p>
+        )}
+      </header>
+
+      <!-- Quick Info -->
+      <div class="bg-white rounded-2xl shadow-md p-6 mb-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          {recipe.data.prepTime && (
+            <div>
+              <p class="text-black/60 text-sm">Prep Time</p>
+              <p class="font-display font-bold text-black">{recipe.data.prepTime}</p>
+            </div>
+          )}
+          {recipe.data.cookTime && (
+            <div>
+              <p class="text-black/60 text-sm">Cook Time</p>
+              <p class="font-display font-bold text-black">{recipe.data.cookTime}</p>
+            </div>
+          )}
+          {recipe.data.servings && (
+            <div>
+              <p class="text-black/60 text-sm">Servings</p>
+              <p class="font-display font-bold text-black">{recipe.data.servings}</p>
+            </div>
+          )}
+          {recipe.data.difficulty && (
+            <div>
+              <p class="text-black/60 text-sm">Difficulty</p>
+              <p class="font-display font-bold text-black capitalize">{recipe.data.difficulty}</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <!-- Market Produce Used -->
+      {recipe.data.produce && recipe.data.produce.length > 0 && (
+        <div class="bg-lime/10 rounded-2xl p-6 mb-8">
+          <h2 class="font-display font-bold text-lg text-black mb-3 flex items-center gap-2">
+            <svg class="w-5 h-5 text-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Find at the Market
+          </h2>
+          <div class="flex flex-wrap gap-2">
+            {recipe.data.produce.map((item: string) => (
+              <span class="bg-white px-3 py-1 rounded-full text-black/80 font-medium">
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Recipe Content -->
+      <div class="bg-white rounded-2xl shadow-md p-6 md:p-8">
+        <div class="prose prose-lg max-w-none prose-headings:font-display prose-headings:font-bold prose-h2:text-2xl prose-h2:text-black prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-xl prose-h3:text-black prose-ul:my-4 prose-li:my-1 prose-p:text-black/80 prose-strong:text-black">
+          <Content />
+        </div>
+      </div>
+
+      <!-- Tags -->
+      {recipe.data.tags && recipe.data.tags.length > 0 && (
+        <div class="mt-6 flex flex-wrap gap-2">
+          {recipe.data.tags.map((tag: string) => (
+            <span class="bg-cream text-black/60 text-sm px-3 py-1 rounded-full">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <!-- Share / Print -->
+      <div class="mt-8 flex flex-wrap gap-4">
+        <button onclick="window.print()" class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow text-black/70">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+          Print Recipe
+        </button>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

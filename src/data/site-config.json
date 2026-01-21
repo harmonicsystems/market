@@ -1,0 +1,27 @@
+{
+  "marketName": "Kinderhook Farmers' Market",
+  "tagline": "It's OK!",
+  "season": {
+    "start": "2026-05-09",
+    "end": "2026-10-10"
+  },
+  "schedule": {
+    "day": "Saturday",
+    "startTime": "8:30 AM",
+    "endTime": "12:30 PM"
+  },
+  "location": {
+    "name": "Village Green",
+    "address": "Broad Street, Kinderhook, NY 12106",
+    "coordinates": {
+      "lat": 42.3951,
+      "lng": -73.6982
+    }
+  },
+  "contact": {
+    "email": "info@kinderhookfarmersmarket.com",
+    "facebook": "https://www.facebook.com/KinderhookFarmersMarket",
+    "instagram": "https://www.instagram.com/kinderhookfarmersmarket"
+  },
+  "sponsor": "Kinderhook Business and Professional Association"
+}

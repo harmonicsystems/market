@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteConfig from '../data/site-config.json';
+---
+
+<BaseLayout title="Plan Your Visit">
+  <section class="bg-cream py-12">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-black mb-4">
+          Plan Your Visit
+        </h1>
+        <p class="text-black/70 text-lg max-w-2xl mx-auto">
+          Everything you need to know for a great market day in Kinderhook.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Map Section -->
+        <div>
+          <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+            <div class="aspect-video bg-gradient-to-br from-teal/20 to-lime/20 flex items-center justify-center">
+              <div class="text-center p-8">
+                <svg class="w-16 h-16 mx-auto text-teal/50 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <p class="text-black/50 font-display">Interactive Leaflet map coming soon</p>
+              </div>
+            </div>
+            <div class="p-6">
+              <h2 class="font-display font-bold text-xl text-black mb-2">
+                {siteConfig.location.name}
+              </h2>
+              <p class="text-black/70 mb-4">{siteConfig.location.address}</p>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${siteConfig.location.coordinates.lat},${siteConfig.location.coordinates.lng}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 text-teal font-semibold hover:underline"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+                Get Directions
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info Cards -->
+        <div class="space-y-6">
+          <!-- When -->
+          <div class="bg-white rounded-2xl shadow-md p-6">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-orange/20 rounded-full flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6 text-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-display font-bold text-lg text-black mb-1">When</h3>
+                <p class="text-black/80 font-semibold">{siteConfig.schedule.day}s, {siteConfig.schedule.startTime} - {siteConfig.schedule.endTime}</p>
+                <p class="text-black/60 text-sm mt-1">May through October</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Parking -->
+          <div class="bg-white rounded-2xl shadow-md p-6">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-teal/20 rounded-full flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-display font-bold text-lg text-black mb-1">Parking</h3>
+                <p class="text-black/70">Free street parking is available throughout the village. Additional parking can be found in the municipal lot behind the Village Hall.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- What to Bring -->
+          <div class="bg-white rounded-2xl shadow-md p-6">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-lime/20 rounded-full flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6 text-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-display font-bold text-lg text-black mb-1">What to Bring</h3>
+                <ul class="text-black/70 space-y-1">
+                  <li>• Reusable shopping bags</li>
+                  <li>• Cash (some vendors are cash-only)</li>
+                  <li>• A cooler for perishables on hot days</li>
+                  <li>• Your appetite!</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accessibility -->
+          <div class="bg-white rounded-2xl shadow-md p-6">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-orange/20 rounded-full flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6 text-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-display font-bold text-lg text-black mb-1">Accessibility</h3>
+                <p class="text-black/70">The Village Green is a flat, open space accessible to wheelchairs and strollers. Service animals are welcome.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Things to Do -->
+      <div class="mt-16">
+        <h2 class="font-display font-bold text-2xl text-black mb-6 text-center">
+          While You're in Kinderhook
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-2xl shadow-md p-6 text-center">
+            <div class="w-16 h-16 bg-teal/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-3xl">🏛️</span>
+            </div>
+            <h3 class="font-display font-bold text-lg text-black mb-2">Martin Van Buren NHS</h3>
+            <p class="text-black/70 text-sm">Visit Lindenwald, the home of the 8th President, just minutes from the village center.</p>
+          </div>
+          <div class="bg-white rounded-2xl shadow-md p-6 text-center">
+            <div class="w-16 h-16 bg-orange/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-3xl">🍽️</span>
+            </div>
+            <h3 class="font-display font-bold text-lg text-black mb-2">Local Dining</h3>
+            <p class="text-black/70 text-sm">Enjoy farm-to-table dining at the village's excellent restaurants and cafes.</p>
+          </div>
+          <div class="bg-white rounded-2xl shadow-md p-6 text-center">
+            <div class="w-16 h-16 bg-lime/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-3xl">🛍️</span>
+            </div>
+            <h3 class="font-display font-bold text-lg text-black mb-2">Village Shops</h3>
+            <p class="text-black/70 text-sm">Browse unique antique shops, art galleries, and boutiques along Broad Street.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
