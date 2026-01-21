@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
+import ShareableMarketCard from '../components/ShareableMarketCard.astro';
 import welcomeImage from '../assets/images/decorative/welcome-kinderhook.webp';
 import siteConfig from '../data/site-config.json';
 import thisWeek from '../data/this-week.json';
@@ -213,8 +214,26 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 
-  <!-- What's in Season Preview -->
+  <!-- Share Save the Date -->
   <section class="bg-cream py-10">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="font-display font-bold text-2xl text-black text-center mb-6">
+        Spread the Word!
+      </h2>
+      <p class="text-center text-black/70 mb-6">
+        Download and share this week's market info with friends and neighbors.
+      </p>
+      <ShareableMarketCard
+        date={thisWeek.date}
+        displayDate={thisWeek.displayDate}
+        theme={thisWeek.theme}
+        music={thisWeek.music}
+      />
+    </div>
+  </section>
+
+  <!-- What's in Season Preview -->
+  <section class="bg-white py-10">
     <div class="max-w-4xl mx-auto px-4">
       <h2 class="font-display font-bold text-2xl text-black text-center mb-6">
         Fresh This Season
