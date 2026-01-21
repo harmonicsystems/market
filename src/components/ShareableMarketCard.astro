@@ -61,11 +61,11 @@ const { date, displayDate, theme, music } = Astro.props;
       class="mt-6 inline-flex items-center gap-2 bg-orange text-white font-display font-bold px-6 py-3 rounded-full hover:bg-orange/90 transition-colors"
     >
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
       </svg>
-      Download & Share
+      Save & Share
     </button>
-    <p class="text-black/50 text-sm mt-2">Save image to share on social media</p>
+    <p class="text-black/50 text-sm mt-2">Opens share sheet on mobile, downloads on desktop</p>
   </div>
 </div>
 
@@ -205,12 +205,38 @@ const { date, displayDate, theme, music } = Astro.props;
     ctx.closePath();
   }
 
-  downloadBtn.addEventListener('click', () => {
+  downloadBtn.addEventListener('click', async () => {
     generateCard();
 
-    const link = document.createElement('a');
-    link.download = `kinderhook-market-${date}.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
+    const filename = `kinderhook-market-${date}.png`;
+
+    // Convert canvas to blob for sharing
+    canvas.toBlob(async (blob) => {
+      if (!blob) return;
+
+      const file = new File([blob], filename, { type: 'image/png' });
+
+      // Try native share (mobile - allows save to photos)
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: 'Kinderhook Farmers Market',
+            text: `Join us at the Kinderhook Farmers' Market - ${displayDate}!`
+          });
+          return;
+        } catch (err) {
+          // User cancelled or share failed, fall back to download
+          if (err.name === 'AbortError') return;
+        }
+      }
+
+      // Fallback: regular download
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = URL.createObjectURL(blob);
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }, 'image/png');
   });
 </script>
