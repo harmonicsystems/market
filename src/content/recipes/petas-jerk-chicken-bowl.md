@@ -1,12 +1,13 @@
 ---
 title: "Peta's Market Day Jerk Chicken Bowl"
 slug: "petas-jerk-chicken-bowl"
+emoji: "🍗"
 contributor: "Peta, Peta's Pocket Caribbean BBQ"
 season: ["summer"]
 difficulty: "medium"
 prepTime: "30 min (plus marinating)"
 cookTime: "25 min"
-servings: "4"
+servings: 4
 produce: ["Peppers", "Tomatoes", "Greens", "Fresh Herbs"]
 tags: ["main-dish", "caribbean", "grilled", "gluten-free"]
 ---

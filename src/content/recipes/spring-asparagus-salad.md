@@ -1,6 +1,7 @@
 ---
 title: "Spring Asparagus Salad with Lemon Vinaigrette"
 slug: "spring-asparagus-salad"
+emoji: "🥗"
 prepTime: "15 minutes"
 cookTime: "5 minutes"
 servings: 4

@@ -38,6 +38,7 @@ const recipes = defineCollection({
   schema: z.object({
     title: z.string(),
     slug: z.string(),
+    emoji: z.string().optional(),
     prepTime: z.string().optional(),
     cookTime: z.string().optional(),
     servings: z.number().optional(),

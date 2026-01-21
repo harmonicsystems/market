@@ -1,12 +1,13 @@
 ---
 title: "Kinderhook Dutch Baby Pancake"
 slug: "kinderhook-dutch-pancake"
+emoji: "🥞"
 contributor: "Margaret Van Dyke, Kinderhook Resident"
 season: ["spring", "summer"]
 difficulty: "easy"
 prepTime: "10 min"
 cookTime: "20 min"
-servings: "4"
+servings: 4
 produce: ["Eggs", "Berries", "Maple Syrup"]
 tags: ["breakfast", "dutch-heritage", "weekend-brunch", "vegetarian"]
 ---

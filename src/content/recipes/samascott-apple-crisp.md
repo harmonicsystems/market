@@ -1,12 +1,13 @@
 ---
 title: "Samascott Orchard Apple Crisp"
 slug: "samascott-apple-crisp"
+emoji: "🍎"
 contributor: "The Samascott Family"
 season: ["fall"]
 difficulty: "easy"
 prepTime: "20 min"
 cookTime: "45 min"
-servings: "8"
+servings: 8
 produce: ["Apples", "Oats"]
 tags: ["dessert", "fall-favorite", "comfort-food", "vegetarian"]
 ---

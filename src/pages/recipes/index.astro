@@ -36,7 +36,7 @@ const seasonColors: Record<string, string> = {
           {allRecipes.map((recipe) => (
             <article class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
               <div class="h-48 bg-gradient-to-br from-lime/20 to-orange/20 flex items-center justify-center">
-                <span class="text-6xl">🥗</span>
+                <span class="text-6xl">{recipe.data.emoji || '🍽️'}</span>
               </div>
               <div class="p-6">
                 <div class="flex flex-wrap gap-2 mb-3">

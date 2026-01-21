@@ -1,12 +1,13 @@
 ---
 title: "Grandaddy's Honey Glazed Carrots"
 slug: "grandaddys-honey-glazed-carrots"
+emoji: "🍯"
 contributor: "Dave from Grandaddy Weaves Honey"
 season: ["spring", "summer", "fall"]
 difficulty: "easy"
 prepTime: "10 min"
 cookTime: "25 min"
-servings: "4"
+servings: 4
 produce: ["Carrots", "Honey", "Fresh Thyme"]
 tags: ["side-dish", "vegetarian", "local-honey", "kid-friendly"]
 ---
