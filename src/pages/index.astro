@@ -45,18 +45,33 @@ const base = import.meta.env.BASE_URL;
         <span class="block font-display font-bold text-4xl md:text-6xl lg:text-7xl tracking-wide text-black uppercase">Kinderhook</span>
         <span class="block font-display font-bold text-2xl md:text-4xl lg:text-5xl text-orange tracking-[0.15em] uppercase mt-1">&mdash; Farmers' Market &mdash;</span>
       </h1>
-      <hr class="gold-rule mb-6" />
-      <p class="text-lg md:text-xl text-black/70 font-body mb-8 max-w-2xl mx-auto italic">
-        Fresh local produce, artisan goods, and live music every Saturday on the Village Green in Kinderhook, New York.
-      </p>
-      <div class="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-black/50 uppercase tracking-wide font-display">
-        <span>Every Saturday</span>
-        <span class="hidden sm:inline">&middot;</span>
-        <span>8:30 AM &ndash; 12:30 PM</span>
-        <span class="hidden sm:inline">&middot;</span>
-        <span>May &ndash; October</span>
+      <hr class="gold-rule mb-8" />
+
+      <!-- Essential Info — When / Where / Season -->
+      <div class="bg-black text-white rounded-xl p-6 md:p-8 mb-8 max-w-2xl mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+          <div>
+            <p class="section-label text-orange/80 mb-1" style="color: rgba(184,134,11,0.7);">When</p>
+            <p class="font-display font-bold text-xl">Every Saturday</p>
+            <p class="text-white/70 text-sm mt-1">8:30 AM &ndash; 12:30 PM</p>
+          </div>
+          <div class="sm:border-x sm:border-white/20">
+            <p class="section-label text-orange/80 mb-1" style="color: rgba(184,134,11,0.7);">Where</p>
+            <p class="font-display font-bold text-xl">Village Green</p>
+            <p class="text-white/70 text-sm mt-1">Kinderhook, NY</p>
+          </div>
+          <div>
+            <p class="section-label text-orange/80 mb-1" style="color: rgba(184,134,11,0.7);">Season</p>
+            <p class="font-display font-bold text-xl">May &ndash; October</p>
+            <p class="text-white/70 text-sm mt-1">Rain or Shine</p>
+          </div>
+        </div>
       </div>
-      <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-black/60 mt-4">
+
+      <p class="text-lg md:text-xl text-black/60 font-body max-w-2xl mx-auto italic mb-6">
+        Fresh local produce, artisan goods, and live music in the heart of the Hudson Valley.
+      </p>
+      <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-black/40">
         <span>Best of Columbia County 2019</span>
         <span>&middot;</span>
         <span>20+ years</span>
@@ -193,29 +208,6 @@ const base = import.meta.env.BASE_URL;
         <a href={`${base}/visit`} class="inline-flex items-center justify-center gap-2 bg-teal text-white font-display font-bold px-6 py-3 rounded-md hover:bg-teal/90 transition-colors text-center">
           Get Directions
         </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Quick Info Bar -->
-  <section class="bg-black text-white py-6">
-    <div class="max-w-4xl mx-auto px-4">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-        <div>
-          <p class="text-white/60 text-xs uppercase tracking-wide mb-1">When</p>
-          <p class="font-display font-bold">Every Saturday</p>
-          <p class="text-sm text-white/80">{siteConfig.schedule.startTime} - {siteConfig.schedule.endTime}</p>
-        </div>
-        <div>
-          <p class="text-white/60 text-xs uppercase tracking-wide mb-1">Where</p>
-          <p class="font-display font-bold">Village Green</p>
-          <p class="text-sm text-white/80">Broad St, Kinderhook</p>
-        </div>
-        <div>
-          <p class="text-white/60 text-xs uppercase tracking-wide mb-1">Season</p>
-          <p class="font-display font-bold">May – October</p>
-          <p class="text-sm text-white/80">Rain or Shine!</p>
-        </div>
       </div>
     </div>
   </section>
