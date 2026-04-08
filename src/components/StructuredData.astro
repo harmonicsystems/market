@@ -14,7 +14,7 @@
  */
 
 interface Props {
-  type: 'organization' | 'event' | 'vendor' | 'recipe' | 'business' | 'breadcrumb';
+  type: 'organization' | 'event' | 'vendor' | 'recipe' | 'business' | 'landmark' | 'breadcrumb';
   data?: Record<string, any>;
 }
 
@@ -215,6 +215,47 @@ function getBusinessSchema() {
   };
 }
 
+// ── Landmark / Tourist Attraction ───────────────────────────────────
+function getLandmarkSchema() {
+  const schema: Record<string, any> = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristAttraction',
+    name: data.name,
+    description: data.description,
+    url: data.website || `${siteUrl}${base}/discover/${data.slug}`,
+    isAccessibleForFree: data.admission === 'Free' || undefined,
+    publicAccess: true,
+    containedInPlace: {
+      '@type': 'City',
+      name: 'Kinderhook',
+      containedInPlace: [
+        { '@type': 'AdministrativeArea', name: 'Columbia County' },
+        { '@type': 'AdministrativeArea', name: 'Hudson Valley' },
+      ],
+    },
+  };
+  if (data.address) {
+    schema.address = {
+      '@type': 'PostalAddress',
+      streetAddress: data.address,
+      addressLocality: 'Kinderhook',
+      addressRegion: 'NY',
+      postalCode: '12106',
+      addressCountry: 'US',
+    };
+  }
+  if (data.coordinates) {
+    schema.geo = {
+      '@type': 'GeoCoordinates',
+      latitude: data.coordinates.lat,
+      longitude: data.coordinates.lng,
+    };
+  }
+  if (data.phone) schema.telephone = data.phone;
+  if (data.hours) schema.openingHours = data.hours;
+  return schema;
+}
+
 // ── Breadcrumb ──────────────────────────────────────────────────────
 function getBreadcrumbSchema() {
   const items = (data.items || []).map((item: { name: string; url: string }, i: number) => ({
@@ -237,6 +278,7 @@ const schemas: Record<string, () => any> = {
   vendor: getVendorSchema,
   recipe: getRecipeSchema,
   business: getBusinessSchema,
+  landmark: getLandmarkSchema,
   breadcrumb: getBreadcrumbSchema,
 };
 

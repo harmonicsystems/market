@@ -58,4 +58,26 @@ const recipes = defineCollection({
   }),
 });
 
-export const collections = { vendors, businesses, recipes };
+const landmarks = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/landmarks' }),
+  schema: z.object({
+    name: z.string(),
+    slug: z.string(),
+    type: z.enum(['historic-site', 'museum', 'gallery', 'trail', 'neighborhood']),
+    tagline: optionalString,
+    image: optionalString,
+    address: optionalString,
+    phone: optionalString,
+    website: optionalUrl,
+    hours: optionalString,
+    admission: optionalString,
+    description: optionalString,
+    featured: z.boolean().default(false),
+    coordinates: z.object({
+      lat: z.number(),
+      lng: z.number(),
+    }).optional(),
+  }),
+});
+
+export const collections = { vendors, businesses, recipes, landmarks };
