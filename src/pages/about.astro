@@ -1,8 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import StructuredData from '../components/StructuredData.astro';
 ---
 
-<BaseLayout title="About">
+<BaseLayout
+  title="About"
+  description="Learn about the Kinderhook Farmers' Market, one of the oldest farmers markets in Columbia County, NY. Over 20 years of bringing fresh local food and community to the Hudson Valley. Discover the history of Kinderhook, birthplace of President Martin Van Buren and the word 'OK'."
+  canonicalPath="/about"
+>
+  <StructuredData slot="head" type="breadcrumb" data={{ items: [{ name: 'Home', url: '/' }, { name: 'About', url: '/about' }] }} />
   <!-- Hero -->
   <section class="bg-cream py-10">
     <div class="max-w-4xl mx-auto px-4 text-center">

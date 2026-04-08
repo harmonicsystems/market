@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import StructuredData from '../../components/StructuredData.astro';
 import { getCollection } from 'astro:content';
 
 const allVendors = await getCollection('vendors');
@@ -25,7 +26,12 @@ const categoryLabels: Record<string, string> = {
 };
 ---
 
-<BaseLayout title="Our Vendors">
+<BaseLayout
+  title="Our Vendors"
+  description="Meet the local farmers, bakers, artisans, and makers at the Kinderhook Farmers' Market in Columbia County, NY. Fresh produce, baked goods, honey, pottery, prepared foods, and crafts from Hudson Valley producers every Saturday."
+  canonicalPath="/vendors"
+>
+  <StructuredData slot="head" type="breadcrumb" data={{ items: [{ name: 'Home', url: '/' }, { name: 'Vendors', url: '/vendors' }] }} />
   <section class="bg-cream py-12">
     <div class="max-w-6xl mx-auto px-4">
       <div class="text-center mb-12">
@@ -46,12 +52,16 @@ const categoryLabels: Record<string, string> = {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {regularVendors.map((vendor) => (
             <article class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-              <div class="h-48 bg-gradient-to-br from-lime/20 to-teal/20 flex items-center justify-center">
-                <span class="text-6xl opacity-50">🌻</span>
-              </div>
+              <a href={`${base}/vendors/${vendor.data.slug}`} class="block">
+                <div class="h-48 bg-gradient-to-br from-lime/20 to-teal/20 flex items-center justify-center">
+                  <span class="text-6xl opacity-50">🌻</span>
+                </div>
+              </a>
               <div class="p-6">
                 <h3 class="font-display font-bold text-xl text-black mb-1">
-                  {vendor.data.name}
+                  <a href={`${base}/vendors/${vendor.data.slug}`} class="hover:text-orange transition-colors">
+                    {vendor.data.name}
+                  </a>
                 </h3>
                 <p class="text-teal text-sm font-medium mb-3">{vendor.data.tagline}</p>
                 <p class="text-black/70 text-sm mb-4">{vendor.data.description}</p>
@@ -80,12 +90,16 @@ const categoryLabels: Record<string, string> = {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {guestVendors.map((vendor) => (
             <article class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow border-2 border-orange/20">
-              <div class="h-48 bg-gradient-to-br from-orange/20 to-cream flex items-center justify-center">
-                <span class="text-6xl opacity-50">✨</span>
-              </div>
+              <a href={`${base}/vendors/${vendor.data.slug}`} class="block">
+                <div class="h-48 bg-gradient-to-br from-orange/20 to-cream flex items-center justify-center">
+                  <span class="text-6xl opacity-50">✨</span>
+                </div>
+              </a>
               <div class="p-6">
                 <h3 class="font-display font-bold text-xl text-black mb-1">
-                  {vendor.data.name}
+                  <a href={`${base}/vendors/${vendor.data.slug}`} class="hover:text-orange transition-colors">
+                    {vendor.data.name}
+                  </a>
                 </h3>
                 <p class="text-orange text-sm font-medium mb-3">{vendor.data.tagline}</p>
                 <p class="text-black/70 text-sm mb-4">{vendor.data.description}</p>

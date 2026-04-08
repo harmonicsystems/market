@@ -1,9 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import StructuredData from '../components/StructuredData.astro';
 import siteConfig from '../data/site-config.json';
 ---
 
-<BaseLayout title="Plan Your Visit">
+<BaseLayout
+  title="Plan Your Visit"
+  description="Plan your trip to the Kinderhook Farmers' Market on the Village Green in Kinderhook, NY. Directions, parking, hours, accessibility info, and things to do in Kinderhook and Columbia County. A perfect Hudson Valley day trip in the Capital Region."
+  canonicalPath="/visit"
+>
+  <StructuredData slot="head" type="breadcrumb" data={{ items: [{ name: 'Home', url: '/' }, { name: 'Plan Your Visit', url: '/visit' }] }} />
   <section class="bg-cream py-12">
     <div class="max-w-6xl mx-auto px-4">
       <div class="text-center mb-12">

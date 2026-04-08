@@ -1,0 +1,59 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  type?: 'website' | 'article';
+  image?: string;
+  imageAlt?: string;
+  canonicalPath?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  type = 'website',
+  image,
+  imageAlt = title,
+  canonicalPath,
+  noindex = false,
+} = Astro.props;
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://kinderhookfarmersmarket.com';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const canonical = canonicalPath ? `${siteUrl}${base}${canonicalPath}` : `${siteUrl}${Astro.url.pathname}`;
+const ogImage = image ? `${siteUrl}${base}${image}` : `${siteUrl}${base}/og-image.png`;
+const fullTitle = `${title} | Kinderhook Farmers' Market - Hudson Valley, NY`;
+---
+
+<!-- Primary Meta Tags -->
+<meta name="title" content={fullTitle} />
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Geo Meta Tags - Critical for local search -->
+<meta name="geo.region" content="US-NY" />
+<meta name="geo.placename" content="Kinderhook, New York" />
+<meta name="geo.position" content="42.3951;-73.6982" />
+<meta name="ICBM" content="42.3951, -73.6982" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:alt" content={imageAlt} />
+<meta property="og:site_name" content="Kinderhook Farmers' Market" />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonical} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={imageAlt} />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonical} />

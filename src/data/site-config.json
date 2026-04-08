@@ -12,10 +12,11 @@
   },
   "location": {
     "name": "Village Green",
-    "address": "Broad Street, Kinderhook, NY 12106",
+    "streetAddress": "Broad Street & Albany Avenue",
+    "address": "Village Green, Broad Street & Albany Avenue, Kinderhook, NY 12106",
     "coordinates": {
       "lat": 42.3951,
-      "lng": -73.6982
+      "lng": -73.6981
     }
   },
   "contact": {
