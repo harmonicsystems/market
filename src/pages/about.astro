@@ -1,6 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import StructuredData from '../components/StructuredData.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+const businesses = await getCollection('businesses');
+const sortedBusinesses = businesses.sort((a, b) => a.data.name.localeCompare(b.data.name));
 ---
 
 <BaseLayout
@@ -153,7 +158,7 @@ import StructuredData from '../components/StructuredData.astro';
       </div>
 
       <!-- Sponsor -->
-      <div class="bg-orange/10 rounded-2xl p-6 md:p-8">
+      <div class="bg-orange/10 rounded-2xl p-6 md:p-8 mb-8">
         <h2 class="font-display font-bold text-2xl text-black mb-4">Our Sponsor</h2>
         <p class="text-black/70 mb-4">
           The Kinderhook Farmers Market is a project of the <strong>Kinderhook Business and Professional Association (KBPA)</strong>. The KBPA works to support local businesses, promote economic development, and enhance the quality of life in our community.
@@ -161,6 +166,37 @@ import StructuredData from '../components/StructuredData.astro';
         <p class="text-black/70">
           Through events like the farmers' market, the KBPA brings residents and visitors together while supporting the local economy and celebrating everything that makes Kinderhook special.
         </p>
+      </div>
+
+      <!-- KBPA Members -->
+      <div class="bg-white rounded-2xl shadow-md p-6 md:p-8">
+        <h2 class="font-display font-bold text-2xl text-black mb-4">KBPA Members</h2>
+        <p class="text-black/70 mb-6">
+          These local businesses and organizations make up the Kinderhook Business and Professional Association — the backbone of our village economy.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {sortedBusinesses.map((biz) => (
+            <a
+              href={`${base}/businesses/${biz.data.slug}`}
+              class="flex items-center gap-3 p-3 rounded-xl hover:bg-cream transition-colors"
+            >
+              <div class="w-8 h-8 bg-teal/10 rounded-full flex items-center justify-center shrink-0">
+                <svg class="w-4 h-4 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <p class="font-display font-semibold text-black text-sm">{biz.data.name}</p>
+                {biz.data.tagline && <p class="text-black/50 text-xs">{biz.data.tagline}</p>}
+              </div>
+            </a>
+          ))}
+        </div>
+        <div class="mt-6 text-center">
+          <a href={`${base}/businesses`} class="inline-block bg-teal text-white font-display font-bold px-6 py-3 rounded-full hover:bg-teal/90 transition-colors">
+            View Full Business Directory
+          </a>
+        </div>
       </div>
     </div>
   </section>

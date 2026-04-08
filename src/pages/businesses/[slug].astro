@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StructuredData from '../../components/StructuredData.astro';
+import { getCollection, render } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+
+export async function getStaticPaths() {
+  const businesses = await getCollection('businesses');
+  return businesses.map((biz) => ({
+    params: { slug: biz.data.slug },
+    props: { biz },
+  }));
+}
+
+const { biz } = Astro.props;
+const { Content } = await render(biz);
+
+const typeLabels: Record<string, string> = {
+  'real-estate': 'Real Estate',
+  'professional-services': 'Professional Services',
+  'cultural': 'Arts & Culture',
+  'financial': 'Financial Services',
+  'legal': 'Legal',
+  'nonprofit': 'Nonprofits & Community',
+  'farm': 'Farms & Agriculture',
+  'religious': 'Houses of Worship',
+  'restaurant': 'Dining',
+  'retail': 'Shops & Retail',
+  'government': 'Government',
+};
+---
+
+<BaseLayout
+  title={biz.data.name}
+  description={`${biz.data.name} — ${biz.data.tagline || 'a local business'} in Kinderhook, NY. Member of the Kinderhook Business and Professional Association (KBPA) in Columbia County, Hudson Valley.`}
+  canonicalPath={`/businesses/${biz.data.slug}`}
+>
+  <StructuredData slot="head" type="business" data={biz.data} />
+  <StructuredData slot="head" type="breadcrumb" data={{ items: [
+    { name: 'Home', url: '/' },
+    { name: 'Business Directory', url: '/businesses' },
+    { name: biz.data.name, url: `/businesses/${biz.data.slug}` },
+  ] }} />
+
+  <article class="bg-cream py-12">
+    <div class="max-w-3xl mx-auto px-4">
+      <!-- Back link -->
+      <a href={`${base}/businesses`} class="inline-flex items-center gap-2 text-teal font-semibold hover:underline mb-6">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Business Directory
+      </a>
+
+      <!-- Header -->
+      <header class="mb-8">
+        <span class="inline-block bg-teal/10 text-teal text-sm font-medium px-3 py-1 rounded-full mb-4">
+          {typeLabels[biz.data.type] || biz.data.type}
+        </span>
+        <h1 class="font-display font-bold text-3xl md:text-4xl text-black mb-2">
+          {biz.data.name}
+        </h1>
+        {biz.data.tagline && (
+          <p class="text-teal font-display font-semibold text-lg mb-4">{biz.data.tagline}</p>
+        )}
+      </header>
+
+      <!-- Content -->
+      <div class="bg-white rounded-2xl shadow-md p-6 md:p-8 mb-8">
+        <div class="prose prose-lg max-w-none prose-headings:font-display prose-headings:font-bold prose-p:text-black/80">
+          <Content />
+        </div>
+      </div>
+
+      <!-- Details -->
+      <div class="bg-white rounded-2xl shadow-md p-6 mb-8">
+        <h2 class="font-display font-bold text-lg text-black mb-4">Details</h2>
+        <div class="space-y-3">
+          {biz.data.address && (
+            <div class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-teal mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span class="text-black/70">{biz.data.address}</span>
+            </div>
+          )}
+          {biz.data.phone && (
+            <div class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-teal mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              <a href={`tel:${biz.data.phone}`} class="text-teal hover:underline">{biz.data.phone}</a>
+            </div>
+          )}
+          {biz.data.website && (
+            <div class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-teal mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+              </svg>
+              <a href={biz.data.website} target="_blank" rel="noopener noreferrer" class="text-teal hover:underline">
+                Visit Website
+              </a>
+            </div>
+          )}
+          {biz.data.hours && (
+            <div class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-teal mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span class="text-black/70">{biz.data.hours}</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <!-- KBPA Badge -->
+      <div class="bg-teal/10 rounded-2xl p-6 mb-8 flex items-start gap-4">
+        <div class="w-12 h-12 bg-teal rounded-full flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <p class="font-display font-bold text-black mb-1">KBPA Member</p>
+          <p class="text-black/70 text-sm">
+            This business is a member of the <strong>Kinderhook Business and Professional Association</strong>, supporting the local economy and community events including the Kinderhook Farmers' Market.
+          </p>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="bg-gradient-to-r from-teal to-lime rounded-2xl p-8 text-center text-white">
+        <h2 class="font-display font-bold text-2xl mb-3">
+          Explore More of Kinderhook
+        </h2>
+        <p class="text-white/90 mb-5">
+          Plan a visit to the market and discover all that Kinderhook has to offer.
+        </p>
+        <div class="flex flex-wrap justify-center gap-3">
+          <a href={`${base}/businesses`} class="inline-block bg-white text-black font-display font-bold px-6 py-3 rounded-full hover:bg-white/90 transition-colors">
+            All Businesses
+          </a>
+          <a href={`${base}/visit`} class="inline-block bg-white/20 text-white font-display font-bold px-6 py-3 rounded-full hover:bg-white/30 transition-colors">
+            Plan Your Visit
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
