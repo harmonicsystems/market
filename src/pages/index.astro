@@ -47,23 +47,28 @@ const base = import.meta.env.BASE_URL;
       </h1>
       <hr class="gold-rule mb-8" />
 
-      <!-- Essential Info — When / Where / Season -->
-      <div class="bg-black text-white rounded-xl p-6 md:p-8 mb-8 max-w-2xl mx-auto">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+      <!-- Essential Info — When / Where / Season / Weather -->
+      <div class="bg-black text-white rounded-xl p-6 md:p-8 mb-8 max-w-3xl mx-auto">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
           <div>
-            <p class="section-label text-orange/80 mb-1" style="color: rgba(184,134,11,0.7);">When</p>
-            <p class="font-display font-bold text-xl">Every Saturday</p>
+            <p class="section-label mb-1" style="color: rgba(184,134,11,0.7);">When</p>
+            <p class="font-display font-bold text-lg md:text-xl">Every Saturday</p>
             <p class="text-white/70 text-sm mt-1">8:30 AM &ndash; 12:30 PM</p>
           </div>
-          <div class="sm:border-x sm:border-white/20">
-            <p class="section-label text-orange/80 mb-1" style="color: rgba(184,134,11,0.7);">Where</p>
-            <p class="font-display font-bold text-xl">Village Green</p>
+          <div class="sm:border-l sm:border-white/20">
+            <p class="section-label mb-1" style="color: rgba(184,134,11,0.7);">Where</p>
+            <p class="font-display font-bold text-lg md:text-xl">Village Green</p>
             <p class="text-white/70 text-sm mt-1">Kinderhook, NY</p>
           </div>
-          <div>
-            <p class="section-label text-orange/80 mb-1" style="color: rgba(184,134,11,0.7);">Season</p>
-            <p class="font-display font-bold text-xl">May &ndash; October</p>
+          <div class="sm:border-l sm:border-white/20">
+            <p class="section-label mb-1" style="color: rgba(184,134,11,0.7);">Season</p>
+            <p class="font-display font-bold text-lg md:text-xl">May &ndash; October</p>
             <p class="text-white/70 text-sm mt-1">Rain or Shine</p>
+          </div>
+          <div class="sm:border-l sm:border-white/20" id="weather-widget">
+            <p class="section-label mb-1" style="color: rgba(184,134,11,0.7);">This Saturday</p>
+            <p class="font-display font-bold text-lg md:text-xl" id="weather-temp">&hellip;</p>
+            <p class="text-white/70 text-sm mt-1" id="weather-desc">Loading forecast</p>
           </div>
         </div>
       </div>
@@ -300,4 +305,80 @@ const base = import.meta.env.BASE_URL;
       </div>
     </div>
   </section>
+
+  <!-- Weather Widget Script — Open-Meteo (free, no API key) -->
+  <script>
+    const WMO_CODES: Record<number, { desc: string; icon: string }> = {
+      0: { desc: 'Clear skies', icon: '☀️' },
+      1: { desc: 'Mostly clear', icon: '🌤️' },
+      2: { desc: 'Partly cloudy', icon: '⛅' },
+      3: { desc: 'Overcast', icon: '☁️' },
+      45: { desc: 'Foggy', icon: '🌫️' },
+      48: { desc: 'Foggy', icon: '🌫️' },
+      51: { desc: 'Light drizzle', icon: '🌦️' },
+      53: { desc: 'Drizzle', icon: '🌦️' },
+      55: { desc: 'Heavy drizzle', icon: '🌧️' },
+      61: { desc: 'Light rain', icon: '🌦️' },
+      63: { desc: 'Rain', icon: '🌧️' },
+      65: { desc: 'Heavy rain', icon: '🌧️' },
+      71: { desc: 'Light snow', icon: '🌨️' },
+      73: { desc: 'Snow', icon: '❄️' },
+      75: { desc: 'Heavy snow', icon: '❄️' },
+      80: { desc: 'Rain showers', icon: '🌦️' },
+      81: { desc: 'Rain showers', icon: '🌧️' },
+      82: { desc: 'Heavy showers', icon: '⛈️' },
+      95: { desc: 'Thunderstorm', icon: '⛈️' },
+      96: { desc: 'Thunderstorm', icon: '⛈️' },
+      99: { desc: 'Severe storm', icon: '⛈️' },
+    };
+
+    async function loadWeather() {
+      const tempEl = document.getElementById('weather-temp');
+      const descEl = document.getElementById('weather-desc');
+      if (!tempEl || !descEl) return;
+
+      try {
+        const res = await fetch(
+          'https://api.open-meteo.com/v1/forecast?latitude=42.3951&longitude=-73.6981&daily=temperature_2m_max,temperature_2m_min,weathercode&temperature_unit=fahrenheit&timezone=America/New_York&forecast_days=7'
+        );
+        const data = await res.json();
+
+        // Find the next Saturday (day 6 = Saturday)
+        const today = new Date();
+        const dates = data.daily.time as string[];
+        let satIdx = -1;
+        for (let i = 0; i < dates.length; i++) {
+          const d = new Date(dates[i] + 'T12:00:00');
+          if (d.getDay() === 6 && d >= today) {
+            satIdx = i;
+            break;
+          }
+        }
+
+        // If today IS Saturday, use today
+        if (satIdx === -1 && today.getDay() === 6) {
+          satIdx = 0;
+        }
+
+        if (satIdx === -1) {
+          descEl.textContent = 'Check back soon';
+          tempEl.textContent = '—';
+          return;
+        }
+
+        const high = Math.round(data.daily.temperature_2m_max[satIdx]);
+        const low = Math.round(data.daily.temperature_2m_min[satIdx]);
+        const code = data.daily.weathercode[satIdx];
+        const weather = WMO_CODES[code] || { desc: 'Variable', icon: '🌤️' };
+
+        tempEl.textContent = `${weather.icon} ${high}°F`;
+        descEl.textContent = `${weather.desc} · Low ${low}°F`;
+      } catch {
+        tempEl.textContent = '—';
+        descEl.textContent = 'Forecast unavailable';
+      }
+    }
+
+    loadWeather();
+  </script>
 </BaseLayout>
