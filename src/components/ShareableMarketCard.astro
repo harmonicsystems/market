@@ -12,45 +12,41 @@ const { date, displayDate, theme, music } = Astro.props;
 <div class="shareable-card-container">
   <canvas id="market-card-canvas" width="1080" height="1080" class="hidden"></canvas>
 
-  <!-- Preview - Kinderhook illustrated style -->
-  <div id="card-preview" class="bg-[#7ECBD6] rounded-2xl p-6 text-center max-w-sm mx-auto shadow-lg relative overflow-hidden">
-    <!-- Decorative elements -->
-    <div class="absolute top-3 left-3 text-2xl">🥕</div>
-    <div class="absolute top-3 right-3 text-2xl">🌷</div>
-    <div class="absolute top-12 left-1/4 text-xl">🥬</div>
-    <div class="absolute top-10 right-1/4 text-xl">🍅</div>
-    <div class="absolute bottom-4 left-4 text-xl">🌽</div>
-    <div class="absolute bottom-4 right-4 text-xl">🚜</div>
-    <div class="absolute bottom-12 left-1/4 text-lg">🍎</div>
-    <div class="absolute bottom-10 right-1/4 text-lg">🌻</div>
+  <!-- Preview - Warm gold & sunflower style -->
+  <div id="card-preview" class="bg-black rounded-xl p-6 text-center max-w-sm mx-auto shadow-lg relative overflow-hidden">
+    <!-- Decorative sunflower emojis -->
+    <div class="absolute top-3 left-3 text-2xl opacity-40">🌻</div>
+    <div class="absolute top-3 right-3 text-2xl opacity-40">🌻</div>
+    <div class="absolute bottom-3 left-3 text-xl opacity-30">🌾</div>
+    <div class="absolute bottom-3 right-3 text-xl opacity-30">🌾</div>
 
-    <!-- Main content bubble -->
-    <div class="bg-white rounded-[2rem] p-6 mb-4 relative">
-      <p class="text-[#F26A2A] text-xs font-bold uppercase tracking-wider mb-1">You're Invited!</p>
-      <h3 class="font-display font-bold text-2xl text-black leading-tight">KINDERHOOK</h3>
-      <h3 class="font-display font-bold text-lg text-black mb-2">Farmers' Market</h3>
+    <!-- Main content card -->
+    <div class="bg-cream rounded-xl p-6 mb-4 relative border-2 border-orange/30">
+      <p class="text-orange text-xs font-bold uppercase tracking-[0.2em] mb-2">You're Invited</p>
+      <h3 class="font-display font-bold text-3xl text-black leading-tight uppercase tracking-wide">Kinderhook</h3>
+      <p class="font-display text-sm text-orange tracking-[0.15em] uppercase mb-3">&mdash; Farmers' Market &mdash;</p>
 
-      <!-- Date bubble -->
-      <div class="bg-[#F26A2A] text-white rounded-full py-2 px-4 inline-block mb-2">
+      <!-- Date -->
+      <div class="bg-orange text-white rounded-md py-2 px-4 inline-block mb-2">
         <p class="font-display font-bold text-sm">{displayDate}</p>
       </div>
-      <p class="text-black/70 text-sm">8:30 AM - 12:30 PM</p>
+      <p class="text-black/60 text-sm">8:30 AM &ndash; 12:30 PM</p>
     </div>
 
-    <!-- Theme/Music bubble -->
+    <!-- Theme/Music -->
     {(theme || music) && (
-      <div class="bg-white rounded-2xl p-4 mb-4">
-        {theme && <p class="font-display font-bold text-[#F26A2A]">{theme}</p>}
-        {music && <p class="text-black/70 text-sm">🎵 {music.name}</p>}
+      <div class="bg-cream rounded-xl p-4 mb-4 border border-orange/20">
+        {theme && <p class="font-display font-bold text-orange">{theme}</p>}
+        {music && <p class="text-black/60 text-sm">&#9835; {music.name}</p>}
       </div>
     )}
 
     <!-- Location -->
-    <p class="text-white text-sm font-medium">Village Green, Broad Street</p>
-    <p class="text-white/80 text-xs">Kinderhook, NY</p>
+    <p class="text-white/90 text-sm font-medium">Village Green &middot; Broad Street &amp; Albany Ave</p>
+    <p class="text-white/60 text-xs">Kinderhook, NY</p>
 
     <!-- It's OK badge -->
-    <div class="inline-block bg-black text-white text-xs font-bold px-3 py-1 rounded-full mt-3">
+    <div class="inline-block bg-orange text-white text-xs font-bold px-3 py-1 rounded-md mt-3 font-accent uppercase tracking-wider">
       It's OK!
     </div>
   </div>
@@ -58,7 +54,7 @@ const { date, displayDate, theme, music } = Astro.props;
   <div class="text-center">
     <button
       id="download-card-btn"
-      class="mt-6 inline-flex items-center gap-2 bg-orange text-white font-display font-bold px-6 py-3 rounded-full hover:bg-orange/90 transition-colors"
+      class="mt-6 inline-flex items-center gap-2 bg-orange text-white font-display font-bold px-6 py-3 rounded-md hover:bg-orange/90 transition-colors"
     >
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -78,120 +74,104 @@ const { date, displayDate, theme, music } = Astro.props;
     const width = 1080;
     const height = 1080;
 
-    // Light teal/blue background (like the Kinderhook map)
-    ctx.fillStyle = '#7ECBD6';
+    // Dark background
+    ctx.fillStyle = '#1A1A1A';
     ctx.fillRect(0, 0, width, height);
 
-    // Draw decorative illustrations
-    drawDecorations();
+    // Decorative sunflowers (subtle)
+    ctx.font = '80px serif';
+    ctx.globalAlpha = 0.25;
+    ctx.fillText('🌻', 40, 110);
+    ctx.fillText('🌻', 950, 110);
+    ctx.fillText('🌾', 60, 1020);
+    ctx.fillText('🌾', 940, 1020);
+    ctx.globalAlpha = 1.0;
 
-    // Main white bubble
-    ctx.fillStyle = 'white';
-    drawBubble(140, 120, 800, 520, 60);
+    // Main cream card
+    ctx.fillStyle = '#FFFDF5';
+    drawRect(ctx, 100, 100, 880, 560, 20);
     ctx.fill();
+
+    // Gold border on card
+    ctx.strokeStyle = 'rgba(184, 134, 11, 0.3)';
+    ctx.lineWidth = 3;
+    drawRect(ctx, 100, 100, 880, 560, 20);
+    ctx.stroke();
 
     // "You're Invited"
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#F26A2A';
-    ctx.font = 'bold 28px Inter, sans-serif';
-    ctx.fillText("YOU'RE INVITED!", width / 2, 200);
+    ctx.fillStyle = '#B8860B';
+    ctx.font = 'bold 24px Lora, Georgia, serif';
+    ctx.letterSpacing = '4px';
+    ctx.fillText("YOU'RE INVITED", width / 2, 190);
 
     // "KINDERHOOK"
     ctx.fillStyle = '#1A1A1A';
-    ctx.font = 'bold 90px Nunito, sans-serif';
+    ctx.font = 'bold 90px DM Serif Display, Georgia, serif';
     ctx.fillText('KINDERHOOK', width / 2, 310);
 
-    // "Farmers' Market"
-    ctx.font = 'bold 50px Nunito, sans-serif';
-    ctx.fillText("Farmers' Market", width / 2, 380);
+    // "— FARMERS' MARKET —"
+    ctx.fillStyle = '#B8860B';
+    ctx.font = '36px DM Serif Display, Georgia, serif';
+    ctx.fillText("— FARMERS' MARKET —", width / 2, 370);
 
-    // Orange date pill
-    ctx.fillStyle = '#F26A2A';
-    roundRect(ctx, 240, 420, 600, 70, 35);
+    // Gold date pill
+    ctx.fillStyle = '#B8860B';
+    drawRect(ctx, 260, 420, 560, 60, 8);
     ctx.fill();
 
     ctx.fillStyle = 'white';
-    ctx.font = 'bold 32px Nunito, sans-serif';
-    ctx.fillText(displayDate, width / 2, 465);
+    ctx.font = 'bold 28px DM Serif Display, Georgia, serif';
+    ctx.fillText(displayDate, width / 2, 460);
 
     // Time
     ctx.fillStyle = '#1A1A1A';
-    ctx.font = '400 32px Inter, sans-serif';
-    ctx.fillText('8:30 AM - 12:30 PM', width / 2, 560);
+    ctx.font = '400 28px Lora, Georgia, serif';
+    ctx.fillText('8:30 AM – 12:30 PM', width / 2, 570);
 
-    // Theme/Music bubble (if exists)
-    let yOffset = 680;
+    // Theme/Music card
+    let yOffset = 700;
     if (theme || music) {
-      ctx.fillStyle = 'white';
-      drawBubble(240, 640, 600, theme && music ? 140 : 100, 30);
+      ctx.fillStyle = '#FFFDF5';
+      const cardH = theme && music ? 130 : 90;
+      drawRect(ctx, 220, 690, 640, cardH, 16);
       ctx.fill();
+      ctx.strokeStyle = 'rgba(184, 134, 11, 0.2)';
+      ctx.lineWidth = 2;
+      drawRect(ctx, 220, 690, 640, cardH, 16);
+      ctx.stroke();
 
       if (theme) {
-        ctx.fillStyle = '#F26A2A';
-        ctx.font = 'bold 36px Nunito, sans-serif';
-        ctx.fillText(theme, width / 2, 705);
-        yOffset = 750;
+        ctx.fillStyle = '#B8860B';
+        ctx.font = 'bold 32px DM Serif Display, Georgia, serif';
+        ctx.fillText(theme, width / 2, 740);
+        yOffset = 790;
       }
       if (music) {
         ctx.fillStyle = '#1A1A1A';
-        ctx.font = '400 28px Inter, sans-serif';
-        ctx.fillText(`🎵 ${music.name}`, width / 2, theme ? 750 : 705);
-        yOffset = theme ? 820 : 770;
+        ctx.font = '400 26px Lora, Georgia, serif';
+        ctx.fillText(`♩ ${music.name}`, width / 2, theme ? 785 : 745);
       }
     }
 
     // Location
-    ctx.fillStyle = 'white';
-    ctx.font = '500 28px Inter, sans-serif';
-    ctx.fillText('Village Green, Broad Street', width / 2, 880);
-    ctx.font = '400 24px Inter, sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.8)';
-    ctx.fillText('Kinderhook, NY', width / 2, 920);
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.font = '500 26px Lora, Georgia, serif';
+    ctx.fillText('Village Green · Broad Street & Albany Ave', width / 2, 890);
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.font = '400 22px Lora, Georgia, serif';
+    ctx.fillText('Kinderhook, NY', width / 2, 930);
 
     // "It's OK!" badge
-    ctx.fillStyle = '#1A1A1A';
-    roundRect(ctx, width / 2 - 70, 960, 140, 50, 25);
+    ctx.fillStyle = '#B8860B';
+    drawRect(ctx, width / 2 - 70, 960, 140, 46, 8);
     ctx.fill();
     ctx.fillStyle = 'white';
-    ctx.font = 'bold 24px Nunito, sans-serif';
-    ctx.fillText("It's OK!", width / 2, 993);
+    ctx.font = 'bold 22px DM Serif Display, Georgia, serif';
+    ctx.fillText("It's OK!", width / 2, 991);
   }
 
-  function drawDecorations() {
-    // Draw veggie/farm illustrations around the edges
-    ctx.font = '70px serif';
-    // Top corners
-    ctx.fillText('🥕', 60, 100);
-    ctx.fillText('🌷', 940, 100);
-    // Top middle area
-    ctx.fillText('🥬', 250, 80);
-    ctx.fillText('🍅', 780, 90);
-    // Middle sides
-    ctx.fillText('🌻', 50, 500);
-    ctx.fillText('🍎', 960, 500);
-    // Bottom area
-    ctx.fillText('🌽', 80, 980);
-    ctx.fillText('🚜', 920, 980);
-    ctx.font = '50px serif';
-    ctx.fillText('🫑', 200, 1010);
-    ctx.fillText('🥒', 830, 1000);
-  }
-
-  function drawBubble(x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.lineTo(x + w - r, y);
-    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-    ctx.lineTo(x + w, y + h - r);
-    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-    ctx.lineTo(x + r, y + h);
-    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-    ctx.lineTo(x, y + r);
-    ctx.quadraticCurveTo(x, y, x + r, y);
-    ctx.closePath();
-  }
-
-  function roundRect(ctx, x, y, w, h, r) {
+  function drawRect(ctx, x, y, w, h, r) {
     ctx.beginPath();
     ctx.moveTo(x + r, y);
     ctx.lineTo(x + w - r, y);
@@ -210,13 +190,11 @@ const { date, displayDate, theme, music } = Astro.props;
 
     const filename = `kinderhook-market-${date}.png`;
 
-    // Convert canvas to blob for sharing
     canvas.toBlob(async (blob) => {
       if (!blob) return;
 
       const file = new File([blob], filename, { type: 'image/png' });
 
-      // Try native share (mobile - allows save to photos)
       if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({
@@ -226,12 +204,10 @@ const { date, displayDate, theme, music } = Astro.props;
           });
           return;
         } catch (err) {
-          // User cancelled or share failed, fall back to download
           if (err.name === 'AbortError') return;
         }
       }
 
-      // Fallback: regular download
       const link = document.createElement('a');
       link.download = filename;
       link.href = URL.createObjectURL(blob);

@@ -60,7 +60,7 @@ const sortedBusinesses = allBusinesses.sort((a, b) => a.data.name.localeCompare(
       <!-- Business Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sortedBusinesses.map((biz) => (
-          <article class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
             <a href={`${base}/businesses/${biz.data.slug}`} class="block">
               <div class="h-32 bg-gradient-to-br from-teal/15 to-lime/15 flex items-center justify-center">
                 <span class="text-5xl opacity-60">{typeIcons[biz.data.type] || '🏢'}</span>
@@ -74,7 +74,7 @@ const sortedBusinesses = allBusinesses.sort((a, b) => a.data.name.localeCompare(
                   </a>
                 </h2>
               </div>
-              <span class="inline-block bg-teal/10 text-teal text-xs font-medium px-2 py-1 rounded-full mb-3">
+              <span class="inline-block bg-teal/10 text-teal text-xs font-medium px-2 py-1 rounded-md mb-3">
                 {typeLabels[biz.data.type] || biz.data.type}
               </span>
               <p class="text-black/70 text-sm">{biz.data.description}</p>
@@ -97,7 +97,7 @@ const sortedBusinesses = allBusinesses.sort((a, b) => a.data.name.localeCompare(
       </div>
 
       <!-- KBPA Info -->
-      <div class="mt-16 bg-white rounded-2xl p-8 text-center shadow-md">
+      <div class="mt-16 bg-white rounded-xl p-8 text-center shadow-md">
         <h2 class="font-display font-bold text-2xl text-black mb-4">
           About the KBPA
         </h2>
@@ -105,10 +105,10 @@ const sortedBusinesses = allBusinesses.sort((a, b) => a.data.name.localeCompare(
           The <strong>Kinderhook Business and Professional Association</strong> works to support local businesses, promote economic development, and enhance the quality of life in Kinderhook. The KBPA sponsors the Kinderhook Farmers' Market and other community events throughout the year.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
-          <a href={`${base}/about`} class="inline-block bg-orange text-white font-display font-bold px-6 py-3 rounded-full hover:bg-orange/90 transition-colors">
+          <a href={`${base}/about`} class="inline-block bg-orange text-white font-display font-bold px-6 py-3 rounded-md hover:bg-orange/90 transition-colors">
             Learn More
           </a>
-          <a href={`${base}/contact`} class="inline-block bg-teal text-white font-display font-bold px-6 py-3 rounded-full hover:bg-teal/90 transition-colors">
+          <a href={`${base}/contact`} class="inline-block bg-teal text-white font-display font-bold px-6 py-3 rounded-md hover:bg-teal/90 transition-colors">
             Join the KBPA
           </a>
         </div>

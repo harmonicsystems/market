@@ -1,23 +1,24 @@
 @import "tailwindcss";
 
-/* Kinderhook Farmers' Market Design Tokens */
+/* Kinderhook Farmers' Market Design Tokens
+   Inspired by: classic sunflower flyer — serif type, black + gold palette */
 @theme {
   /* Primary Colors */
-  --color-orange: #F26A2A;
-  --color-teal: #2AAFCE;
+  --color-orange: #B8860B;  /* Dark goldenrod — primary accent, CTAs */
+  --color-teal: #6B7F3B;    /* Earthy olive — secondary, links */
 
   /* Secondary Colors */
-  --color-lime: #B8BF3D;
-  --color-black: #1A1A1A;
+  --color-lime: #D4A017;    /* Sunflower gold — tertiary highlights */
+  --color-black: #1A1A1A;   /* Rich black — text */
 
   /* Neutrals */
-  --color-cream: #FFF9F0;
+  --color-cream: #FFFDF5;   /* Warm white — backgrounds */
   --color-white: #FFFFFF;
 
   /* Font Families */
-  --font-display: 'Nunito', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
-  --font-accent: 'Caveat', cursive;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body: 'Lora', Georgia, serif;
+  --font-accent: 'DM Serif Display', Georgia, serif;
 }
 
 /* Base styles */
@@ -40,6 +41,66 @@ html {
 
 .skip-link:focus {
   top: 0;
+}
+
+/* ── Custom Design Elements ─────────────────────────── */
+
+/* Gold decorative rule — use as section dividers */
+.gold-rule {
+  border: none;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-orange) 20%,
+    var(--color-orange) 80%,
+    transparent
+  );
+  max-width: 200px;
+  margin: 1.5rem auto;
+}
+
+/* Thin gold border on cards for warmth */
+.card-bordered {
+  border: 1px solid rgba(184, 134, 11, 0.15);
+}
+
+/* Uppercase small-cap headings used in section labels */
+.section-label {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-orange);
+}
+
+/* Em-dash decorators (mirror the flyer) */
+.decorated-heading::before {
+  content: "— ";
+}
+.decorated-heading::after {
+  content: " —";
+}
+
+/* Subtle texture overlay for hero sections */
+.hero-texture {
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(184, 134, 11, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(107, 127, 59, 0.03) 0%, transparent 40%);
+}
+
+/* Gold link underline animation */
+a.gold-link {
+  text-decoration: none;
+  background-image: linear-gradient(var(--color-orange), var(--color-orange));
+  background-size: 0% 2px;
+  background-position: left bottom;
+  background-repeat: no-repeat;
+  transition: background-size 0.3s ease;
+}
+a.gold-link:hover {
+  background-size: 100% 2px;
 }
 
 /* Reduced motion */

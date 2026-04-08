@@ -41,7 +41,7 @@ const base = import.meta.env.BASE_URL;
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
     <title>{title} | Kinderhook Farmers' Market - Hudson Valley, NY</title>
     <StructuredData type="organization" />
     <slot name="head" />
@@ -49,26 +49,19 @@ const base = import.meta.env.BASE_URL;
   <body class="min-h-screen flex flex-col">
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- Design Preview Disclaimer -->
-    <div class="bg-teal text-white text-center py-2 px-4 text-sm">
-      <p>
-        <strong>Design Preview</strong> — This site is under development. Vendors, events, and details shown are examples only and will be updated once confirmed with the Kinderhook Farmers' Market.
-      </p>
-    </div>
-
     <header class="bg-white shadow-sm sticky top-0 z-50">
-      <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-        <a href={base} class="flex items-center gap-2">
-          <span class="font-display font-bold text-2xl text-orange">Kinderhook</span>
-          <span class="bg-black text-white text-xs font-bold px-2 py-1 rounded-full">It's OK!</span>
+      <nav class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <a href={base} class="flex flex-col items-center leading-tight">
+          <span class="font-display font-bold text-lg md:text-xl tracking-wide text-black uppercase">Kinderhook</span>
+          <span class="font-display text-xs md:text-sm text-orange tracking-[0.2em] uppercase">&mdash; Farmers' Market &mdash;</span>
         </a>
 
-        <ul class="hidden md:flex items-center gap-6 font-display font-semibold text-black">
+        <ul class="hidden md:flex items-center gap-6 font-display font-semibold text-sm uppercase tracking-wide text-black">
           <li><a href={`${base}/vendors`} class="hover:text-orange transition-colors">Vendors</a></li>
           <li><a href={`${base}/discover`} class="hover:text-orange transition-colors">Discover</a></li>
           <li><a href={`${base}/visit`} class="hover:text-orange transition-colors">Visit</a></li>
           <li><a href={`${base}/about`} class="hover:text-orange transition-colors">About</a></li>
-          <li><a href={`${base}/contact`} class="bg-orange text-white px-4 py-2 rounded-full hover:bg-orange/90 transition-colors">Contact</a></li>
+          <li><a href={`${base}/contact`} class="bg-orange text-white px-4 py-2 rounded-md hover:bg-orange/90 transition-colors">Contact</a></li>
         </ul>
 
         <button class="md:hidden p-2" aria-label="Open menu" id="mobile-menu-btn">
@@ -80,7 +73,7 @@ const base = import.meta.env.BASE_URL;
 
       <!-- Mobile menu -->
       <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-        <ul class="flex flex-col p-4 gap-4 font-display font-semibold">
+        <ul class="flex flex-col p-4 gap-4 font-display font-semibold uppercase tracking-wide text-sm">
           <li><a href={`${base}/vendors`} class="block py-2 hover:text-orange">Vendors</a></li>
           <li><a href={`${base}/discover`} class="block py-2 hover:text-orange">Discover Kinderhook</a></li>
           <li><a href={`${base}/visit`} class="block py-2 hover:text-orange">Plan Your Visit</a></li>
@@ -98,8 +91,9 @@ const base = import.meta.env.BASE_URL;
       <div class="max-w-6xl mx-auto px-4 py-12">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 class="font-display font-bold text-xl mb-4">Kinderhook Farmers' Market</h3>
-            <p class="text-white/80 mb-2">Village Green, Broad Street</p>
+            <h3 class="font-display font-bold text-xl mb-1 uppercase tracking-wide">Kinderhook</h3>
+            <p class="font-display text-sm text-orange tracking-[0.15em] uppercase mb-4">&mdash; Farmers' Market &mdash;</p>
+            <p class="text-white/80 mb-2">Village Green, Broad Street &amp; Albany Avenue</p>
             <p class="text-white/80 mb-2">Kinderhook, NY 12106</p>
             <p class="text-white/80">Saturdays 8:30am - 12:30pm</p>
             <p class="text-white/60 text-sm mt-2">May through October</p>

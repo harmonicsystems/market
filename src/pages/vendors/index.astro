@@ -46,12 +46,12 @@ const categoryLabels: Record<string, string> = {
       <!-- Regular Vendors -->
       <div class="mb-16">
         <h2 class="font-display font-bold text-2xl text-black mb-6 flex items-center gap-3">
-          <span class="bg-lime text-white text-sm px-3 py-1 rounded-full">Weekly</span>
+          <span class="bg-lime text-white text-sm px-3 py-1 rounded-md">Weekly</span>
           Regular Vendors
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {regularVendors.map((vendor) => (
-            <article class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+            <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
               <a href={`${base}/vendors/${vendor.data.slug}`} class="block">
                 <div class="h-48 bg-gradient-to-br from-lime/20 to-teal/20 flex items-center justify-center">
                   <span class="text-6xl opacity-50">🌻</span>
@@ -67,7 +67,7 @@ const categoryLabels: Record<string, string> = {
                 <p class="text-black/70 text-sm mb-4">{vendor.data.description}</p>
                 <div class="flex flex-wrap gap-2">
                   {vendor.data.categories.map((cat: string) => (
-                    <span class="bg-cream text-black/70 text-xs px-2 py-1 rounded-full">
+                    <span class="bg-cream text-black/70 text-xs px-2 py-1 rounded-md">
                       {categoryLabels[cat] || cat}
                     </span>
                   ))}
@@ -81,7 +81,7 @@ const categoryLabels: Record<string, string> = {
       <!-- Guest Vendors -->
       <div>
         <h2 class="font-display font-bold text-2xl text-black mb-6 flex items-center gap-3">
-          <span class="bg-orange text-white text-sm px-3 py-1 rounded-full">Rotating</span>
+          <span class="bg-orange text-white text-sm px-3 py-1 rounded-md">Rotating</span>
           Guest Vendors
         </h2>
         <p class="text-black/70 mb-6">
@@ -89,7 +89,7 @@ const categoryLabels: Record<string, string> = {
         </p>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {guestVendors.map((vendor) => (
-            <article class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow border-2 border-orange/20">
+            <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow border-2 border-orange/20">
               <a href={`${base}/vendors/${vendor.data.slug}`} class="block">
                 <div class="h-48 bg-gradient-to-br from-orange/20 to-cream flex items-center justify-center">
                   <span class="text-6xl opacity-50">✨</span>
@@ -105,7 +105,7 @@ const categoryLabels: Record<string, string> = {
                 <p class="text-black/70 text-sm mb-4">{vendor.data.description}</p>
                 <div class="flex flex-wrap gap-2">
                   {vendor.data.categories.map((cat: string) => (
-                    <span class="bg-cream text-black/70 text-xs px-2 py-1 rounded-full">
+                    <span class="bg-cream text-black/70 text-xs px-2 py-1 rounded-md">
                       {categoryLabels[cat] || cat}
                     </span>
                   ))}
@@ -117,14 +117,14 @@ const categoryLabels: Record<string, string> = {
       </div>
 
       <!-- Become a Vendor CTA -->
-      <div class="mt-16 bg-white rounded-2xl p-8 text-center shadow-md">
+      <div class="mt-16 bg-white rounded-xl p-8 text-center shadow-md">
         <h2 class="font-display font-bold text-2xl text-black mb-4">
           Interested in Becoming a Vendor?
         </h2>
         <p class="text-black/70 mb-6 max-w-xl mx-auto">
           We're always looking for local farmers, artisans, and food producers to join our market family.
         </p>
-        <a href={`${base}/contact`} class="inline-block bg-orange text-white font-display font-bold px-6 py-3 rounded-full hover:bg-orange/90 transition-colors">
+        <a href={`${base}/contact`} class="inline-block bg-orange text-white font-display font-bold px-6 py-3 rounded-md hover:bg-orange/90 transition-colors">
           Apply to Vend
         </a>
       </div>

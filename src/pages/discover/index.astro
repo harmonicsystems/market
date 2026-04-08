@@ -42,7 +42,7 @@ const featured = allLandmarks.filter(l => l.data.featured);
   <section class="bg-cream py-12">
     <div class="max-w-6xl mx-auto px-4">
       <div class="text-center mb-12">
-        <span class="inline-block bg-black text-white font-accent text-lg px-4 py-1 rounded-full mb-4">It's OK!</span>
+        <span class="inline-block bg-black text-white font-accent text-lg px-4 py-1 rounded-md mb-4">It's OK!</span>
         <h1 class="font-display font-bold text-4xl md:text-5xl text-black mb-4">
           Discover Kinderhook
         </h1>
@@ -54,7 +54,7 @@ const featured = allLandmarks.filter(l => l.data.featured);
       <!-- Featured highlights -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
         {featured.map((landmark) => (
-          <article class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
             <a href={`${base}/discover/${landmark.data.slug}`} class="block">
               <div class={`h-40 bg-gradient-to-br ${
                 landmark.data.type === 'historic-site' ? 'from-orange/15 to-teal/15' :
@@ -66,7 +66,7 @@ const featured = allLandmarks.filter(l => l.data.featured);
               </div>
             </a>
             <div class="p-5">
-              <span class="inline-block bg-teal/10 text-teal text-xs font-medium px-2 py-1 rounded-full mb-2">
+              <span class="inline-block bg-teal/10 text-teal text-xs font-medium px-2 py-1 rounded-md mb-2">
                 {typeLabels[landmark.data.type]?.replace(/s$/, '') || landmark.data.type}
               </span>
               <h2 class="font-display font-bold text-lg text-black mb-1">
@@ -79,7 +79,7 @@ const featured = allLandmarks.filter(l => l.data.featured);
               )}
               <p class="text-black/70 text-sm line-clamp-3">{landmark.data.description}</p>
               {landmark.data.admission === 'Free' && (
-                <span class="inline-block mt-3 bg-lime/20 text-lime text-xs font-bold px-2 py-1 rounded-full">
+                <span class="inline-block mt-3 bg-lime/20 text-lime text-xs font-bold px-2 py-1 rounded-md">
                   Free Admission
                 </span>
               )}
@@ -116,7 +116,7 @@ const featured = allLandmarks.filter(l => l.data.featured);
                     </span>
                   )}
                   {landmark.data.admission === 'Free' && (
-                    <span class="bg-lime/20 text-lime font-bold px-2 py-0.5 rounded-full">Free</span>
+                    <span class="bg-lime/20 text-lime font-bold px-2 py-0.5 rounded-md">Free</span>
                   )}
                 </div>
               </a>
@@ -134,10 +134,10 @@ const featured = allLandmarks.filter(l => l.data.featured);
           Start with the Saturday farmers' market on the Village Green, explore historic sites and galleries, then enjoy lunch at a local restaurant. It's all walkable.
         </p>
         <div class="flex flex-wrap justify-center gap-3">
-          <a href={`${base}/visit`} class="inline-block bg-white text-black font-display font-bold px-6 py-3 rounded-full hover:bg-white/90 transition-colors">
+          <a href={`${base}/visit`} class="inline-block bg-white text-black font-display font-bold px-6 py-3 rounded-md hover:bg-white/90 transition-colors">
             Plan Your Visit
           </a>
-          <a href={`${base}/businesses`} class="inline-block bg-white/20 text-white font-display font-bold px-6 py-3 rounded-full hover:bg-white/30 transition-colors">
+          <a href={`${base}/businesses`} class="inline-block bg-white/20 text-white font-display font-bold px-6 py-3 rounded-md hover:bg-white/30 transition-colors">
             Local Businesses
           </a>
         </div>

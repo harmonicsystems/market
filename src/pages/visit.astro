@@ -37,7 +37,7 @@ const typeIcons: Record<string, string> = {
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <!-- Map Section -->
         <div>
-          <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+          <div class="bg-white rounded-xl shadow-md overflow-hidden">
             <div class="aspect-video bg-gradient-to-br from-teal/20 to-lime/20 flex items-center justify-center">
               <div class="text-center p-8">
                 <svg class="w-16 h-16 mx-auto text-teal/50 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -70,7 +70,7 @@ const typeIcons: Record<string, string> = {
         <!-- Info Cards -->
         <div class="space-y-6">
           <!-- When -->
-          <div class="bg-white rounded-2xl shadow-md p-6">
+          <div class="bg-white rounded-xl shadow-md p-6">
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 bg-orange/20 rounded-full flex items-center justify-center shrink-0">
                 <svg class="w-6 h-6 text-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,7 +86,7 @@ const typeIcons: Record<string, string> = {
           </div>
 
           <!-- Parking -->
-          <div class="bg-white rounded-2xl shadow-md p-6">
+          <div class="bg-white rounded-xl shadow-md p-6">
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 bg-teal/20 rounded-full flex items-center justify-center shrink-0">
                 <svg class="w-6 h-6 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,7 +101,7 @@ const typeIcons: Record<string, string> = {
           </div>
 
           <!-- What to Bring -->
-          <div class="bg-white rounded-2xl shadow-md p-6">
+          <div class="bg-white rounded-xl shadow-md p-6">
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 bg-lime/20 rounded-full flex items-center justify-center shrink-0">
                 <svg class="w-6 h-6 text-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,7 +121,7 @@ const typeIcons: Record<string, string> = {
           </div>
 
           <!-- Accessibility -->
-          <div class="bg-white rounded-2xl shadow-md p-6">
+          <div class="bg-white rounded-xl shadow-md p-6">
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 bg-orange/20 rounded-full flex items-center justify-center shrink-0">
                 <svg class="w-6 h-6 text-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,20 +144,20 @@ const typeIcons: Record<string, string> = {
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           {featured.map((landmark) => (
-            <a href={`${base}/discover/${landmark.data.slug}`} class="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow block">
+            <a href={`${base}/discover/${landmark.data.slug}`} class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-shadow block">
               <div class="w-16 h-16 bg-teal/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span class="text-3xl">{typeIcons[landmark.data.type] || '📍'}</span>
               </div>
               <h3 class="font-display font-bold text-lg text-black mb-2">{landmark.data.name}</h3>
               <p class="text-black/70 text-sm">{landmark.data.tagline}</p>
               {landmark.data.admission === 'Free' && (
-                <span class="inline-block mt-2 bg-lime/20 text-lime text-xs font-bold px-2 py-0.5 rounded-full">Free</span>
+                <span class="inline-block mt-2 bg-lime/20 text-lime text-xs font-bold px-2 py-0.5 rounded-md">Free</span>
               )}
             </a>
           ))}
         </div>
         <div class="mt-8 text-center">
-          <a href={`${base}/discover`} class="inline-block bg-teal text-white font-display font-bold px-6 py-3 rounded-full hover:bg-teal/90 transition-colors">
+          <a href={`${base}/discover`} class="inline-block bg-teal text-white font-display font-bold px-6 py-3 rounded-md hover:bg-teal/90 transition-colors">
             Discover All of Kinderhook
           </a>
         </div>
