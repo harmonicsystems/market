@@ -1,0 +1,50 @@
+---
+/**
+ * DoodleIcon — renders hand-drawn doodle SVGs inline with custom color.
+ *
+ * Usage:
+ *   <DoodleIcon name="tree" class="w-12 h-12" />
+ *   <DoodleIcon name="shop" color="var(--color-orange)" class="w-8 h-8" />
+ *
+ * The SVGs use fill="black" by default — we override with currentColor
+ * via CSS so the icon inherits text color or uses the color prop.
+ */
+
+interface Props {
+  name: string;
+  color?: string;
+  class?: string;
+}
+
+const { name, color, class: className = 'w-10 h-10' } = Astro.props;
+
+// Import all SVGs from the icons directory
+const icons = import.meta.glob('/src/assets/icons/*.svg', { as: 'raw', eager: true });
+
+// Find the matching icon
+const key = Object.keys(icons).find(k => k.endsWith(`/${name}.svg`));
+const rawSvg = key ? (icons[key] as string) : null;
+
+// Process SVG: make it scalable and color-customizable
+let processedSvg = '';
+if (rawSvg) {
+  processedSvg = rawSvg
+    // Remove fixed width/height so CSS controls sizing
+    .replace(/\s*width="[^"]*"/, '')
+    .replace(/\s*height="[^"]*"/, '')
+    // Replace fill="black" with currentColor for CSS color control
+    .replace(/fill="black"/g, 'fill="currentColor"')
+    .replace(/fill="#000000"/g, 'fill="currentColor"')
+    .replace(/fill="#000"/g, 'fill="currentColor"')
+    // Ensure viewBox is preserved and add class
+    .replace('<svg', `<svg class="${className}" aria-hidden="true"`);
+}
+
+const style = color ? `color: ${color}` : undefined;
+---
+
+{processedSvg ? (
+  <span class="inline-flex items-center justify-center shrink-0" style={style} set:html={processedSvg} />
+) : (
+  <span class={`inline-flex items-center justify-center shrink-0 ${className}`} style={style}>?</span>
+)}

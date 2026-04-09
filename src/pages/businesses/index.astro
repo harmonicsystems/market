@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StructuredData from '../../components/StructuredData.astro';
+import DoodleIcon from '../../components/DoodleIcon.astro';
 import { getCollection } from 'astro:content';
 
 const base = import.meta.env.BASE_URL;
@@ -21,18 +22,19 @@ const typeLabels: Record<string, string> = {
   'government': 'Government',
 };
 
+// Map business types to doodle icon names
 const typeIcons: Record<string, string> = {
-  'real-estate': '🏠',
-  'professional-services': '💼',
-  'cultural': '🏛️',
-  'financial': '🏦',
-  'legal': '⚖️',
-  'nonprofit': '💚',
-  'farm': '🌾',
-  'religious': '⛪',
-  'restaurant': '🍽️',
-  'retail': '🛍️',
-  'government': '🏛️',
+  'real-estate': 'home-1',
+  'professional-services': 'suitcase',
+  'cultural': 'globe',
+  'financial': 'shield',
+  'legal': 'flag',
+  'nonprofit': 'heart',
+  'farm': 'tree',
+  'religious': 'star',
+  'restaurant': 'cutlery',
+  'retail': 'shop',
+  'government': 'crown',
 };
 
 // Sort businesses alphabetically
@@ -62,8 +64,8 @@ const sortedBusinesses = allBusinesses.sort((a, b) => a.data.name.localeCompare(
         {sortedBusinesses.map((biz) => (
           <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
             <a href={`${base}/businesses/${biz.data.slug}`} class="block">
-              <div class="h-32 bg-gradient-to-br from-teal/15 to-lime/15 flex items-center justify-center">
-                <span class="text-5xl opacity-60">{typeIcons[biz.data.type] || '🏢'}</span>
+              <div class="h-32 bg-gradient-to-br from-teal/15 to-lime/15 flex items-center justify-center text-teal/40">
+                <DoodleIcon name={typeIcons[biz.data.type] || 'shop'} class="w-16 h-16" />
               </div>
             </a>
             <div class="p-5">

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import StructuredData from '../components/StructuredData.astro';
+import DoodleIcon from '../components/DoodleIcon.astro';
 import { getCollection } from 'astro:content';
 import siteConfig from '../data/site-config.json';
 
@@ -9,11 +10,11 @@ const landmarks = await getCollection('landmarks');
 const featured = landmarks.filter(l => l.data.featured).slice(0, 6);
 
 const typeIcons: Record<string, string> = {
-  'historic-site': '🏛️',
-  'museum': '📚',
-  'gallery': '🎨',
-  'trail': '🥾',
-  'neighborhood': '🏘️',
+  'historic-site': 'flag',
+  'museum': 'globe',
+  'gallery': 'paint-brush',
+  'trail': 'tree',
+  'neighborhood': 'home',
 };
 ---
 
@@ -146,7 +147,7 @@ const typeIcons: Record<string, string> = {
           {featured.map((landmark) => (
             <a href={`${base}/discover/${landmark.data.slug}`} class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-shadow block">
               <div class="w-16 h-16 bg-teal/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span class="text-3xl">{typeIcons[landmark.data.type] || '📍'}</span>
+                <span class="text-teal/50"><DoodleIcon name={typeIcons[landmark.data.type] || 'location-pin'} class="w-10 h-10" /></span>
               </div>
               <h3 class="font-display font-bold text-lg text-black mb-2">{landmark.data.name}</h3>
               <p class="text-black/70 text-sm">{landmark.data.tagline}</p>
