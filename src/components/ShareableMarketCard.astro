@@ -7,47 +7,49 @@ interface Props {
 }
 
 const { date, displayDate, theme, music } = Astro.props;
+
+// Break displayDate into day + date for bigger typography
+// "Saturday, May 9, 2026" → day="Saturday" date="May 9, 2026"
+const commaIdx = displayDate.indexOf(',');
+const dayName = commaIdx > 0 ? displayDate.slice(0, commaIdx) : '';
+const dateRest = commaIdx > 0 ? displayDate.slice(commaIdx + 1).trim() : displayDate;
 ---
 
 <div class="shareable-card-container">
   <canvas id="market-card-canvas" width="1080" height="1080" class="hidden"></canvas>
 
-  <!-- Preview - Warm gold & sunflower style -->
-  <div id="card-preview" class="rounded-xl p-6 text-center max-w-sm mx-auto shadow-lg relative overflow-hidden" style="background-color: #2E1F2F;">
-    <!-- Decorative sunflower emojis -->
-    <div class="absolute top-3 left-3 text-2xl opacity-40">🌻</div>
-    <div class="absolute top-3 right-3 text-2xl opacity-40">🌻</div>
-    <div class="absolute bottom-3 left-3 text-xl opacity-30">🌾</div>
-    <div class="absolute bottom-3 right-3 text-xl opacity-30">🌾</div>
+  <!-- Preview — matches the generated share image -->
+  <div id="card-preview" class="rounded-xl max-w-md mx-auto shadow-xl overflow-hidden">
 
-    <!-- Main content card -->
-    <div class="bg-cream rounded-xl p-6 mb-4 relative border-2 border-orange/30">
-      <p class="text-orange text-xs font-bold uppercase tracking-[0.2em] mb-2">You're Invited</p>
-      <h3 class="font-display font-bold text-3xl text-black leading-tight uppercase tracking-wide">Kinderhook</h3>
-      <p class="font-display text-sm text-orange tracking-[0.15em] uppercase mb-3">&mdash; Farmers' Market &mdash;</p>
-
-      <!-- Date -->
-      <div class="bg-orange text-white rounded-md py-2 px-4 inline-block mb-2">
-        <p class="font-display font-bold text-sm">{displayDate}</p>
-      </div>
-      <p class="text-black/60 text-sm">8:30 AM &ndash; 12:30 PM</p>
+    <!-- Top band: aubergine with market name -->
+    <div class="py-8 px-6 text-center" style="background-color: #2E1F2F;">
+      <p class="font-display font-bold text-4xl text-white leading-none mb-2">Kinderhook</p>
+      <p class="font-display text-xl text-orange tracking-[0.08em]">&mdash; Farmers' Market &mdash;</p>
     </div>
 
-    <!-- Theme/Music -->
-    {(theme || music) && (
-      <div class="bg-cream rounded-xl p-4 mb-4 border border-orange/20">
-        {theme && <p class="font-display font-bold text-orange">{theme}</p>}
-        {music && <p class="text-black/60 text-sm">&#9835; {music.name}</p>}
-      </div>
-    )}
+    <!-- Gold accent stripe -->
+    <div class="h-1.5 bg-orange"></div>
 
-    <!-- Location -->
-    <p class="text-white/90 text-sm font-medium">Village Green &middot; Broad Street &amp; Albany Ave</p>
-    <p class="text-white/60 text-xs">Kinderhook, NY</p>
+    <!-- Middle: cream with BIG date -->
+    <div class="bg-cream py-8 px-6 text-center">
+      {dayName && <p class="font-display font-bold text-3xl text-black mb-1">{dayName}</p>}
+      <p class="font-display font-bold text-2xl text-black/70">{dateRest}</p>
+      <p class="text-black/50 text-lg mt-2">8:30 AM &ndash; 12:30 PM &middot; Village Green</p>
 
-    <!-- It's OK badge -->
-    <div class="inline-block bg-orange text-white text-xs font-bold px-3 py-1 rounded-md mt-3 font-accent uppercase tracking-wider">
-      It's OK!
+      {(theme || music) && (
+        <div class="mt-5 pt-5 border-t border-black/10">
+          {theme && <p class="font-display font-bold text-2xl text-orange">{theme}</p>}
+          {music && <p class="text-black/50 text-lg mt-1">&#9835; {music.name}</p>}
+        </div>
+      )}
+    </div>
+
+    <!-- Gold accent stripe -->
+    <div class="h-1.5 bg-orange"></div>
+
+    <!-- Bottom band: aubergine with location -->
+    <div class="py-5 px-6 text-center" style="background-color: #2E1F2F;">
+      <p class="text-white/80 text-base">Kinderhook, NY &middot; Rain or Shine</p>
     </div>
   </div>
 
@@ -57,11 +59,11 @@ const { date, displayDate, theme, music } = Astro.props;
       class="mt-6 inline-flex items-center gap-2 bg-orange text-white font-display font-bold px-6 py-3 rounded-md hover:bg-orange/90 transition-colors"
     >
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
       </svg>
-      Save & Share
+      Save &amp; Share
     </button>
-    <p class="text-black/50 text-sm mt-2">Opens share sheet on mobile, downloads on desktop</p>
+    <p class="text-black/40 text-sm mt-2">Share on Instagram, Facebook, Nextdoor</p>
   </div>
 </div>
 
@@ -70,119 +72,99 @@ const { date, displayDate, theme, music } = Astro.props;
   const ctx = canvas.getContext('2d');
   const downloadBtn = document.getElementById('download-card-btn');
 
+  // Break displayDate for layout: "Saturday, May 9, 2026" → "Saturday" + "May 9, 2026"
+  const commaIdx = displayDate.indexOf(',');
+  const dayName = commaIdx > 0 ? displayDate.slice(0, commaIdx) : '';
+  const dateRest = commaIdx > 0 ? displayDate.slice(commaIdx + 1).trim() : displayDate;
+
   function generateCard() {
-    const width = 1080;
-    const height = 1080;
+    const w = 1080;
+    const h = 1080;
+    const aubergine = '#2E1F2F';
+    const cream = '#FDF8F0';
+    const gold = '#B8860B';
 
-    // Dark background
-    ctx.fillStyle = '#2E1F2F';
-    ctx.fillRect(0, 0, width, height);
-
-    // Decorative sunflowers (subtle)
-    ctx.font = '80px serif';
-    ctx.globalAlpha = 0.25;
-    ctx.fillText('🌻', 40, 110);
-    ctx.fillText('🌻', 950, 110);
-    ctx.fillText('🌾', 60, 1020);
-    ctx.fillText('🌾', 940, 1020);
-    ctx.globalAlpha = 1.0;
-
-    // Main cream card
-    ctx.fillStyle = '#FFFDF5';
-    drawRect(ctx, 100, 100, 880, 560, 20);
-    ctx.fill();
-
-    // Gold border on card
-    ctx.strokeStyle = 'rgba(184, 134, 11, 0.3)';
-    ctx.lineWidth = 3;
-    drawRect(ctx, 100, 100, 880, 560, 20);
-    ctx.stroke();
-
-    // "You're Invited"
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#B8860B';
-    ctx.font = 'bold 24px Lora, Georgia, serif';
-    ctx.letterSpacing = '4px';
-    ctx.fillText("YOU'RE INVITED", width / 2, 190);
 
-    // "KINDERHOOK"
-    ctx.fillStyle = '#2E1F2F';
-    ctx.font = 'bold 90px DM Serif Display, Georgia, serif';
-    ctx.fillText('KINDERHOOK', width / 2, 310);
+    // ═══ TOP BAND: Aubergine with market name ═══
+    ctx.fillStyle = aubergine;
+    ctx.fillRect(0, 0, w, 340);
 
-    // "— FARMERS' MARKET —"
-    ctx.fillStyle = '#B8860B';
-    ctx.font = '36px DM Serif Display, Georgia, serif';
-    ctx.fillText("— FARMERS' MARKET —", width / 2, 370);
+    // "Kinderhook" — HUGE
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 130px DM Serif Display, Georgia, serif';
+    ctx.fillText('Kinderhook', w / 2, 185);
 
-    // Gold date pill
-    ctx.fillStyle = '#B8860B';
-    drawRect(ctx, 260, 420, 560, 60, 8);
-    ctx.fill();
+    // "— Farmers' Market —"
+    ctx.fillStyle = gold;
+    ctx.font = '52px DM Serif Display, Georgia, serif';
+    ctx.fillText("— Farmers' Market —", w / 2, 280);
 
-    ctx.fillStyle = 'white';
-    ctx.font = 'bold 28px DM Serif Display, Georgia, serif';
-    ctx.fillText(displayDate, width / 2, 460);
+    // ═══ GOLD ACCENT STRIPE ═══
+    ctx.fillStyle = gold;
+    ctx.fillRect(0, 340, w, 16);
 
-    // Time
-    ctx.fillStyle = '#2E1F2F';
-    ctx.font = '400 28px Lora, Georgia, serif';
-    ctx.fillText('8:30 AM – 12:30 PM', width / 2, 570);
+    // ═══ MIDDLE: Cream with big date ═══
+    ctx.fillStyle = cream;
+    ctx.fillRect(0, 356, w, 400);
 
-    // Theme/Music card
-    let yOffset = 700;
-    if (theme || music) {
-      ctx.fillStyle = '#FFFDF5';
-      const cardH = theme && music ? 130 : 90;
-      drawRect(ctx, 220, 690, 640, cardH, 16);
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(184, 134, 11, 0.2)';
-      ctx.lineWidth = 2;
-      drawRect(ctx, 220, 690, 640, cardH, 16);
-      ctx.stroke();
-
-      if (theme) {
-        ctx.fillStyle = '#B8860B';
-        ctx.font = 'bold 32px DM Serif Display, Georgia, serif';
-        ctx.fillText(theme, width / 2, 740);
-        yOffset = 790;
-      }
-      if (music) {
-        ctx.fillStyle = '#2E1F2F';
-        ctx.font = '400 26px Lora, Georgia, serif';
-        ctx.fillText(`♩ ${music.name}`, width / 2, theme ? 785 : 745);
-      }
+    // Day name — enormous
+    if (dayName) {
+      ctx.fillStyle = aubergine;
+      ctx.font = 'bold 100px DM Serif Display, Georgia, serif';
+      ctx.fillText(dayName, w / 2, 475);
     }
 
-    // Location
-    ctx.fillStyle = 'rgba(255,255,255,0.9)';
-    ctx.font = '500 26px Lora, Georgia, serif';
-    ctx.fillText('Village Green · Broad Street & Albany Ave', width / 2, 890);
-    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    // Date
+    ctx.fillStyle = 'rgba(46, 31, 47, 0.65)';
+    ctx.font = 'bold 64px DM Serif Display, Georgia, serif';
+    ctx.fillText(dateRest, w / 2, dayName ? 560 : 500);
+
+    // Time + Location
+    ctx.fillStyle = 'rgba(46, 31, 47, 0.45)';
+    ctx.font = '400 38px Lora, Georgia, serif';
+    ctx.fillText('8:30 AM – 12:30 PM  ·  Village Green', w / 2, dayName ? 630 : 580);
+
+    // Theme + Music
+    let themeAreaY = dayName ? 690 : 640;
+    if (theme) {
+      ctx.fillStyle = gold;
+      ctx.font = 'bold 56px DM Serif Display, Georgia, serif';
+      ctx.fillText(theme, w / 2, themeAreaY);
+      themeAreaY += 55;
+    }
+    if (music) {
+      ctx.fillStyle = 'rgba(46, 31, 47, 0.45)';
+      ctx.font = '400 36px Lora, Georgia, serif';
+      ctx.fillText(`♩ ${music.name}`, w / 2, themeAreaY);
+    }
+
+    // ═══ GOLD ACCENT STRIPE ═══
+    ctx.fillStyle = gold;
+    ctx.fillRect(0, 756, w, 16);
+
+    // ═══ BOTTOM BAND: Aubergine with location ═══
+    ctx.fillStyle = aubergine;
+    ctx.fillRect(0, 772, w, 308);
+
+    // Location — clear and readable
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.font = '500 38px Lora, Georgia, serif';
+    ctx.fillText('Kinderhook, NY', w / 2, 870);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.font = '400 32px Lora, Georgia, serif';
+    ctx.fillText('Rain or Shine', w / 2, 925);
+
+    // "It's OK!" — warm gold
+    ctx.fillStyle = gold;
+    ctx.font = 'italic 34px DM Serif Display, Georgia, serif';
+    ctx.fillText("It's OK!", w / 2, 1005);
+
+    // URL — subtle
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
     ctx.font = '400 22px Lora, Georgia, serif';
-    ctx.fillText('Kinderhook, NY', width / 2, 930);
-
-    // "It's OK!" badge
-    ctx.fillStyle = '#B8860B';
-    drawRect(ctx, width / 2 - 70, 960, 140, 46, 8);
-    ctx.fill();
-    ctx.fillStyle = 'white';
-    ctx.font = 'bold 22px DM Serif Display, Georgia, serif';
-    ctx.fillText("It's OK!", width / 2, 991);
-  }
-
-  function drawRect(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.lineTo(x + w - r, y);
-    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-    ctx.lineTo(x + w, y + h - r);
-    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-    ctx.lineTo(x + r, y + h);
-    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-    ctx.lineTo(x, y + r);
-    ctx.quadraticCurveTo(x, y, x + r, y);
-    ctx.closePath();
+    ctx.fillText('kinderhookfarmersmarket.com', w / 2, 1060);
   }
 
   downloadBtn.addEventListener('click', async () => {
