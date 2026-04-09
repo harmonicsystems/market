@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 /* Kinderhook Farmers' Market Design Tokens
-   Inspired by: classic sunflower flyer — serif type, black + gold palette */
+   Warm, floral, agricultural — aubergine + gold + olive */
 @theme {
   /* Primary Colors */
   --color-orange: #B8860B;  /* Dark goldenrod — primary accent, CTAs */
-  --color-teal: #6B7F3B;    /* Earthy olive — secondary, links */
+  --color-teal: #5A7247;    /* Deeper sage green — secondary, links, nature */
 
   /* Secondary Colors */
-  --color-lime: #D4A017;    /* Sunflower gold — tertiary highlights */
-  --color-black: #1A1A1A;   /* Rich black — text */
+  --color-lime: #C49A02;    /* Warm gold — tertiary highlights */
+  --color-black: #2E1F2F;   /* Deep aubergine — text, headers, dark sections */
 
   /* Neutrals */
-  --color-cream: #FFFDF5;   /* Warm white — backgrounds */
+  --color-cream: #FDF8F0;   /* Warm parchment — backgrounds */
   --color-white: #FFFFFF;
 
   /* Font Families */
@@ -60,18 +60,18 @@ html {
   margin: 1.5rem auto;
 }
 
-/* Thin gold border on cards for warmth */
+/* Thin warm border on cards — aubergine tint */
 .card-bordered {
-  border: 1px solid rgba(184, 134, 11, 0.15);
+  border: 1px solid rgba(46, 31, 47, 0.1);
 }
 
-/* Uppercase small-cap headings used in section labels */
+/* Section labels — warm and inviting, not corporate */
 .section-label {
   font-family: var(--font-display);
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.05em;
   color: var(--color-orange);
 }
 
@@ -83,11 +83,12 @@ html {
   content: " —";
 }
 
-/* Subtle texture overlay for hero sections */
+/* Subtle texture overlay for hero sections — warm floral tones */
 .hero-texture {
   background-image:
-    radial-gradient(circle at 20% 50%, rgba(184, 134, 11, 0.04) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(107, 127, 59, 0.03) 0%, transparent 40%);
+    radial-gradient(circle at 15% 60%, rgba(90, 114, 71, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(184, 134, 11, 0.04) 0%, transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(46, 31, 47, 0.02) 0%, transparent 40%);
 }
 
 /* Gold link underline animation */

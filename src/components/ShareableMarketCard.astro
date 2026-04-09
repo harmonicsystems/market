@@ -13,7 +13,7 @@ const { date, displayDate, theme, music } = Astro.props;
   <canvas id="market-card-canvas" width="1080" height="1080" class="hidden"></canvas>
 
   <!-- Preview - Warm gold & sunflower style -->
-  <div id="card-preview" class="bg-black rounded-xl p-6 text-center max-w-sm mx-auto shadow-lg relative overflow-hidden">
+  <div id="card-preview" class="rounded-xl p-6 text-center max-w-sm mx-auto shadow-lg relative overflow-hidden" style="background-color: #2E1F2F;">
     <!-- Decorative sunflower emojis -->
     <div class="absolute top-3 left-3 text-2xl opacity-40">🌻</div>
     <div class="absolute top-3 right-3 text-2xl opacity-40">🌻</div>
@@ -75,7 +75,7 @@ const { date, displayDate, theme, music } = Astro.props;
     const height = 1080;
 
     // Dark background
-    ctx.fillStyle = '#1A1A1A';
+    ctx.fillStyle = '#2E1F2F';
     ctx.fillRect(0, 0, width, height);
 
     // Decorative sunflowers (subtle)
@@ -106,7 +106,7 @@ const { date, displayDate, theme, music } = Astro.props;
     ctx.fillText("YOU'RE INVITED", width / 2, 190);
 
     // "KINDERHOOK"
-    ctx.fillStyle = '#1A1A1A';
+    ctx.fillStyle = '#2E1F2F';
     ctx.font = 'bold 90px DM Serif Display, Georgia, serif';
     ctx.fillText('KINDERHOOK', width / 2, 310);
 
@@ -125,7 +125,7 @@ const { date, displayDate, theme, music } = Astro.props;
     ctx.fillText(displayDate, width / 2, 460);
 
     // Time
-    ctx.fillStyle = '#1A1A1A';
+    ctx.fillStyle = '#2E1F2F';
     ctx.font = '400 28px Lora, Georgia, serif';
     ctx.fillText('8:30 AM – 12:30 PM', width / 2, 570);
 
@@ -148,7 +148,7 @@ const { date, displayDate, theme, music } = Astro.props;
         yOffset = 790;
       }
       if (music) {
-        ctx.fillStyle = '#1A1A1A';
+        ctx.fillStyle = '#2E1F2F';
         ctx.font = '400 26px Lora, Georgia, serif';
         ctx.fillText(`♩ ${music.name}`, width / 2, theme ? 785 : 745);
       }
