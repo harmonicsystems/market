@@ -41,7 +41,7 @@ const base = import.meta.env.BASE_URL;
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Aoboshi+One&family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
     <title>{title} | Kinderhook Farmers' Market - Hudson Valley, NY</title>
     <StructuredData type="organization" />
     <slot name="head" />
@@ -49,11 +49,10 @@ const base = import.meta.env.BASE_URL;
   <body class="min-h-screen flex flex-col">
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <header class="bg-white shadow-sm sticky top-0 z-50">
+    <header class="bg-cream sticky top-0 z-50">
       <nav class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-        <a href={base} class="flex flex-col items-center leading-tight">
-          <span class="font-display font-bold text-lg md:text-xl tracking-wide text-black">Kinderhook</span>
-          <span class="font-display text-xs md:text-sm text-orange tracking-[0.15em]">&mdash; Farmers' Market &mdash;</span>
+        <a href={base} id="header-logo" class="font-logo text-sm md:text-base tracking-wide text-black uppercase opacity-0 transition-opacity duration-300">
+          Kinderhook Farmers' Market
         </a>
 
         <ul class="hidden md:flex items-center gap-6 font-display font-semibold text-sm tracking-wide text-black">
@@ -72,7 +71,7 @@ const base = import.meta.env.BASE_URL;
       </nav>
 
       <!-- Mobile menu -->
-      <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+      <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-black/10">
         <ul class="flex flex-col p-4 gap-4 font-display font-semibold tracking-wide text-sm">
           <li><a href={`${base}/vendors`} class="block py-2 hover:text-orange">Vendors</a></li>
           <li><a href={`${base}/discover`} class="block py-2 hover:text-orange">Discover Kinderhook</a></li>
@@ -91,8 +90,7 @@ const base = import.meta.env.BASE_URL;
       <div class="max-w-6xl mx-auto px-4 py-12">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 class="font-display font-bold text-xl mb-1 tracking-wide">Kinderhook</h3>
-            <p class="font-display text-sm text-orange tracking-[0.12em] mb-4">&mdash; Farmers' Market &mdash;</p>
+            <h3 class="font-logo text-lg tracking-wide uppercase mb-4">Kinderhook Farmers' Market</h3>
             <p class="text-white/80 mb-2">Village Green, Broad Street &amp; Albany Avenue</p>
             <p class="text-white/80 mb-2">Kinderhook, NY 12106</p>
             <p class="text-white/80">Saturdays 8:30am - 12:30pm</p>
@@ -142,6 +140,31 @@ const base = import.meta.env.BASE_URL;
       menuBtn?.addEventListener('click', () => {
         mobileMenu?.classList.toggle('hidden');
       });
+
+      // Show header logo after scrolling past homepage hero
+      const headerLogo = document.getElementById('header-logo');
+      const homepageHero = document.getElementById('homepage-hero');
+
+      if (headerLogo && homepageHero) {
+        // Homepage: hide logo until scrolled past hero
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              headerLogo.classList.add('opacity-0');
+              headerLogo.classList.remove('opacity-100');
+            } else {
+              headerLogo.classList.remove('opacity-0');
+              headerLogo.classList.add('opacity-100');
+            }
+          },
+          { threshold: 0, rootMargin: '-60px 0px 0px 0px' }
+        );
+        observer.observe(homepageHero);
+      } else if (headerLogo) {
+        // All other pages: always show the logo
+        headerLogo.classList.remove('opacity-0');
+        headerLogo.classList.add('opacity-100');
+      }
     </script>
   </body>
 </html>

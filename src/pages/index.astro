@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import StructuredData from '../components/StructuredData.astro';
 import { Image } from 'astro:assets';
+import MarketIcon from '../components/MarketIcon.astro';
 import ShareableMarketCard from '../components/ShareableMarketCard.astro';
 import welcomeImage from '../assets/images/decorative/welcome-kinderhook.webp';
 import siteConfig from '../data/site-config.json';
@@ -39,11 +40,14 @@ const base = import.meta.env.BASE_URL;
 >
   <StructuredData slot="head" type="event" data={{ date: thisWeek.date, theme: thisWeek.theme, music: thisWeek.music }} />
   <!-- Hero: Market-Forward Identity -->
-  <section class="bg-cream py-14 md:py-24 hero-texture">
+  <section id="homepage-hero" class="bg-cream py-14 md:py-24 hero-texture">
     <div class="max-w-4xl mx-auto px-4 text-center">
-      <h1 class="mb-4">
-        <span class="block font-display font-bold text-5xl md:text-7xl lg:text-8xl tracking-wide text-black">Kinderhook</span>
-        <span class="block font-display text-2xl md:text-4xl lg:text-5xl text-orange tracking-[0.08em] mt-1">&mdash; Farmers' Market &mdash;</span>
+      <div class="flex justify-center mb-6">
+        <MarketIcon name="sunflower" class="w-20 h-20 md:w-28 md:h-28" />
+      </div>
+      <h1 class="mb-4 font-logo uppercase tracking-wide">
+        <span class="block text-5xl md:text-7xl lg:text-8xl text-black">Kinderhook</span>
+        <span class="block text-3xl md:text-5xl lg:text-6xl text-black mt-1">Farmers' Market</span>
       </h1>
       <hr class="gold-rule mb-8" />
 
@@ -73,10 +77,10 @@ const base = import.meta.env.BASE_URL;
         </div>
       </div>
 
-      <p class="text-lg md:text-xl text-black/60 font-body max-w-2xl mx-auto italic mb-6">
+      <p class="text-lg md:text-xl text-black/80 font-body max-w-2xl mx-auto italic mb-6">
         Fresh local produce, artisan goods, and live music in the heart of the Hudson Valley.
       </p>
-      <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-black/40">
+      <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-black/70">
         <span>Best of Columbia County 2019</span>
         <span>&middot;</span>
         <span>20+ years</span>
