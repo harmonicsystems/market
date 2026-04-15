@@ -40,7 +40,7 @@ const base = import.meta.env.BASE_URL;
 >
   <StructuredData slot="head" type="event" data={{ date: thisWeek.date, theme: thisWeek.theme, music: thisWeek.music }} />
   <!-- Hero: Market-Forward Identity -->
-  <section id="homepage-hero" class="bg-cream py-14 md:py-24 hero-texture">
+  <section id="homepage-hero" class="bg-cream py-14 md:py-24">
     <div class="max-w-4xl mx-auto px-4 text-center">
       <div class="flex justify-center mb-6">
         <MarketIcon name="sunflower" class="w-20 h-20 md:w-28 md:h-28" />
@@ -55,22 +55,22 @@ const base = import.meta.env.BASE_URL;
       <div class="bg-black text-white rounded-xl p-6 md:p-8 mb-8 max-w-3xl mx-auto">
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
           <div>
-            <p class="section-label mb-1" style="color: rgba(184,134,11,0.7);">When</p>
+            <p class="section-label mb-1" style="color: #DFA926;">When</p>
             <p class="font-display font-bold text-lg md:text-xl">Every Saturday</p>
             <p class="text-white/70 text-sm mt-1">8:30 AM &ndash; 12:30 PM</p>
           </div>
           <div class="sm:border-l sm:border-white/20">
-            <p class="section-label mb-1" style="color: rgba(184,134,11,0.7);">Where</p>
+            <p class="section-label mb-1" style="color: #DFA926;">Where</p>
             <p class="font-display font-bold text-lg md:text-xl">Village Green</p>
             <p class="text-white/70 text-sm mt-1">Kinderhook, NY</p>
           </div>
           <div class="sm:border-l sm:border-white/20">
-            <p class="section-label mb-1" style="color: rgba(184,134,11,0.7);">Season</p>
+            <p class="section-label mb-1" style="color: #DFA926;">Season</p>
             <p class="font-display font-bold text-lg md:text-xl">May &ndash; October</p>
             <p class="text-white/70 text-sm mt-1">Rain or Shine</p>
           </div>
           <div class="sm:border-l sm:border-white/20" id="weather-widget">
-            <p class="section-label mb-1" style="color: rgba(184,134,11,0.7);">This Saturday</p>
+            <p class="section-label mb-1" style="color: #DFA926;">This Saturday</p>
             <p class="font-display font-bold text-lg md:text-xl" id="weather-temp">&hellip;</p>
             <p class="text-white/70 text-sm mt-1" id="weather-desc">Loading forecast</p>
           </div>
@@ -152,8 +152,8 @@ const base = import.meta.env.BASE_URL;
       <div class="mt-6 space-y-4">
         <!-- Guest Vendors -->
         {thisWeek.guestVendors.length > 0 && (
-          <div class="bg-cream rounded-xl p-4">
-            <h3 class="font-display font-bold text-sm text-orange uppercase tracking-wide mb-3 flex items-center gap-2">
+          <div class="bg-white rounded-xl p-4">
+            <h3 class="font-display font-bold text-sm text-black/60 uppercase tracking-wide mb-3 flex items-center gap-2">
               <span class="w-2 h-2 bg-orange rounded-full"></span>
               Guest Vendors This Week
             </h3>
@@ -171,8 +171,8 @@ const base = import.meta.env.BASE_URL;
         )}
 
         <!-- Regular Vendors -->
-        <div class="bg-lime/10 rounded-xl p-4">
-          <h3 class="font-display font-bold text-sm text-lime uppercase tracking-wide mb-3 flex items-center gap-2">
+        <div class="bg-white rounded-xl p-4">
+          <h3 class="font-display font-bold text-sm text-black/60 uppercase tracking-wide mb-3 flex items-center gap-2">
             <span class="w-2 h-2 bg-lime rounded-full"></span>
             Weekly Vendors
           </h3>
@@ -193,8 +193,8 @@ const base = import.meta.env.BASE_URL;
 
         <!-- Community Partners -->
         {thisWeek.communityPartners.length > 0 && (
-          <div class="bg-teal/10 rounded-xl p-4">
-            <h3 class="font-display font-bold text-sm text-teal uppercase tracking-wide mb-3 flex items-center gap-2">
+          <div class="bg-white rounded-xl p-4">
+            <h3 class="font-display font-bold text-sm text-black/60 uppercase tracking-wide mb-3 flex items-center gap-2">
               <span class="w-2 h-2 bg-teal rounded-full"></span>
               Community Partners
             </h3>
@@ -227,7 +227,7 @@ const base = import.meta.env.BASE_URL;
       <h2 class="font-display font-bold text-2xl text-black text-center mb-6">
         Spread the Word!
       </h2>
-      <p class="text-center text-black/70 mb-6">
+      <p class="text-center text-black/90 mb-6">
         Download and share this week's market info with friends and neighbors.
       </p>
       <ShareableMarketCard
@@ -248,12 +248,12 @@ const base = import.meta.env.BASE_URL;
       </h2>
       <hr class="gold-rule mb-6" />
       <div class="flex flex-wrap justify-center gap-3 mb-6">
-        <span class="bg-cream px-4 py-2 rounded-md text-black font-medium card-bordered">Asparagus</span>
-        <span class="bg-cream px-4 py-2 rounded-md text-black font-medium card-bordered">Rhubarb</span>
-        <span class="bg-cream px-4 py-2 rounded-md text-black font-medium card-bordered">Spring Greens</span>
-        <span class="bg-cream px-4 py-2 rounded-md text-black font-medium card-bordered">Radishes</span>
-        <span class="bg-cream px-4 py-2 rounded-md text-black font-medium card-bordered">Strawberries</span>
-        <span class="bg-cream px-4 py-2 rounded-md text-black font-medium card-bordered">Fresh Herbs</span>
+        <span class="bg-orange/10 px-4 py-2 rounded-md text-black font-medium border border-orange/20">Asparagus</span>
+        <span class="bg-orange/10 px-4 py-2 rounded-md text-black font-medium border border-orange/20">Rhubarb</span>
+        <span class="bg-orange/10 px-4 py-2 rounded-md text-black font-medium border border-orange/20">Spring Greens</span>
+        <span class="bg-orange/10 px-4 py-2 rounded-md text-black font-medium border border-orange/20">Radishes</span>
+        <span class="bg-orange/10 px-4 py-2 rounded-md text-black font-medium border border-orange/20">Strawberries</span>
+        <span class="bg-orange/10 px-4 py-2 rounded-md text-black font-medium border border-orange/20">Fresh Herbs</span>
       </div>
       <p class="text-center">
         <a href={`${base}/whats-fresh`} class="text-teal font-display font-semibold hover:underline">
