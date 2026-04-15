@@ -8,7 +8,7 @@ A modern, community-centered website for the Kinderhook Farmers' Market in Kinde
 **Goal:** Replace the outdated 2015 WordPress site with a fast, beautiful, easily-maintainable modern site that strengthens the local economy, boosts search visibility for Kinderhook, and makes the village a must-visit destination.
 
 **Live site:** https://harmonicsystems.github.io/market/
-**Status:** Design preview (waiting on brand assets/redesign). SEO infrastructure and content are production-ready.
+**Status:** Active development with designer assets integrated. SEO infrastructure and content are production-ready.
 
 ---
 
@@ -43,6 +43,7 @@ src/
 ├── components/
 │   ├── SEO.astro              # Open Graph, Twitter cards, geo meta tags, canonical URLs
 │   ├── StructuredData.astro   # JSON-LD schemas (organization, event, vendor, business, landmark, recipe, breadcrumb)
+│   ├── MarketIcon.astro           # Hand-drawn Procreate icon component (7 icons)
 │   ├── ShareableMarketCard.astro  # Canvas-based save-the-date image generator
 │   └── ...
 ├── layouts/
@@ -137,20 +138,56 @@ Fields: `title`, `slug`, `emoji`, `image`, `prepTime`, `cookTime`, `servings`, `
 ### Brand Colors
 
 ```css
---kinderhook-orange: #F26A2A;   /* Primary accent, CTAs, badges */
---kinderhook-teal: #2AAFCE;     /* Headers, links, highlights */
---kinderhook-lime: #B8BF3D;     /* Botanical accents, fresh/seasonal */
---kinderhook-black: #1A1A1A;    /* Text, contrast */
---kinderhook-cream: #FFF9F0;    /* Backgrounds */
+--color-orange: #B8860B;   /* Dark goldenrod — primary accent, CTAs */
+--color-teal: #5A7247;     /* Deep sage green — secondary, links, nature */
+--color-lime: #C49A02;     /* Warm gold — tertiary highlights */
+--color-black: #2E1F2F;    /* Deep aubergine — text, headers, dark sections */
+--color-cream: #DFA926;    /* Golden amber — sitewide background */
 ```
 
-### Typography (Google Fonts)
-- **Display/Headings:** Nunito (font-display)
-- **Body:** Inter
-- **Accent:** Caveat (font-accent)
+Designer accent colors (for future use):
+- Yellow: `#DFA926` (warm golden amber — currently the background)
+- Purple: `#5D3C54` (deep plum)
 
-### Status
-Currently using a "Design Preview" banner. Waiting on brand assets/redesign before visual polish. The site structure, content, and SEO are production-ready.
+### Typography (Google Fonts)
+
+```css
+--font-logo: 'Aoboshi One', Georgia, serif;       /* Logo/brand text only */
+--font-display: 'DM Serif Display', Georgia, serif; /* Headings throughout site */
+--font-body: 'Lora', Georgia, serif;                /* Body text */
+--font-accent: 'DM Serif Display', Georgia, serif;  /* Accent text */
+```
+
+- **Logo/Brand:** Aoboshi One (`font-logo`) — header, footer, homepage hero only
+- **Display/Headings:** DM Serif Display (`font-display`) — all page headings, nav
+- **Body:** Lora (`font-body`) — paragraphs, descriptions
+
+### Icons
+
+Custom hand-drawn Procreate PNG icons from designer in `public/icons/`:
+
+| Icon | File | Used for |
+|------|------|----------|
+| Apple | FM-APPLE-ICON.png | Regular vendors |
+| Bike | FM-BIKE-ICON.png | Neighborhoods, visit |
+| Bird | FM-BIRD-ICON.png | Trails, nature |
+| Brush | FM-BRUSH-ICON.png | Galleries, arts |
+| History | FM-HISTORY-ICON.png | Historic sites, museums |
+| OK | FM-OK-ICON.png | Businesses, fallback |
+| Sunflower | FM-SUNFLOWER-ICON.png | Guest vendors, homepage hero |
+
+Rendered via `MarketIcon.astro` component with short name props (e.g., `<MarketIcon name="apple" class="w-16 h-16" />`).
+
+### Header Behavior
+- Gold background (`bg-cream`), blends with page
+- Logo text hidden on homepage until user scrolls past hero (IntersectionObserver on `#homepage-hero`)
+- Logo always visible on all other pages
+- Mobile hamburger menu
+
+### Contrast Notes
+- On gold background: use `text-black` or `text-black/90` minimum (7.27:1 ratio)
+- Never use `text-orange`, `text-teal`, or `text-white` directly on gold — insufficient contrast
+- On white cards: `text-black`, `text-teal` (5.34:1), and large `text-orange` (3.25:1) are fine
 
 ---
 
