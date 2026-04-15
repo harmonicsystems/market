@@ -15,4 +15,4 @@ active: true
 vendorType: "guest"
 ---
 
-Peta's Pocket brings the vibrant flavors of the Caribbean to the Kinderhook Farmers' Market. Using family recipes and fresh local ingredients, we serve up jerk chicken, savory sides, and island-inspired dishes that will transport your taste buds.
+Peta's Pocket brings the vibrant flavors of the Caribbean to the Kinderhook Farmers Market. Using family recipes and fresh local ingredients, we serve up jerk chicken, savory sides, and island-inspired dishes that will transport your taste buds.

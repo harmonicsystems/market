@@ -31,7 +31,7 @@ function getOrganizationSchema() {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     '@id': orgId,
-    name: "Kinderhook Farmers' Market",
+    name: "Kinderhook Farmers Market",
     alternateName: "Kinderhook Farmer's Market",
     url: marketUrl,
     logo: `${siteUrl}${base}/logo.png`,
@@ -79,9 +79,9 @@ function getOrganizationSchema() {
 // data: { date, theme?, description?, music?: { name } }
 function getEventSchema() {
   const theme = data.theme || 'Weekly Market';
-  const eventName = `Kinderhook Farmers' Market — ${theme}`;
+  const eventName = `Kinderhook Farmers Market — ${theme}`;
   const desc = data.description
-    || `${theme} at the Kinderhook Farmers' Market on the Village Green. Fresh local produce, artisan goods, and community on the Hudson Valley's favorite Saturday morning destination.`;
+    || `${theme} at the Kinderhook Farmers Market on the Village Green. Fresh local produce, artisan goods, and community on the Hudson Valley's favorite Saturday morning destination.`;
 
   // EDT (UTC-4) for May–October market season
   const startISO = `${data.date}T08:30:00-04:00`;
@@ -116,7 +116,7 @@ function getEventSchema() {
     image: [`${siteUrl}${base}/og-image.png`],
     organizer: {
       '@type': 'Organization',
-      name: "Kinderhook Farmers' Market",
+      name: "Kinderhook Farmers Market",
       url: marketUrl,
     },
     offers: {
@@ -172,7 +172,7 @@ function getRecipeSchema() {
     '@context': 'https://schema.org',
     '@type': 'Recipe',
     name: data.title,
-    description: data.description || `A community recipe from the Kinderhook Farmers' Market featuring fresh Hudson Valley produce`,
+    description: data.description || `A community recipe from the Kinderhook Farmers Market featuring fresh Hudson Valley produce`,
     author: data.contributor ? { '@type': 'Person', name: data.contributor } : undefined,
     prepTime: data.prepTime ? `PT${data.prepTime.replace(/\s*minutes?/i, 'M').replace(/\s*hours?/i, 'H')}` : undefined,
     cookTime: data.cookTime ? `PT${data.cookTime.replace(/\s*minutes?/i, 'M').replace(/\s*hours?/i, 'H')}` : undefined,

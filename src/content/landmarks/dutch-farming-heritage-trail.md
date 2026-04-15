@@ -12,4 +12,4 @@ The Dutch Farming Heritage Trail is a 1.7-mile walking path that connects two of
 
 The trail passes through rolling farmland that has been cultivated for over 300 years, offering a peaceful walk through the agricultural landscape that has defined this part of the Hudson Valley since the earliest Dutch settlers arrived. Interpretive signs along the route share the history of farming in Columbia County.
 
-The trail is a wonderful way to experience both landmarks in a single visit, especially paired with a morning at the Kinderhook Farmers' Market.
+The trail is a wonderful way to experience both landmarks in a single visit, especially paired with a morning at the Kinderhook Farmers Market.

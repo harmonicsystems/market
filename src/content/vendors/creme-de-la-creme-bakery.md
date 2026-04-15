@@ -5,7 +5,7 @@ tagline: "Mother/daughter bakers and entrepreneurs"
 categories:
   - baked-goods
   - sweets
-description: "A beloved mother-daughter baking duo bringing artisan pastries, fresh bread, and sweet treats to the Kinderhook Farmers' Market."
+description: "A beloved mother-daughter baking duo bringing artisan pastries, fresh bread, and sweet treats to the Kinderhook Farmers Market."
 website: ""
 instagram: ""
 facebook: ""

@@ -14,7 +14,7 @@ interface Props {
 
 const {
   title,
-  description = "Kinderhook Farmers' Market in the Hudson Valley — fresh local produce, artisan goods, baked goods, and community spirit every Saturday on the Village Green in Kinderhook, Columbia County, NY. Open May through October.",
+  description = "Kinderhook Farmers Market in the Hudson Valley — fresh local produce, artisan goods, baked goods, and community spirit every Saturday on the Village Green in Kinderhook, Columbia County, NY. Open May through October.",
   ogType = 'website',
   ogImage,
   ogImageAlt,
@@ -42,7 +42,7 @@ const base = import.meta.env.BASE_URL;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Aoboshi+One&family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
-    <title>{title} | Kinderhook Farmers' Market - Hudson Valley, NY</title>
+    <title>{title} | Kinderhook Farmers Market - Hudson Valley, NY</title>
     <StructuredData type="organization" />
     <slot name="head" />
   </head>
@@ -52,18 +52,18 @@ const base = import.meta.env.BASE_URL;
     <header class="bg-cream sticky top-0 z-50">
       <nav class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <a href={base} id="header-logo" class="font-logo text-sm md:text-base tracking-wide text-black uppercase opacity-0 transition-opacity duration-300">
-          Kinderhook Farmers' Market
+          Kinderhook Farmers Market
         </a>
 
         <ul class="hidden md:flex items-center gap-6 font-display font-semibold text-sm tracking-wide text-black">
-          <li><a href={`${base}/vendors`} class="hover:text-orange transition-colors">Vendors</a></li>
-          <li><a href={`${base}/discover`} class="hover:text-orange transition-colors">Discover</a></li>
-          <li><a href={`${base}/visit`} class="hover:text-orange transition-colors">Visit</a></li>
-          <li><a href={`${base}/about`} class="hover:text-orange transition-colors">About</a></li>
-          <li><a href={`${base}/contact`} class="bg-orange text-white px-4 py-2 rounded-md hover:bg-orange/90 transition-colors">Contact</a></li>
+          <li><a href={`${base}/vendors`} class="hover:underline decoration-2 underline-offset-4">Vendors</a></li>
+          <li><a href={`${base}/discover`} class="hover:underline decoration-2 underline-offset-4">Discover</a></li>
+          <li><a href={`${base}/visit`} class="hover:underline decoration-2 underline-offset-4">Visit</a></li>
+          <li><a href={`${base}/about`} class="hover:underline decoration-2 underline-offset-4">About</a></li>
+          <li><a href={`${base}/contact`} class="bg-black text-cream px-4 py-2 rounded-md hover:bg-black/85 transition-colors">Contact</a></li>
         </ul>
 
-        <button class="md:hidden p-2" aria-label="Open menu" id="mobile-menu-btn">
+        <button class="md:hidden p-2 text-black" aria-label="Open menu" id="mobile-menu-btn">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -71,13 +71,13 @@ const base = import.meta.env.BASE_URL;
       </nav>
 
       <!-- Mobile menu -->
-      <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-black/10">
-        <ul class="flex flex-col p-4 gap-4 font-display font-semibold tracking-wide text-sm">
-          <li><a href={`${base}/vendors`} class="block py-2 hover:text-orange">Vendors</a></li>
-          <li><a href={`${base}/discover`} class="block py-2 hover:text-orange">Discover Kinderhook</a></li>
-          <li><a href={`${base}/visit`} class="block py-2 hover:text-orange">Plan Your Visit</a></li>
-          <li><a href={`${base}/about`} class="block py-2 hover:text-orange">About</a></li>
-          <li><a href={`${base}/contact`} class="block py-2 text-orange font-bold">Contact</a></li>
+      <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-black/20">
+        <ul class="flex flex-col p-4 gap-2 font-display font-semibold tracking-wide text-base text-black">
+          <li><a href={`${base}/vendors`} class="block py-3 px-3 rounded-md hover:bg-black hover:text-cream transition-colors">Vendors</a></li>
+          <li><a href={`${base}/discover`} class="block py-3 px-3 rounded-md hover:bg-black hover:text-cream transition-colors">Discover Kinderhook</a></li>
+          <li><a href={`${base}/visit`} class="block py-3 px-3 rounded-md hover:bg-black hover:text-cream transition-colors">Plan Your Visit</a></li>
+          <li><a href={`${base}/about`} class="block py-3 px-3 rounded-md hover:bg-black hover:text-cream transition-colors">About</a></li>
+          <li><a href={`${base}/contact`} class="block py-3 px-3 rounded-md bg-black text-cream hover:bg-black/85 transition-colors">Contact</a></li>
         </ul>
       </div>
     </header>
@@ -90,7 +90,7 @@ const base = import.meta.env.BASE_URL;
       <div class="max-w-6xl mx-auto px-4 py-12">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 class="font-logo text-lg tracking-wide uppercase mb-4">Kinderhook Farmers' Market</h3>
+            <h3 class="font-logo text-lg tracking-wide uppercase mb-4">Kinderhook Farmers Market</h3>
             <p class="text-white/80 mb-2">Village Green, Broad Street &amp; Albany Avenue</p>
             <p class="text-white/80 mb-2">Kinderhook, NY 12106</p>
             <p class="text-white/80">Saturdays 8:30am - 12:30pm</p>
@@ -128,7 +128,7 @@ const base = import.meta.env.BASE_URL;
         </div>
 
         <div class="border-t border-white/20 mt-8 pt-8 text-center text-white/60 text-sm">
-          <p>&copy; {new Date().getFullYear()} Kinderhook Farmers' Market. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Kinderhook Farmers Market. All rights reserved.</p>
         </div>
       </div>
     </footer>

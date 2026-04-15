@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Kinderhook Farmers' Market Design Tokens
+/* Kinderhook Farmers Market Design Tokens
    Warm, floral, agricultural — aubergine + gold + olive */
 @theme {
   /* Primary Colors */
@@ -64,6 +64,16 @@ html {
 /* Thin warm border on cards — aubergine tint */
 .card-bordered {
   border: 1px solid rgba(46, 31, 47, 0.1);
+}
+
+/* Social icons rendered from hand-drawn PNGs, tinted via CSS mask */
+.social-icon-mask {
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
 }
 
 /* Section labels — warm and inviting, not corporate */

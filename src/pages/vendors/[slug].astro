@@ -65,7 +65,7 @@ const categoryLabels: Record<string, string> = {
 
 <BaseLayout
   title={vendor.data.name}
-  description={`${vendor.data.tagline || vendor.data.name} — find them at the Kinderhook Farmers' Market in Columbia County, NY. ${vendor.data.description || ''}`}
+  description={`${vendor.data.tagline || vendor.data.name} — find them at the Kinderhook Farmers Market in Columbia County, NY. ${vendor.data.description || ''}`}
   canonicalPath={`/vendors/${vendor.data.slug}`}
 >
   <StructuredData slot="head" type="vendor" data={vendor.data} />

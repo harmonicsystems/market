@@ -17,6 +17,6 @@ coordinates:
 
 The School is a 30,000-square-foot gallery space in a beautifully converted former school building right on Broad Street in Kinderhook. Founded in 2013 by Jack Shainman, the gallery presents ambitious, large-scale exhibitions from internationally renowned contemporary artists.
 
-The gallery is open to the public every Saturday — perfectly timed to pair with a morning at the Kinderhook Farmers' Market just steps away on the Village Green. Admission is always free.
+The gallery is open to the public every Saturday — perfectly timed to pair with a morning at the Kinderhook Farmers Market just steps away on the Village Green. Admission is always free.
 
 Past exhibitions have featured works by artists including Nick Cave, Hank Willis Thomas, and many other celebrated contemporary artists, making The School a cultural destination that draws visitors from across the Hudson Valley and beyond.

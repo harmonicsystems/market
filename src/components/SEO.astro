@@ -23,7 +23,7 @@ const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https:/
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const canonical = canonicalPath ? `${siteUrl}${base}${canonicalPath}` : `${siteUrl}${Astro.url.pathname}`;
 const ogImage = image ? `${siteUrl}${base}${image}` : `${siteUrl}${base}/og-image.png`;
-const fullTitle = `${title} | Kinderhook Farmers' Market - Hudson Valley, NY`;
+const fullTitle = `${title} | Kinderhook Farmers Market - Hudson Valley, NY`;
 ---
 
 <!-- Primary Meta Tags -->
@@ -44,7 +44,7 @@ const fullTitle = `${title} | Kinderhook Farmers' Market - Hudson Valley, NY`;
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImage} />
 <meta property="og:image:alt" content={imageAlt} />
-<meta property="og:site_name" content="Kinderhook Farmers' Market" />
+<meta property="og:site_name" content="Kinderhook Farmers Market" />
 <meta property="og:locale" content="en_US" />
 
 <!-- Twitter -->
