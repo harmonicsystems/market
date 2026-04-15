@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StructuredData from '../../components/StructuredData.astro';
-import DoodleIcon from '../../components/DoodleIcon.astro';
+import MarketIcon from '../../components/MarketIcon.astro';
 import { getCollection } from 'astro:content';
 
 const allVendors = await getCollection('vendors');
@@ -55,7 +55,7 @@ const categoryLabels: Record<string, string> = {
             <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
               <a href={`${base}/vendors/${vendor.data.slug}`} class="block">
                 <div class="h-48 bg-gradient-to-br from-lime/20 to-teal/20 flex items-center justify-center">
-                  <span class="text-teal/30"><DoodleIcon name="basket" class="w-16 h-16" /></span>
+                  <span class="opacity-30"><MarketIcon name="apple" class="w-16 h-16" /></span>
                 </div>
               </a>
               <div class="p-6">
@@ -93,7 +93,7 @@ const categoryLabels: Record<string, string> = {
             <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow border-2 border-orange/20">
               <a href={`${base}/vendors/${vendor.data.slug}`} class="block">
                 <div class="h-48 bg-gradient-to-br from-orange/20 to-cream flex items-center justify-center">
-                  <span class="text-orange/30"><DoodleIcon name="star" class="w-16 h-16" /></span>
+                  <span class="opacity-30"><MarketIcon name="sunflower" class="w-16 h-16" /></span>
                 </div>
               </a>
               <div class="p-6">

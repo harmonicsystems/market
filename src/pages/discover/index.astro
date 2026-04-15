@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StructuredData from '../../components/StructuredData.astro';
-import DoodleIcon from '../../components/DoodleIcon.astro';
+import MarketIcon from '../../components/MarketIcon.astro';
 import { getCollection } from 'astro:content';
 
 const base = import.meta.env.BASE_URL;
@@ -16,11 +16,11 @@ const typeLabels: Record<string, string> = {
 };
 
 const typeIcons: Record<string, string> = {
-  'historic-site': 'flag',
-  'museum': 'globe',
-  'gallery': 'paint-brush',
-  'trail': 'tree',
-  'neighborhood': 'home',
+  'historic-site': 'history',
+  'museum': 'history',
+  'gallery': 'brush',
+  'trail': 'bird',
+  'neighborhood': 'bike',
 };
 
 // Group landmarks by type, ordered
@@ -63,7 +63,7 @@ const featured = allLandmarks.filter(l => l.data.featured);
                 landmark.data.type === 'trail' ? 'from-lime/15 to-teal/15' :
                 'from-teal/15 to-orange/15'
               } flex items-center justify-center`}>
-                <span class="text-teal/40"><DoodleIcon name={typeIcons[landmark.data.type] || 'location-pin'} class="w-14 h-14" /></span>
+                <span class="opacity-40"><MarketIcon name={typeIcons[landmark.data.type] || 'ok'} class="w-14 h-14" /></span>
               </div>
             </a>
             <div class="p-5">
@@ -93,7 +93,7 @@ const featured = allLandmarks.filter(l => l.data.featured);
       {grouped.map(({ type, landmarks }) => (
         <div class="mb-12">
           <h2 class="font-display font-bold text-2xl text-black mb-6 flex items-center gap-3">
-            <span class="text-orange"><DoodleIcon name={typeIcons[type]} class="w-8 h-8" /></span>
+            <span class="opacity-70"><MarketIcon name={typeIcons[type]} class="w-8 h-8" /></span>
             {typeLabels[type]}
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

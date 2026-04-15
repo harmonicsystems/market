@@ -1,0 +1,43 @@
+---
+/**
+ * MarketIcon — renders hand-drawn Procreate PNG icons from the designer.
+ *
+ * Usage:
+ *   <MarketIcon name="apple" class="w-12 h-12" />
+ *   <MarketIcon name="sunflower" class="w-16 h-16" />
+ *
+ * Available icons: apple, bike, bird, brush, history, ok, sunflower
+ * Icons are black on transparent — use CSS opacity on parent for visual weight.
+ */
+
+interface Props {
+  name: string;
+  class?: string;
+}
+
+const { name, class: className = 'w-10 h-10' } = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+
+// Map short names to filenames
+const iconFiles: Record<string, string> = {
+  'apple': 'FM-APPLE-ICON.png',
+  'bike': 'FM-BIKE-ICON.png',
+  'bird': 'FM-BIRD-ICON.png',
+  'brush': 'FM-BRUSH-ICON.png',
+  'history': 'FM-HISTORY-ICON.png',
+  'ok': 'FM-OK-ICON.png',
+  'sunflower': 'FM-SUNFLOWER-ICON.png',
+};
+
+const filename = iconFiles[name];
+const src = filename ? `${base}/icons/${filename}` : null;
+---
+
+{src ? (
+  <span class="inline-flex items-center justify-center shrink-0">
+    <img src={src} alt="" aria-hidden="true" class={className} loading="lazy" />
+  </span>
+) : (
+  <span class={`inline-flex items-center justify-center shrink-0 ${className}`}>?</span>
+)}
