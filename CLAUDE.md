@@ -22,6 +22,8 @@ A modern, community-centered website for the Kinderhook Farmers' Market in Kinde
 | Discover Kinderhook | 9 | `/discover/`, `/discover/[slug]` | `content/landmarks/*.md` (8 landmarks) |
 | Recipes | 6 | `/recipes/`, `/recipes/[slug]` | `content/recipes/*.md` (5 recipes) |
 | Core pages | 4 | `/about`, `/visit`, `/whats-fresh`, `/contact` | Inline + JSON data |
+| Share cards | 1+ | `/share/[week]` | `this-week.json` (will move to content collection) |
+| Dev tools | 1 | `/styleguide` | Inline (noindex) |
 
 ---
 
@@ -43,11 +45,12 @@ src/
 ├── components/
 │   ├── SEO.astro              # Open Graph, Twitter cards, geo meta tags, canonical URLs
 │   ├── StructuredData.astro   # JSON-LD schemas (organization, event, vendor, business, landmark, recipe, breadcrumb)
-│   ├── MarketIcon.astro           # Hand-drawn Procreate icon component (7 icons)
-│   ├── ShareableMarketCard.astro  # Canvas-based save-the-date image generator
+│   ├── MarketIcon.astro           # Hand-drawn Procreate icon component (13 icons)
+│   ├── HeroCore.astro             # Shared market identity block (sunflower/title/divider/schedule/time)
+│   ├── ShareableMarketCard.astro  # Canvas-based save-the-date image generator (tone: dark|light)
 │   └── ...
 ├── layouts/
-│   └── BaseLayout.astro       # Sitewide layout with nav, footer, SEO component, Organization schema
+│   └── BaseLayout.astro       # Sitewide layout with nav, footer (share bar + designer signature), SEO, Organization schema
 ├── pages/
 │   ├── index.astro            # Homepage with weekly lineup from this-week.json
 │   ├── vendors/
@@ -62,6 +65,9 @@ src/
 │   ├── recipes/
 │   │   ├── index.astro        # Recipe collection
 │   │   └── [slug].astro       # Recipe detail pages with Recipe schema
+│   ├── share/
+│   │   └── [week].astro       # 1080×1080 share-card route (HeroCore + per-week info, noindex)
+│   ├── styleguide.astro       # Design reference page (noindex, dev tool)
 │   ├── about.astro            # Market story, history, KBPA member listing
 │   ├── visit.astro            # Plan your visit + dynamic landmarks from collection
 │   ├── whats-fresh.astro      # Seasonal produce guide with tab switching
@@ -156,13 +162,15 @@ Teal and Lime were removed in favor of this tighter, more accessible palette. Or
 --font-accent: 'DM Serif Display', Georgia, serif;  /* Accent text */
 ```
 
-- **Logo/Brand:** Aoboshi One (`font-logo`) — header, footer, homepage hero only
-- **Display/Headings:** DM Serif Display (`font-display`) — all page headings, nav
+- **Logo/Brand:** Aoboshi One (`font-logo`) — header wordmark, footer wordmark only
+- **Display/Headings:** DM Serif Display (`font-display`) — homepage hero title, all page headings, nav, NEXT MARKET banner
 - **Body:** Lora (`font-body`) — paragraphs, descriptions
 
 ### Icons
 
-Custom hand-drawn Procreate PNG icons from designer in `public/icons/`:
+Custom hand-drawn Procreate PNG icons from designer (Susanne Lamb) in `public/icons/`. All are black-on-transparent PNGs.
+
+**Category icons** — rendered via `MarketIcon.astro` with short name props (e.g., `<MarketIcon name="apple" class="w-16 h-16" />`):
 
 | Icon | File | Used for |
 |------|------|----------|
@@ -172,9 +180,50 @@ Custom hand-drawn Procreate PNG icons from designer in `public/icons/`:
 | Brush | FM-BRUSH-ICON.png | Galleries, arts |
 | History | FM-HISTORY-ICON.png | Historic sites, museums |
 | OK | FM-OK-ICON.png | Businesses, fallback |
-| Sunflower | FM-SUNFLOWER-ICON.png | Guest vendors, homepage hero |
+| Sunflower | FM-SUNFLOWER-ICON.png | Guest vendors |
+| Music | FM-MUSIC-ICON.png | Live music section |
+| Star | FM-STAR-ICON.png | Special events |
+| Heart | FM-HEART-ICON.png | Follow for Weekly Updates label |
 
-Rendered via `MarketIcon.astro` component with short name props (e.g., `<MarketIcon name="apple" class="w-16 h-16" />`).
+**Social icons** — rendered inline via CSS mask technique (see below):
+
+| Icon | File | Used for |
+|------|------|----------|
+| Facebook | FM-FACEBOOK-ICON.png | Facebook share/follow links |
+| Instagram | FM-INSTAGRAM-ICON.png | Instagram follow links |
+| Nextdoor | FM-NEXTDOOR-ICON.png | Nextdoor share links |
+| Download | FM-DOWNLOAD-ICON.png | Save share image button |
+
+**Decorative elements:**
+
+| Asset | File | Used for |
+|-------|------|----------|
+| Sunflower banner (GIF) | FM-SUNFLOWER-TOP_BANNER.gif | Animated hero banner |
+| Sunflower banner (static) | FM-SUNFLOWER-TOP_BANNER-STATIC.png | Canvas share card |
+| Divider line | FM-DIVIDER_2.png | Hand-drawn underline below title |
+| Flourish | FM-DIVIDER_1.png | Curly brackets around time (split via mask-position) |
+| Floral divider | FM-DIVIDER_3.png | Available but not yet used |
+| Designer signature | DESIGNED-BY-SUSANNE-LAMB.png | Footer credit (linked to susannelamb.com) |
+
+### Icon Rendering Technique
+
+Icons are tinted to brand colors via CSS `mask-image` — the PNG's alpha channel masks a solid `background-color`:
+
+```html
+<span class="social-icon-mask block w-12 h-12"
+  style="background-color: #5D3C54;
+         -webkit-mask-image: url('/icons/FM-MUSIC-ICON.png');
+         mask-image: url('/icons/FM-MUSIC-ICON.png');">
+</span>
+```
+
+The `.social-icon-mask` utility in `global.css` sets `mask-size: contain; mask-repeat: no-repeat; mask-position: center`.
+
+**Color by context:**
+- On cream (hero, cards): `#2E1F2F` (aubergine), `#5D3C54` (purple for music), `#B8860B` (orange for stars)
+- On aubergine (footer): `#FFFFFF` (white)
+
+**Known limitation:** CSS masks don't survive browser "Full Page" screenshot tools (iOS Safari, etc.) — icons render as solid rectangles. This is cosmetic only and doesn't affect Playwright screenshots (stage 3 of share-card unification).
 
 ### Header Behavior
 - Gold background (`bg-cream`), blends with page
@@ -201,10 +250,38 @@ Schedule: Saturdays 8:30 AM – 12:30 PM, May through October
 
 ---
 
+## HeroCore Architecture
+
+`HeroCore.astro` extracts the market's visual identity into a reusable component shared between the homepage hero and the `/share/[week]` share-card route. This is stage 1 of a plan to unify the hero and the shareable image so they can never drift.
+
+**Props:**
+- `fluid` (default `true`) — `true` uses `clamp()`-based fluid sizes for the homepage; `false` uses fixed pixel sizes calibrated for a 1080×1080 share canvas
+- `scheduleText` (default `'Every Saturday, May – October'`) — the homepage keeps the generic season line; the share page overrides with the specific market date (e.g. `week.displayDate`)
+
+**Homepage hero layout:**
+- `<HeroCore />` (fluid, default schedule text)
+- Tagline ("Fresh local produce...") in white
+- Follow for Weekly Updates block (hearts + Facebook + Instagram)
+
+**Share card layout** (`/share/[week]`):
+- `<HeroCore fluid={false} scheduleText={week.displayDate} />`
+- Theme text in purple (e.g. "Opening Day!")
+- Optional music line
+- Location footer + URL
+- Rendered in a standalone 1080×1080 HTML page (no nav/footer)
+
+**Remaining stages:**
+- **Stage 2:** Move `this-week.json` → `content/weeks/*.md` collection; `getStaticPaths` generates one `/share/<date>` per week
+- **Stage 3:** GitHub Action runs Playwright to screenshot each `/share/<date>` at 1080×1080 and commits PNGs to `public/share/`
+- **Stage 4:** Wire hero download button to static PNGs; retire `ShareableMarketCard.astro` canvas code; use PNGs as `og:image`
+
+---
+
 ## Key Features Still on Roadmap
 
 ### Near-term
-- **Multi-week schedule system** — Replace single `this-week.json` with a full season schedule, generating per-week Event schemas
+- **Share-card unification stages 2–4** — Content collection, Playwright snapshots, retire canvas code (see HeroCore Architecture above)
+- **Multi-week schedule system** — Replace single `this-week.json` with a full season schedule, generating per-week Event schemas (overlaps with stage 2 above)
 - **Interactive Leaflet map** on Visit page (placeholder currently shown)
 - **Vendor/business photos** — Photo fields exist in schemas but no images yet
 - **OG image and logo assets** — `og-image.png` and `logo.png` referenced in schemas but not yet created
@@ -256,6 +333,7 @@ Edit `src/data/this-week.json` — update date, theme, music, vendors, events.
 
 ## Notes
 
+- **Designer:** Susanne Lamb ([susannelamb.com](https://susannelamb.com)) — hand-drawn Procreate icons, dividers, sunflower banner, signature. Credit in footer links to her site.
 - The "It's OK!" tagline comes from Martin Van Buren's nickname "Old Kinderhook" — possibly the origin of the word "okay"
 - The KBPA website (kinderhookbusiness.com) appears to be down — we now host the most complete KBPA member directory
 - Jack Shainman Gallery: The School is open Saturdays, same as the market — natural synergy
