@@ -5,14 +5,11 @@
 @theme {
   /* Primary Colors */
   --color-orange: #B8860B;  /* Dark goldenrod — primary accent, CTAs */
-  --color-teal: #5A7247;    /* Deeper sage green — secondary, links, nature */
-
-  /* Secondary Colors */
-  --color-lime: #C49A02;    /* Warm gold — tertiary highlights */
+  --color-purple: #5D3C54;  /* Deep plum — secondary accent, taglines, category alternatives */
   --color-black: #2E1F2F;   /* Deep aubergine — text, headers, dark sections */
 
   /* Neutrals */
-  --color-cream: #DFA926;   /* Golden amber — backgrounds */
+  --color-cream: #DFA926;   /* Golden amber (yellow) — backgrounds */
   --color-white: #FFFFFF;
 
   /* Font Families */

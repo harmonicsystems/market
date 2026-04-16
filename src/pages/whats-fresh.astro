@@ -127,19 +127,19 @@ else if (month >= 8 && month <= 9) currentSeason = 'fall';
               <h3 class="font-display font-bold text-lg text-black mb-3">Shopping Tips</h3>
               <ul class="space-y-2 text-black/70">
                 <li class="flex items-start gap-2">
-                  <span class="text-lime">•</span>
+                  <span class="text-orange">•</span>
                   Arrive early for the best selection
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="text-lime">•</span>
+                  <span class="text-orange">•</span>
                   Ask vendors about their growing practices
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="text-lime">•</span>
+                  <span class="text-orange">•</span>
                   Bring a cooler for perishables on warm days
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="text-lime">•</span>
+                  <span class="text-orange">•</span>
                   Try something new each week!
                 </li>
               </ul>
@@ -170,7 +170,7 @@ else if (month >= 8 && month <= 9) currentSeason = 'fall';
       ))}
 
       <!-- Recipes CTA -->
-      <div class="mt-12 bg-gradient-to-r from-orange to-teal rounded-2xl p-8 text-center text-white">
+      <div class="mt-12 bg-gradient-to-r from-orange to-purple rounded-2xl p-8 text-center text-white">
         <h2 class="font-display font-bold text-2xl mb-4">
           Looking for Recipe Ideas?
         </h2>
@@ -192,11 +192,11 @@ else if (month >= 8 && month <= 9) currentSeason = 'fall';
 
         // Update tabs
         document.querySelectorAll('.season-tab').forEach(t => {
-          t.classList.remove('bg-lime', 'bg-orange', 'bg-teal', 'text-white');
+          t.classList.remove('bg-orange', 'bg-purple', 'text-white');
           t.classList.add('bg-white', 'text-black');
         });
         tab.classList.remove('bg-white', 'text-black');
-        const colors = { spring: 'bg-lime', summer: 'bg-orange', fall: 'bg-teal' };
+        const colors = { spring: 'bg-orange', summer: 'bg-orange', fall: 'bg-purple' };
         tab.classList.add(colors[season as keyof typeof colors], 'text-white');
 
         // Update content

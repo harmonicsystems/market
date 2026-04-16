@@ -78,7 +78,7 @@ const categoryLabels: Record<string, string> = {
   <article class="bg-cream py-12">
     <div class="max-w-3xl mx-auto px-4">
       <!-- Back link -->
-      <a href={`${base}/vendors`} class="inline-flex items-center gap-2 text-teal font-semibold hover:underline mb-6">
+      <a href={`${base}/vendors`} class="inline-flex items-center gap-2 text-orange font-semibold hover:underline mb-6">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
@@ -88,7 +88,7 @@ const categoryLabels: Record<string, string> = {
       <!-- Hero -->
       <header class="mb-8">
         <div class="flex flex-wrap gap-2 mb-4">
-          <span class={`text-sm px-3 py-1 rounded-md font-medium ${vendor.data.vendorType === 'regular' ? 'bg-lime text-white' : 'bg-orange text-white'}`}>
+          <span class={`text-sm px-3 py-1 rounded-md font-medium ${vendor.data.vendorType === 'regular' ? 'bg-orange text-white' : 'bg-purple text-white'}`}>
             {vendor.data.vendorType === 'regular' ? 'Weekly Vendor' : 'Guest Vendor'}
           </span>
           {vendor.data.categories.map((cat: string) => (
@@ -101,7 +101,7 @@ const categoryLabels: Record<string, string> = {
           {vendor.data.name}
         </h1>
         {vendor.data.tagline && (
-          <p class="text-teal font-display font-semibold text-lg mb-4">{vendor.data.tagline}</p>
+          <p class="text-purple font-display font-semibold text-lg mb-4">{vendor.data.tagline}</p>
         )}
         {vendor.data.description && (
           <p class="text-black/70 text-lg">{vendor.data.description}</p>
@@ -125,7 +125,7 @@ const categoryLabels: Record<string, string> = {
                 href={vendor.data.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 bg-cream px-4 py-2 rounded-md text-black/80 hover:bg-teal/10 transition-colors"
+                class="inline-flex items-center gap-2 bg-cream px-4 py-2 rounded-md text-black/80 hover:bg-orange/10 transition-colors"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
@@ -151,7 +151,7 @@ const categoryLabels: Record<string, string> = {
                 href={vendor.data.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 bg-cream px-4 py-2 rounded-md text-black/80 hover:bg-teal/10 transition-colors"
+                class="inline-flex items-center gap-2 bg-cream px-4 py-2 rounded-md text-black/80 hover:bg-orange/10 transition-colors"
               >
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                   <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
@@ -165,9 +165,9 @@ const categoryLabels: Record<string, string> = {
 
       <!-- Recipes featuring this vendor -->
       {vendorRecipes.length > 0 && (
-        <div class="bg-lime/10 rounded-2xl p-6 md:p-8 mb-8">
+        <div class="bg-orange/10 rounded-2xl p-6 md:p-8 mb-8">
           <h2 class="font-display font-bold text-xl text-black mb-4 flex items-center gap-2">
-            <svg class="w-5 h-5 text-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
             Recipes Featuring {vendor.data.name}
@@ -200,7 +200,7 @@ const categoryLabels: Record<string, string> = {
                 class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition-shadow block"
               >
                 <h3 class="font-display font-bold text-black mb-1">{rv.data.name}</h3>
-                <p class="text-teal text-sm font-medium mb-2">{rv.data.tagline}</p>
+                <p class="text-purple text-sm font-medium mb-2">{rv.data.tagline}</p>
                 <div class="flex flex-wrap gap-1">
                   {rv.data.categories.slice(0, 3).map((cat: string) => (
                     <span class="bg-cream text-black/60 text-xs px-2 py-0.5 rounded-md">
@@ -215,7 +215,7 @@ const categoryLabels: Record<string, string> = {
       )}
 
       <!-- CTA -->
-      <div class="bg-gradient-to-r from-orange to-teal rounded-2xl p-8 text-center text-white">
+      <div class="bg-gradient-to-r from-orange to-purple rounded-2xl p-8 text-center text-white">
         <h2 class="font-display font-bold text-2xl mb-3">
           Visit the Market This Saturday
         </h2>

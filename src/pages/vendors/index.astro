@@ -47,14 +47,14 @@ const categoryLabels: Record<string, string> = {
       <!-- Regular Vendors -->
       <div class="mb-16">
         <h2 class="font-display font-bold text-2xl text-black mb-6 flex items-center gap-3">
-          <span class="bg-lime text-white text-sm px-3 py-1 rounded-md">Weekly</span>
+          <span class="bg-orange text-white text-sm px-3 py-1 rounded-md">Weekly</span>
           Regular Vendors
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {regularVendors.map((vendor) => (
             <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
               <a href={`${base}/vendors/${vendor.data.slug}`} class="block">
-                <div class="h-48 bg-gradient-to-br from-lime/20 to-teal/20 flex items-center justify-center">
+                <div class="h-48 bg-gradient-to-br from-orange/20 to-orange/20 flex items-center justify-center">
                   <span class="opacity-30"><MarketIcon name="apple" class="w-16 h-16" /></span>
                 </div>
               </a>
@@ -64,7 +64,7 @@ const categoryLabels: Record<string, string> = {
                     {vendor.data.name}
                   </a>
                 </h3>
-                <p class="text-teal text-sm font-medium mb-3">{vendor.data.tagline}</p>
+                <p class="text-purple text-sm font-medium mb-3">{vendor.data.tagline}</p>
                 <p class="text-black/70 text-sm mb-4">{vendor.data.description}</p>
                 <div class="flex flex-wrap gap-2">
                   {vendor.data.categories.map((cat: string) => (
@@ -102,7 +102,7 @@ const categoryLabels: Record<string, string> = {
                     {vendor.data.name}
                   </a>
                 </h3>
-                <p class="text-orange text-sm font-medium mb-3">{vendor.data.tagline}</p>
+                <p class="text-purple text-sm font-medium mb-3">{vendor.data.tagline}</p>
                 <p class="text-black/70 text-sm mb-4">{vendor.data.description}</p>
                 <div class="flex flex-wrap gap-2">
                   {vendor.data.categories.map((cat: string) => (

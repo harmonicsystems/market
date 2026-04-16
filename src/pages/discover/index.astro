@@ -58,16 +58,16 @@ const featured = allLandmarks.filter(l => l.data.featured);
           <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
             <a href={`${base}/discover/${landmark.data.slug}`} class="block">
               <div class={`h-40 bg-gradient-to-br ${
-                landmark.data.type === 'historic-site' ? 'from-orange/15 to-teal/15' :
-                landmark.data.type === 'gallery' ? 'from-teal/15 to-lime/15' :
-                landmark.data.type === 'trail' ? 'from-lime/15 to-teal/15' :
-                'from-teal/15 to-orange/15'
+                landmark.data.type === 'historic-site' ? 'from-orange/15 to-orange/15' :
+                landmark.data.type === 'gallery' ? 'from-orange/15 to-orange/15' :
+                landmark.data.type === 'trail' ? 'from-orange/15 to-orange/15' :
+                'from-orange/15 to-orange/15'
               } flex items-center justify-center`}>
                 <span class="opacity-40"><MarketIcon name={typeIcons[landmark.data.type] || 'ok'} class="w-14 h-14" /></span>
               </div>
             </a>
             <div class="p-5">
-              <span class="inline-block bg-teal/10 text-teal text-xs font-medium px-2 py-1 rounded-md mb-2">
+              <span class="inline-block bg-orange/10 text-orange text-xs font-medium px-2 py-1 rounded-md mb-2">
                 {typeLabels[landmark.data.type]?.replace(/s$/, '') || landmark.data.type}
               </span>
               <h2 class="font-display font-bold text-lg text-black mb-1">
@@ -76,11 +76,11 @@ const featured = allLandmarks.filter(l => l.data.featured);
                 </a>
               </h2>
               {landmark.data.tagline && (
-                <p class="text-teal text-sm font-medium mb-2">{landmark.data.tagline}</p>
+                <p class="text-purple text-sm font-medium mb-2">{landmark.data.tagline}</p>
               )}
               <p class="text-black/70 text-sm line-clamp-3">{landmark.data.description}</p>
               {landmark.data.admission === 'Free' && (
-                <span class="inline-block mt-3 bg-lime/20 text-lime text-xs font-bold px-2 py-1 rounded-md">
+                <span class="inline-block mt-3 bg-orange/20 text-orange text-xs font-bold px-2 py-1 rounded-md">
                   Free Admission
                 </span>
               )}
@@ -104,7 +104,7 @@ const featured = allLandmarks.filter(l => l.data.featured);
               >
                 <h3 class="font-display font-bold text-black mb-1">{landmark.data.name}</h3>
                 {landmark.data.tagline && (
-                  <p class="text-teal text-sm font-medium mb-2">{landmark.data.tagline}</p>
+                  <p class="text-purple text-sm font-medium mb-2">{landmark.data.tagline}</p>
                 )}
                 <p class="text-black/60 text-sm">{landmark.data.description}</p>
                 <div class="flex flex-wrap gap-3 mt-3 text-xs text-black/50">
@@ -117,7 +117,7 @@ const featured = allLandmarks.filter(l => l.data.featured);
                     </span>
                   )}
                   {landmark.data.admission === 'Free' && (
-                    <span class="bg-lime/20 text-lime font-bold px-2 py-0.5 rounded-md">Free</span>
+                    <span class="bg-orange/20 text-orange font-bold px-2 py-0.5 rounded-md">Free</span>
                   )}
                 </div>
               </a>
@@ -127,7 +127,7 @@ const featured = allLandmarks.filter(l => l.data.featured);
       ))}
 
       <!-- Trip planning CTA -->
-      <div class="bg-gradient-to-r from-orange to-teal rounded-2xl p-8 text-center text-white">
+      <div class="bg-gradient-to-r from-orange to-purple rounded-2xl p-8 text-center text-white">
         <h2 class="font-display font-bold text-2xl mb-3">
           Plan Your Kinderhook Day Trip
         </h2>

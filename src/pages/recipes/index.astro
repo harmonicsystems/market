@@ -6,16 +6,16 @@ const base = import.meta.env.BASE_URL;
 const allRecipes = await getCollection('recipes');
 
 const difficultyColors: Record<string, string> = {
-  easy: 'bg-lime text-white',
+  easy: 'bg-orange/15 text-orange border border-orange/40',
   medium: 'bg-orange text-white',
-  hard: 'bg-teal text-white',
+  hard: 'bg-purple text-white',
 };
 
 const seasonColors: Record<string, string> = {
-  spring: 'bg-lime/20 text-lime',
-  summer: 'bg-orange/20 text-orange',
-  fall: 'bg-teal/20 text-teal',
-  winter: 'bg-black/20 text-black',
+  spring: 'bg-orange/20 text-orange',
+  summer: 'bg-orange text-white',
+  fall: 'bg-purple/20 text-purple',
+  winter: 'bg-black text-cream',
 };
 ---
 
@@ -39,7 +39,7 @@ const seasonColors: Record<string, string> = {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {allRecipes.map((recipe) => (
             <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-              <div class="h-48 bg-gradient-to-br from-lime/20 to-orange/20 flex items-center justify-center">
+              <div class="h-48 bg-gradient-to-br from-orange/20 to-orange/20 flex items-center justify-center">
                 <span class="text-6xl">{recipe.data.emoji || '🍽️'}</span>
               </div>
               <div class="p-6">
@@ -97,7 +97,7 @@ const seasonColors: Record<string, string> = {
                 )}
                 <a
                   href={`${base}/recipes/${recipe.data.slug}`}
-                  class="inline-block mt-4 text-teal font-semibold hover:underline"
+                  class="inline-block mt-4 text-orange font-semibold hover:underline"
                 >
                   View Recipe →
                 </a>

@@ -138,16 +138,14 @@ Fields: `title`, `slug`, `emoji`, `image`, `prepTime`, `cookTime`, `servings`, `
 ### Brand Colors
 
 ```css
---color-orange: #B8860B;   /* Dark goldenrod — primary accent, CTAs */
---color-teal: #5A7247;     /* Deep sage green — secondary, links, nature */
---color-lime: #C49A02;     /* Warm gold — tertiary highlights */
---color-black: #2E1F2F;    /* Deep aubergine — text, headers, dark sections */
---color-cream: #DFA926;    /* Golden amber — sitewide background */
+--color-orange: #B8860B;   /* Dark goldenrod — primary accent, CTAs, highlights */
+--color-purple: #5D3C54;   /* Deep plum — secondary accent, taglines, category alternatives */
+--color-black: #2E1F2F;    /* Deep aubergine — text, headings, dark sections */
+--color-cream: #DFA926;    /* Golden amber (yellow) — sitewide background */
+--color-white: #FFFFFF;    /* Card surfaces, text on dark */
 ```
 
-Designer accent colors (for future use):
-- Yellow: `#DFA926` (warm golden amber — currently the background)
-- Purple: `#5D3C54` (deep plum)
+Teal and Lime were removed in favor of this tighter, more accessible palette. Orange and Purple together cover differentiation needs (primary vs secondary CTAs, regular vs guest vendors, easy/medium/hard difficulty, spring/summer vs fall seasons).
 
 ### Typography (Google Fonts)
 
@@ -185,9 +183,10 @@ Rendered via `MarketIcon.astro` component with short name props (e.g., `<MarketI
 - Mobile hamburger menu
 
 ### Contrast Notes
-- On gold background: use `text-black` or `text-black/90` minimum (7.27:1 ratio)
-- Never use `text-orange`, `text-teal`, or `text-white` directly on gold — insufficient contrast
-- On white cards: `text-black`, `text-teal` (5.34:1), and large `text-orange` (3.25:1) are fine
+- On gold/cream background: use `text-black` or `text-black/90` minimum (7.27:1 ratio)
+- Never use `text-orange` or `text-white` directly on cream — insufficient contrast
+- On white cards: `text-black`, `text-purple` (~6:1), and large `text-orange` (3.25:1) are fine
+- `text-purple` on cream is readable but large sizes only; prefer `text-purple` on white surfaces
 
 ---
 

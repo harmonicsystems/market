@@ -17,9 +17,9 @@ const { recipe } = Astro.props;
 const { Content } = await render(recipe);
 
 const difficultyColors: Record<string, string> = {
-  easy: 'bg-lime text-white',
+  easy: 'bg-orange/15 text-orange border border-orange/40',
   medium: 'bg-orange text-white',
-  hard: 'bg-teal text-white',
+  hard: 'bg-purple text-white',
 };
 ---
 
@@ -34,7 +34,7 @@ const difficultyColors: Record<string, string> = {
   <article class="bg-cream py-12">
     <div class="max-w-3xl mx-auto px-4">
       <!-- Back link -->
-      <a href={`${base}/recipes`} class="inline-flex items-center gap-2 text-teal font-semibold hover:underline mb-6">
+      <a href={`${base}/recipes`} class="inline-flex items-center gap-2 text-orange font-semibold hover:underline mb-6">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
@@ -45,7 +45,7 @@ const difficultyColors: Record<string, string> = {
       <header class="mb-8">
         <div class="flex flex-wrap gap-2 mb-4">
           {recipe.data.season?.map((s: string) => (
-            <span class="bg-lime/20 text-lime text-sm px-3 py-1 rounded-md font-medium">
+            <span class="bg-orange/20 text-orange text-sm px-3 py-1 rounded-md font-medium">
               {s.charAt(0).toUpperCase() + s.slice(1)}
             </span>
           ))}
@@ -97,9 +97,9 @@ const difficultyColors: Record<string, string> = {
 
       <!-- Market Produce Used -->
       {recipe.data.produce && recipe.data.produce.length > 0 && (
-        <div class="bg-lime/10 rounded-2xl p-6 mb-8">
+        <div class="bg-orange/10 rounded-2xl p-6 mb-8">
           <h2 class="font-display font-bold text-lg text-black mb-3 flex items-center gap-2">
-            <svg class="w-5 h-5 text-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             Find at the Market

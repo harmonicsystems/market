@@ -6,11 +6,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL;
 
 const colors = [
-  { name: 'Orange',  hex: '#B8860B', varName: '--color-orange', twClass: 'bg-orange',  notes: 'Dark goldenrod. Primary accent, CTAs.' },
-  { name: 'Teal',    hex: '#5A7247', varName: '--color-teal',   twClass: 'bg-teal',    notes: 'Deep sage green. Secondary, links, nature cues.' },
-  { name: 'Lime',    hex: '#C49A02', varName: '--color-lime',   twClass: 'bg-lime',    notes: 'Warm gold. Tertiary highlights.' },
-  { name: 'Black',   hex: '#2E1F2F', varName: '--color-black',  twClass: 'bg-black',   notes: 'Deep aubergine. Text, headers, dark sections.' },
-  { name: 'Cream',   hex: '#DFA926', varName: '--color-cream',  twClass: 'bg-cream',   notes: 'Golden amber. Sitewide background.' },
+  { name: 'Orange',  hex: '#B8860B', varName: '--color-orange', twClass: 'bg-orange',  notes: 'Dark goldenrod. Primary accent, CTAs, highlights.' },
+  { name: 'Purple',  hex: '#5D3C54', varName: '--color-purple', twClass: 'bg-purple',  notes: 'Deep plum. Secondary accent, taglines, category alternatives.' },
+  { name: 'Black',   hex: '#2E1F2F', varName: '--color-black',  twClass: 'bg-black',   notes: 'Deep aubergine. Text, headings, dark sections.' },
+  { name: 'Cream',   hex: '#DFA926', varName: '--color-cream',  twClass: 'bg-cream',   notes: 'Golden amber (yellow). Sitewide background.' },
   { name: 'White',   hex: '#FFFFFF', varName: '--color-white',  twClass: 'bg-white',   notes: 'Card surfaces, text on dark.' },
 ];
 
@@ -189,7 +188,7 @@ const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
             <div class="p-6 bg-white">
               <div class="text-center">
                 <h2 class="font-display font-bold text-2xl md:text-3xl text-black mb-1">Saturday, May 9, 2026</h2>
-                <p class="text-teal font-display font-bold text-lg">Opening Day!</p>
+                <p class="text-orange font-display font-bold text-lg">Opening Day!</p>
                 <p class="text-black/60 mt-2">8:30 AM – 12:30 PM • Village Green</p>
               </div>
             </div>
@@ -202,15 +201,15 @@ const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
               <span class="text-xs text-black/60">Seen on: /</span>
             </header>
             <div class="p-6 bg-white">
-              <div class="bg-gradient-to-br from-teal/10 to-teal/5 rounded-xl p-4 md:p-5 border border-black/10 max-w-md">
+              <div class="bg-gradient-to-br from-purple/10 to-purple/5 rounded-xl p-4 md:p-5 border border-black/10 max-w-md">
                 <div class="flex items-center gap-3 mb-3">
                   <span
                     class="social-icon-mask block w-12 h-12 shrink-0"
-                    style={`background-color: #5A7247; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
+                    style={`background-color: #5D3C54; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
                     aria-hidden="true"
                   ></span>
                   <div>
-                    <p class="text-xs text-teal font-semibold uppercase tracking-wide">Live Music</p>
+                    <p class="text-xs text-purple font-semibold uppercase tracking-wide">Live Music</p>
                     <p class="font-display font-bold text-lg text-black/60 italic">Lineup coming soon</p>
                   </div>
                 </div>
@@ -364,11 +363,9 @@ const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
             <p class="text-black font-medium">Black on cream — 7.27:1 ✓</p>
             <p class="text-white">White on cream — fails</p>
             <p class="text-orange">Orange on cream — fails</p>
-            <p class="text-teal">Teal on cream — fails</p>
           </div>
           <div class="bg-white p-4 rounded-md border border-black/10">
             <p class="text-black font-medium">Black on white — ✓</p>
-            <p class="text-teal">Teal on white — 5.34:1 ✓</p>
             <p class="text-orange">Orange on white — large only</p>
           </div>
           <div class="bg-black p-4 rounded-md">
