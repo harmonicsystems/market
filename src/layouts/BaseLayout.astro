@@ -2,7 +2,9 @@
 import '../styles/global.css';
 import SEO from '../components/SEO.astro';
 import StructuredData from '../components/StructuredData.astro';
+import ShareableMarketCard from '../components/ShareableMarketCard.astro';
 import siteConfig from '../data/site-config.json';
+import thisWeek from '../data/this-week.json';
 
 interface Props {
   title: string;
@@ -94,41 +96,15 @@ const base = import.meta.env.BASE_URL;
 
     <footer class="bg-black text-white mt-auto">
       <div class="max-w-xl mx-auto px-4 py-12 text-center">
-        <!-- Follow for weekly updates — hearts flank the label -->
-        <p class="font-display font-bold text-white text-lg md:text-xl uppercase tracking-widest inline-flex items-center gap-3 mb-6">
-          <span
-            class="social-icon-mask block w-5 h-5 md:w-6 md:h-6 shrink-0"
-            style={`background-color: #FFFFFF; -webkit-mask-image: url('${base}/icons/FM-HEART-ICON.png'); mask-image: url('${base}/icons/FM-HEART-ICON.png');`}
-            aria-hidden="true"
-          ></span>
-          Follow for Weekly Updates
-          <span
-            class="social-icon-mask block w-5 h-5 md:w-6 md:h-6 shrink-0"
-            style={`background-color: #FFFFFF; -webkit-mask-image: url('${base}/icons/FM-HEART-ICON.png'); mask-image: url('${base}/icons/FM-HEART-ICON.png');`}
-            aria-hidden="true"
-          ></span>
-        </p>
-
-        <!-- Social icons — underneath the label -->
-        <div class="flex flex-wrap justify-center items-center gap-6 mb-10">
-          <a
-            href={siteConfig.contact.facebook}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Follow us on Facebook"
-            class="inline-flex items-center justify-center hover:opacity-80 transition-opacity"
-          >
-            <span class="social-icon-mask block w-12 h-12" style={`background-color: #FFFFFF; -webkit-mask-image: url('${base}/icons/FM-FACEBOOK-ICON.png'); mask-image: url('${base}/icons/FM-FACEBOOK-ICON.png');`}></span>
-          </a>
-          <a
-            href={siteConfig.contact.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Follow us on Instagram"
-            class="inline-flex items-center justify-center hover:opacity-80 transition-opacity"
-          >
-            <span class="social-icon-mask block w-12 h-12" style={`background-color: #FFFFFF; -webkit-mask-image: url('${base}/icons/FM-INSTAGRAM-ICON.png'); mask-image: url('${base}/icons/FM-INSTAGRAM-ICON.png');`}></span>
-          </a>
+        <!-- Share the market — Facebook / Nextdoor / Instagram / Download, light tone for dark footer -->
+        <div class="mb-10">
+          <ShareableMarketCard
+            date={thisWeek.date}
+            displayDate={thisWeek.displayDate}
+            theme={thisWeek.theme}
+            music={thisWeek.music}
+            tone="light"
+          />
         </div>
 
         <!-- Designer signature — links to susannelamb.com.

@@ -1,0 +1,99 @@
+---
+/**
+ * HeroCore — the market's visual identity block.
+ *
+ * Shared between the homepage hero and the /share/[week] share-card route,
+ * so the two can never drift. Contains only the static branding elements:
+ * sunflower banner, KINDERHOOK / FARMERS MARKET title, hand-drawn underline,
+ * "Every Saturday, May – October" schedule line, and the time flanked by
+ * flourishes. Per-week information (date / theme / music) is NOT part of
+ * HeroCore — callers add that below via the default slot.
+ *
+ * By default the component scales fluidly with the viewport (clamp-based
+ * sizes), matching the homepage hero. When rendered at a fixed canvas size
+ * (e.g. 1080×1080 for a share card) pass `fluid={false}` and the component
+ * uses fixed sizes calibrated for that canvas instead.
+ */
+
+interface Props {
+  /** When true (default) sizes scale fluidly with the viewport via clamp().
+   * When false sizes are fixed and calibrated for a 1080×1080 share canvas. */
+  fluid?: boolean;
+  /** Text shown between the divider and the time. Defaults to the market's
+   * recurring season line. The share-card route overrides this with the
+   * specific date of the next market. */
+  scheduleText?: string;
+}
+
+const { fluid = true, scheduleText = 'Every Saturday, May – October' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+// Size tokens. Fluid mode matches the homepage hero. Fixed mode is calibrated
+// so HeroCore fills the upper half of a 1080×1080 canvas comfortably.
+const sizes = fluid
+  ? {
+      banner: 'w-full max-w-[200px] sm:max-w-[240px]',
+      titleLine1: 'text-[clamp(2.5rem,11vw,4rem)]',
+      titleLine2: 'text-[clamp(1.875rem,8.5vw,3rem)]',
+      divider: 'w-full max-w-sm mt-3 mb-5',
+      schedule: 'text-[clamp(0.95rem,3.8vw,1.35rem)] mb-2',
+      time: 'text-[clamp(1.25rem,5vw,1.875rem)]',
+      flourish: 'h-4 w-10 sm:h-5 sm:w-14',
+      timeGap: 'gap-2 sm:gap-3',
+    }
+  : {
+      // Fixed sizes for 1080×1080 share canvas
+      banner: 'w-[360px]',
+      titleLine1: 'text-[96px]',
+      titleLine2: 'text-[72px]',
+      divider: 'w-[520px] mt-4 mb-8',
+      schedule: 'text-[32px] mb-4',
+      time: 'text-[44px]',
+      flourish: 'h-8 w-20',
+      timeGap: 'gap-4',
+    };
+---
+
+<!-- Sunflower banner -->
+<div class="flex justify-center -mb-1">
+  <span
+    class={`social-icon-mask block aspect-[320/123] ${sizes.banner}`}
+    style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-SUNFLOWER-TOP_BANNER.gif'); mask-image: url('${base}/icons/FM-SUNFLOWER-TOP_BANNER.gif');`}
+    aria-hidden="true"
+  ></span>
+</div>
+
+<!-- KINDERHOOK / FARMERS MARKET -->
+<h1 class="mb-2 font-display uppercase tracking-wide inline-block">
+  <span class={`block text-black leading-none ${sizes.titleLine1}`}>Kinderhook</span>
+  <span class={`block text-black leading-none mt-1 whitespace-nowrap ${sizes.titleLine2}`}>Farmers Market</span>
+</h1>
+
+<!-- Hand-drawn underline -->
+<div
+  class={`social-icon-mask mx-auto block ${sizes.divider}`}
+  style={`aspect-ratio: 20 / 1; background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-DIVIDER_2.png'); mask-image: url('${base}/icons/FM-DIVIDER_2.png'); -webkit-mask-size: 100% 100%; mask-size: 100% 100%;`}
+  aria-hidden="true"
+></div>
+
+<!-- Schedule line — either the recurring season or the specific next-market date -->
+<p class={`font-display uppercase tracking-wide text-black ${sizes.schedule}`}>
+  {scheduleText}
+</p>
+
+<!-- Time with flourishes -->
+<div class={`flex items-center justify-center ${sizes.timeGap}`}>
+  <span
+    class={`social-icon-mask block shrink-0 ${sizes.flourish}`}
+    style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-DIVIDER_1.png'); mask-image: url('${base}/icons/FM-DIVIDER_1.png'); -webkit-mask-size: 200% 100%; mask-size: 200% 100%; -webkit-mask-position: left center; mask-position: left center;`}
+    aria-hidden="true"
+  ></span>
+  <p class={`font-display text-black whitespace-nowrap ${sizes.time}`}>
+    8:30 AM &ndash; 12:30 PM
+  </p>
+  <span
+    class={`social-icon-mask block shrink-0 ${sizes.flourish}`}
+    style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-DIVIDER_1.png'); mask-image: url('${base}/icons/FM-DIVIDER_1.png'); -webkit-mask-size: 200% 100%; mask-size: 200% 100%; -webkit-mask-position: right center; mask-position: right center;`}
+    aria-hidden="true"
+  ></span>
+</div>

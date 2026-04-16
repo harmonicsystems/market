@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import StructuredData from '../components/StructuredData.astro';
 import { Image } from 'astro:assets';
 import MarketIcon from '../components/MarketIcon.astro';
+import HeroCore from '../components/HeroCore.astro';
 import welcomeImage from '../assets/images/decorative/welcome-kinderhook.webp';
 import siteConfig from '../data/site-config.json';
 import thisWeek from '../data/this-week.json';
@@ -41,53 +42,14 @@ const base = import.meta.env.BASE_URL;
   <!-- Hero: Market-Forward Identity (mobile-first, fluid scaling) -->
   <section id="homepage-hero" class="bg-cream py-10 sm:py-14">
     <div class="max-w-xl mx-auto px-4 text-center">
-      <div class="flex justify-center -mb-1">
-        <span
-          class="social-icon-mask block w-full max-w-[200px] sm:max-w-[240px] aspect-[320/123]"
-          style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-SUNFLOWER-TOP_BANNER.gif'); mask-image: url('${base}/icons/FM-SUNFLOWER-TOP_BANNER.gif');`}
-          aria-hidden="true"
-        ></span>
-      </div>
-      <h1 class="mb-2 font-display uppercase tracking-wide inline-block">
-        <span class="block text-black leading-none text-[clamp(2.5rem,11vw,4rem)]">Kinderhook</span>
-        <span class="block text-black leading-none mt-1 whitespace-nowrap text-[clamp(1.875rem,8.5vw,3rem)]">Farmers Market</span>
-      </h1>
+      <HeroCore />
 
-      <!-- Hand-drawn underline beneath the title -->
-      <div
-        class="social-icon-mask mx-auto block w-full max-w-sm mt-3 mb-5"
-        style={`aspect-ratio: 20 / 1; background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-DIVIDER_2.png'); mask-image: url('${base}/icons/FM-DIVIDER_2.png'); -webkit-mask-size: 100% 100%; mask-size: 100% 100%;`}
-        aria-hidden="true"
-      ></div>
-
-      <!-- Schedule line — every Saturday, May – October -->
-      <p class="font-display uppercase tracking-wide text-black mb-2 text-[clamp(0.95rem,3.8vw,1.35rem)]">
-        Every Saturday, May &ndash; October
-      </p>
-
-      <!-- Time, flanked by hand-drawn flourishes -->
-      <div class="flex items-center justify-center gap-2 sm:gap-3 mb-5">
-        <span
-          class="social-icon-mask block shrink-0 h-4 w-10 sm:h-5 sm:w-14"
-          style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-DIVIDER_1.png'); mask-image: url('${base}/icons/FM-DIVIDER_1.png'); -webkit-mask-size: 200% 100%; mask-size: 200% 100%; -webkit-mask-position: left center; mask-position: left center;`}
-          aria-hidden="true"
-        ></span>
-        <p class="font-display text-black whitespace-nowrap text-[clamp(1.25rem,5vw,1.875rem)]">
-          8:30 AM &ndash; 12:30 PM
-        </p>
-        <span
-          class="social-icon-mask block shrink-0 h-4 w-10 sm:h-5 sm:w-14"
-          style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-DIVIDER_1.png'); mask-image: url('${base}/icons/FM-DIVIDER_1.png'); -webkit-mask-size: 200% 100%; mask-size: 200% 100%; -webkit-mask-position: right center; mask-position: right center;`}
-          aria-hidden="true"
-        ></span>
-      </div>
-
-      <p class="text-white font-body max-w-xs sm:max-w-sm mx-auto mb-5 text-[clamp(0.9rem,3vw,1rem)]">
+      <p class="text-white font-body max-w-xs sm:max-w-sm mx-auto mt-5 mb-5 text-[clamp(0.9rem,3vw,1rem)]">
         Fresh local produce, artisan goods, and live music in the heart of the Hudson Valley.
       </p>
 
-      <!-- Follow for weekly updates — hearts flank the label, socials flow below -->
-      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-3">
+      <!-- Follow for weekly updates — hearts flank the label, socials always below -->
+      <div class="flex flex-col items-center justify-center gap-3">
         <p class="font-display font-bold text-black text-lg md:text-xl uppercase tracking-widest inline-flex items-center gap-3">
           <span
             class="social-icon-mask block w-5 h-5 md:w-6 md:h-6 shrink-0"
@@ -196,7 +158,7 @@ const base = import.meta.env.BASE_URL;
         <div class="bg-white rounded-xl p-4">
           <h3 class="font-display font-bold text-black/60 text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
             <span class="w-2 h-2 bg-orange rounded-full"></span>
-            Guest Vendors This Week
+            Guest Vendors
           </h3>
           {thisWeek.guestVendors.length > 0 ? (
             <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">

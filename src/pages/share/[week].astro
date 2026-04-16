@@ -1,0 +1,93 @@
+---
+/**
+ * Share-card route — renders the market design at a fixed 1080×1080 canvas
+ * with per-week info (date, theme, optional music) baked in. Used as the
+ * single source of truth for social share images: a build step will snapshot
+ * this page with Playwright and save the PNG to `public/share/<week>.png`.
+ *
+ * For stage 1 of the migration this route is driven by `this-week.json`
+ * (one path, the current week). Later stages will switch to a content
+ * collection with one entry per market week.
+ */
+
+import '../../styles/global.css';
+import HeroCore from '../../components/HeroCore.astro';
+import thisWeek from '../../data/this-week.json';
+
+export async function getStaticPaths() {
+  return [
+    {
+      params: { week: thisWeek.date },
+      props: { week: thisWeek },
+    },
+  ];
+}
+
+interface WeekInfo {
+  date: string;
+  displayDate: string;
+  theme?: string;
+  music?: { name: string; time: string };
+}
+
+const { week } = Astro.props as { week: WeekInfo };
+const base = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Share card — {week.displayDate}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Aoboshi+One&family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+    />
+    <style>
+      /* Lock the viewport to a 1080×1080 square so Playwright screenshots are
+         pixel-identical to what you see in the browser. */
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 1080px;
+        height: 1080px;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="bg-cream flex flex-col items-center justify-center text-center px-12"
+      style="width: 1080px; height: 1080px;"
+    >
+      <HeroCore fluid={false} scheduleText={week.displayDate} />
+
+      <!-- Per-week info: theme + optional music -->
+      <div class="mt-10 flex flex-col items-center">
+        {week.theme && (
+          <p class="text-purple font-display font-bold text-[48px] leading-none">
+            {week.theme}
+          </p>
+        )}
+        {week.music && (
+          <p class="mt-4 text-black/70 font-body text-[28px]">
+            Live music: <span class="text-black">{week.music.name}</span>
+            {week.music.time ? ` · ${week.music.time}` : ''}
+          </p>
+        )}
+      </div>
+
+      <!-- Footer -->
+      <p class="mt-12 text-black/60 font-body text-[22px] tracking-wider uppercase">
+        Village Green · Kinderhook, NY · Rain or Shine
+      </p>
+      <p class="mt-2 text-black/40 font-body text-[18px]">
+        kinderhookfarmersmarket.com
+      </p>
+    </div>
+  </body>
+</html>
