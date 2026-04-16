@@ -79,13 +79,25 @@ const dateRest = commaIdx > 0 ? displayDate.slice(commaIdx + 1).trim() : display
   const dayName = commaIdx > 0 ? displayDate.slice(0, commaIdx) : '';
   const dateRest = commaIdx > 0 ? displayDate.slice(commaIdx + 1).trim() : displayDate;
 
-  // Load the static sunflower banner (matches preview)
+  // Load the static sunflower banner (matches preview).
+  // Note: do NOT set crossOrigin — the asset is same-origin, and setting
+  // crossOrigin="anonymous" can silently fail on static hosts that don't
+  // send CORS headers, leaving bannerImg.complete=true but the image
+  // unrenderable onto the canvas.
   const bannerImg = new Image();
-  bannerImg.crossOrigin = 'anonymous';
   const bannerSrc = (base || '/').replace(/\/$/, '') + '/icons/FM-SUNFLOWER-TOP_BANNER-STATIC.png';
+  const bannerReady = new Promise((resolve) => {
+    bannerImg.onload = () => resolve(true);
+    bannerImg.onerror = () => resolve(false);
+  });
   bannerImg.src = bannerSrc;
 
-  function generateCard() {
+  async function generateCard() {
+    // Make sure the banner has finished loading before we try to draw it.
+    await bannerReady;
+    if (bannerImg.decode) {
+      try { await bannerImg.decode(); } catch {}
+    }
     const w = 1080;
     const h = 1080;
     const aubergine = '#2E1F2F';
@@ -166,7 +178,7 @@ const dateRest = commaIdx > 0 ? displayDate.slice(commaIdx + 1).trim() : display
   }
 
   downloadBtn.addEventListener('click', async () => {
-    generateCard();
+    await generateCard();
 
     const filename = `kinderhook-market-${date}.png`;
 

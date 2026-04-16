@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import SEO from '../components/SEO.astro';
 import StructuredData from '../components/StructuredData.astro';
+import siteConfig from '../data/site-config.json';
 
 interface Props {
   title: string;
@@ -92,49 +93,63 @@ const base = import.meta.env.BASE_URL;
     </main>
 
     <footer class="bg-black text-white mt-auto">
-      <div class="max-w-6xl mx-auto px-4 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h3 class="font-logo text-lg tracking-wide uppercase mb-4">Kinderhook Farmers Market</h3>
-            <p class="text-white/80 mb-2">Village Green, Broad Street &amp; Albany Avenue</p>
-            <p class="text-white/80 mb-2">Kinderhook, NY 12106</p>
-            <p class="text-white/80">Saturdays 8:30am - 12:30pm</p>
-            <p class="text-white/60 text-sm mt-2">May through October</p>
-          </div>
+      <div class="max-w-xl mx-auto px-4 py-12 text-center">
+        <!-- Follow for weekly updates — hearts flank the label -->
+        <p class="font-display font-bold text-white text-lg md:text-xl uppercase tracking-widest inline-flex items-center gap-3 mb-6">
+          <span
+            class="social-icon-mask block w-5 h-5 md:w-6 md:h-6 shrink-0"
+            style={`background-color: #FFFFFF; -webkit-mask-image: url('${base}/icons/FM-HEART-ICON.png'); mask-image: url('${base}/icons/FM-HEART-ICON.png');`}
+            aria-hidden="true"
+          ></span>
+          Follow for Weekly Updates
+          <span
+            class="social-icon-mask block w-5 h-5 md:w-6 md:h-6 shrink-0"
+            style={`background-color: #FFFFFF; -webkit-mask-image: url('${base}/icons/FM-HEART-ICON.png'); mask-image: url('${base}/icons/FM-HEART-ICON.png');`}
+            aria-hidden="true"
+          ></span>
+        </p>
 
-          <div>
-            <h3 class="font-display font-bold text-xl mb-4">Quick Links</h3>
-            <ul class="space-y-2 text-white/80">
-              <li><a href={`${base}/vendors`} class="hover:text-orange transition-colors">Our Vendors</a></li>
-              <li><a href={`${base}/discover`} class="hover:text-orange transition-colors">Discover Kinderhook</a></li>
-              <li><a href={`${base}/businesses`} class="hover:text-orange transition-colors">Business Directory</a></li>
-              <li><a href={`${base}/visit`} class="hover:text-orange transition-colors">Plan Your Visit</a></li>
-              <li><a href={`${base}/recipes`} class="hover:text-orange transition-colors">Recipes</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 class="font-display font-bold text-xl mb-4">Connect</h3>
-            <a
-              href="https://www.facebook.com/KinderhookFarmersMarket"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 text-white/80 hover:text-orange transition-colors"
-            >
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
-              </svg>
-              Follow us on Facebook
-            </a>
-            <p class="mt-4 text-white/60 text-sm">
-              Sponsored by the Kinderhook Business and Professional Association
-            </p>
-          </div>
+        <!-- Social icons — underneath the label -->
+        <div class="flex flex-wrap justify-center items-center gap-6 mb-10">
+          <a
+            href={siteConfig.contact.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow us on Facebook"
+            class="inline-flex items-center justify-center hover:opacity-80 transition-opacity"
+          >
+            <span class="social-icon-mask block w-12 h-12" style={`background-color: #FFFFFF; -webkit-mask-image: url('${base}/icons/FM-FACEBOOK-ICON.png'); mask-image: url('${base}/icons/FM-FACEBOOK-ICON.png');`}></span>
+          </a>
+          <a
+            href={siteConfig.contact.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow us on Instagram"
+            class="inline-flex items-center justify-center hover:opacity-80 transition-opacity"
+          >
+            <span class="social-icon-mask block w-12 h-12" style={`background-color: #FFFFFF; -webkit-mask-image: url('${base}/icons/FM-INSTAGRAM-ICON.png'); mask-image: url('${base}/icons/FM-INSTAGRAM-ICON.png');`}></span>
+          </a>
         </div>
 
-        <div class="border-t border-white/20 mt-8 pt-8 text-center text-white/60 text-sm">
-          <p>&copy; {new Date().getFullYear()} Kinderhook Farmers Market. All rights reserved.</p>
-        </div>
+        <!-- Designer signature — links to susannelamb.com.
+             The source PNG is dark-purple text on an opaque white rectangle,
+             so we invert+grayscale to get black-on-white, then screen-blend
+             against the aubergine footer so the white rectangle disappears
+             and the text renders near-white. -->
+        <a
+          href="https://susannelamb.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Designed by Susanne Lamb — susannelamb.com"
+          class="inline-block hover:opacity-80 transition-opacity"
+        >
+          <img
+            src={`${base}/icons/DESIGNED-BY-SUSANNE-LAMB.png`}
+            alt="Designed by Susanne Lamb"
+            class="block w-56 md:w-64 h-auto mx-auto"
+            style="filter: invert(1) grayscale(1) contrast(1.2); mix-blend-mode: screen;"
+          />
+        </a>
       </div>
     </footer>
 

@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import StructuredData from '../components/StructuredData.astro';
 import { Image } from 'astro:assets';
 import MarketIcon from '../components/MarketIcon.astro';
-import ShareableMarketCard from '../components/ShareableMarketCard.astro';
 import welcomeImage from '../assets/images/decorative/welcome-kinderhook.webp';
 import siteConfig from '../data/site-config.json';
 import thisWeek from '../data/this-week.json';
@@ -39,63 +38,99 @@ const base = import.meta.env.BASE_URL;
   canonicalPath="/"
 >
   <StructuredData slot="head" type="event" data={{ date: thisWeek.date, theme: thisWeek.theme, music: thisWeek.music }} />
-  <!-- Hero: Market-Forward Identity -->
-  <section id="homepage-hero" class="bg-cream py-14 md:py-24">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <div class="flex justify-center mb-0 -mb-2">
+  <!-- Hero: Market-Forward Identity (mobile-first, fluid scaling) -->
+  <section id="homepage-hero" class="bg-cream py-10 sm:py-14">
+    <div class="max-w-xl mx-auto px-4 text-center">
+      <div class="flex justify-center -mb-1">
         <span
-          class="social-icon-mask block w-full max-w-xs md:max-w-md aspect-[320/123]"
+          class="social-icon-mask block w-full max-w-[200px] sm:max-w-[240px] aspect-[320/123]"
           style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-SUNFLOWER-TOP_BANNER.gif'); mask-image: url('${base}/icons/FM-SUNFLOWER-TOP_BANNER.gif');`}
           aria-hidden="true"
         ></span>
       </div>
-      <h1 class="mb-4 font-logo uppercase tracking-wide inline-block">
-        <span class="block text-5xl md:text-7xl lg:text-8xl text-black leading-none">Kinderhook</span>
-        <span class="block text-4xl md:text-6xl lg:text-7xl text-black leading-none mt-2 whitespace-nowrap">Farmers Market</span>
+      <h1 class="mb-2 font-display uppercase tracking-wide inline-block">
+        <span class="block text-black leading-none text-[clamp(2.5rem,11vw,4rem)]">Kinderhook</span>
+        <span class="block text-black leading-none mt-1 whitespace-nowrap text-[clamp(1.875rem,8.5vw,3rem)]">Farmers Market</span>
       </h1>
 
-      <!-- Essential Info — When / Where / Season / Weather -->
-      <div class="bg-black text-white rounded-xl p-6 md:p-8 mb-8 max-w-3xl mx-auto">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
-          <div>
-            <p class="font-logo uppercase tracking-wide text-xs md:text-sm mb-1" style="color: #DFA926;">When</p>
-            <p class="font-display font-bold text-lg md:text-xl">Every Saturday</p>
-            <p class="text-white/70 text-sm mt-1">8:30 AM &ndash; 12:30 PM</p>
-          </div>
-          <div class="sm:border-l sm:border-white/20">
-            <p class="font-logo uppercase tracking-wide text-xs md:text-sm mb-1" style="color: #DFA926;">Where</p>
-            <p class="font-display font-bold text-lg md:text-xl">Village Green</p>
-            <p class="text-white/70 text-sm mt-1">Kinderhook, NY</p>
-          </div>
-          <div class="sm:border-l sm:border-white/20">
-            <p class="font-logo uppercase tracking-wide text-xs md:text-sm mb-1" style="color: #DFA926;">Season</p>
-            <p class="font-display font-bold text-lg md:text-xl">May &ndash; October</p>
-            <p class="text-white/70 text-sm mt-1">Rain or Shine</p>
-          </div>
-          <div class="sm:border-l sm:border-white/20" id="weather-widget">
-            <p class="font-logo uppercase tracking-wide text-xs md:text-sm mb-1" style="color: #DFA926;">This Saturday</p>
-            <p class="font-display font-bold text-lg md:text-xl" id="weather-temp">&hellip;</p>
-            <p class="text-white/70 text-sm mt-1" id="weather-desc">Loading forecast</p>
-          </div>
-        </div>
+      <!-- Hand-drawn underline beneath the title -->
+      <div
+        class="social-icon-mask mx-auto block w-full max-w-sm mt-3 mb-5"
+        style={`aspect-ratio: 20 / 1; background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-DIVIDER_2.png'); mask-image: url('${base}/icons/FM-DIVIDER_2.png'); -webkit-mask-size: 100% 100%; mask-size: 100% 100%;`}
+        aria-hidden="true"
+      ></div>
+
+      <!-- Schedule line — every Saturday, May – October -->
+      <p class="font-display uppercase tracking-wide text-black mb-2 text-[clamp(0.95rem,3.8vw,1.35rem)]">
+        Every Saturday, May &ndash; October
+      </p>
+
+      <!-- Time, flanked by hand-drawn flourishes -->
+      <div class="flex items-center justify-center gap-2 sm:gap-3 mb-5">
+        <span
+          class="social-icon-mask block shrink-0 h-4 w-10 sm:h-5 sm:w-14"
+          style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-DIVIDER_1.png'); mask-image: url('${base}/icons/FM-DIVIDER_1.png'); -webkit-mask-size: 200% 100%; mask-size: 200% 100%; -webkit-mask-position: left center; mask-position: left center;`}
+          aria-hidden="true"
+        ></span>
+        <p class="font-display text-black whitespace-nowrap text-[clamp(1.25rem,5vw,1.875rem)]">
+          8:30 AM &ndash; 12:30 PM
+        </p>
+        <span
+          class="social-icon-mask block shrink-0 h-4 w-10 sm:h-5 sm:w-14"
+          style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-DIVIDER_1.png'); mask-image: url('${base}/icons/FM-DIVIDER_1.png'); -webkit-mask-size: 200% 100%; mask-size: 200% 100%; -webkit-mask-position: right center; mask-position: right center;`}
+          aria-hidden="true"
+        ></span>
       </div>
 
-      <p class="text-lg md:text-xl text-black/80 font-logo max-w-2xl mx-auto mb-6">
+      <p class="text-white font-body max-w-xs sm:max-w-sm mx-auto mb-5 text-[clamp(0.9rem,3vw,1rem)]">
         Fresh local produce, artisan goods, and live music in the heart of the Hudson Valley.
       </p>
 
-      <!-- Share bar — compact, sits inside hero -->
-      <ShareableMarketCard
-        date={thisWeek.date}
-        displayDate={thisWeek.displayDate}
-        theme={thisWeek.theme}
-        music={thisWeek.music}
-      />
+      <!-- Follow for weekly updates — hearts flank the label, socials flow below -->
+      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-3">
+        <p class="font-display font-bold text-black text-lg md:text-xl uppercase tracking-widest inline-flex items-center gap-3">
+          <span
+            class="social-icon-mask block w-5 h-5 md:w-6 md:h-6 shrink-0"
+            style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-HEART-ICON.png'); mask-image: url('${base}/icons/FM-HEART-ICON.png');`}
+            aria-hidden="true"
+          ></span>
+          Follow for Weekly Updates
+          <span
+            class="social-icon-mask block w-5 h-5 md:w-6 md:h-6 shrink-0"
+            style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-HEART-ICON.png'); mask-image: url('${base}/icons/FM-HEART-ICON.png');`}
+            aria-hidden="true"
+          ></span>
+        </p>
+        <div class="flex flex-wrap justify-center items-center gap-4">
+          <a
+            href={siteConfig.contact.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow us on Facebook"
+            class="inline-flex items-center justify-center hover:opacity-80 transition-opacity"
+          >
+            <span class="social-icon-mask block w-10 h-10 md:w-12 md:h-12" style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-FACEBOOK-ICON.png'); mask-image: url('${base}/icons/FM-FACEBOOK-ICON.png');`}></span>
+          </a>
+          <a
+            href={siteConfig.contact.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow us on Instagram"
+            class="inline-flex items-center justify-center hover:opacity-80 transition-opacity"
+          >
+            <span class="social-icon-mask block w-10 h-10 md:w-12 md:h-12" style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-INSTAGRAM-ICON.png'); mask-image: url('${base}/icons/FM-INSTAGRAM-ICON.png');`}></span>
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- THIS WEEK'S LINEUP - The Main Event -->
-  <section class="bg-white py-8 md:py-12">
+  <section class="bg-white pt-[15px] pb-8 md:pb-12">
+    <!-- Purple "NEXT MARKET:" banner — full-bleed across the page -->
+    <div class="bg-purple py-3 md:py-4 mb-6 md:mb-8">
+      <p class="text-center font-display text-white uppercase tracking-wide text-[clamp(1.875rem,8.5vw,3rem)] leading-none">Next Market:</p>
+    </div>
     <div class="max-w-4xl mx-auto px-4">
       <!-- Header -->
       <div class="text-center mb-6">
@@ -105,6 +140,9 @@ const base = import.meta.env.BASE_URL;
         <p class="text-orange font-display font-bold text-lg">{thisWeek.theme}</p>
         <p class="text-black/60 mt-2">
           {siteConfig.schedule.startTime} – {siteConfig.schedule.endTime} • Village Green
+        </p>
+        <p id="weather-widget" class="text-black/70 text-sm mt-2">
+          <span id="weather-temp">…</span> <span class="text-black/40">·</span> <span id="weather-desc">Loading forecast</span>
         </p>
       </div>
 
@@ -120,7 +158,7 @@ const base = import.meta.env.BASE_URL;
               aria-hidden="true"
             ></span>
             <div>
-              <p class="text-xs text-purple font-semibold uppercase tracking-wide">Live Music</p>
+              <p class="font-display font-bold text-purple text-lg md:text-xl uppercase tracking-widest">Live Music</p>
               {thisWeek.music ? (
                 <p class="font-display font-bold text-lg text-black">{thisWeek.music.name}</p>
               ) : (
@@ -143,7 +181,7 @@ const base = import.meta.env.BASE_URL;
                 aria-hidden="true"
               ></span>
               <div>
-                <p class="text-xs text-orange font-semibold uppercase tracking-wide">Special Event</p>
+                <p class="font-display font-bold text-orange text-lg md:text-xl uppercase tracking-widest">Special Event</p>
                 <p class="font-display font-bold text-lg text-black">{thisWeek.specialEvents[0].name}</p>
               </div>
             </div>
@@ -156,7 +194,7 @@ const base = import.meta.env.BASE_URL;
       <div class="mt-6 space-y-4">
         <!-- Guest Vendors -->
         <div class="bg-white rounded-xl p-4">
-          <h3 class="font-display font-bold text-sm text-black/60 uppercase tracking-wide mb-3 flex items-center gap-2">
+          <h3 class="font-display font-bold text-black/60 text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
             <span class="w-2 h-2 bg-orange rounded-full"></span>
             Guest Vendors This Week
           </h3>
@@ -178,7 +216,7 @@ const base = import.meta.env.BASE_URL;
 
         <!-- Regular Vendors -->
         <div class="bg-white rounded-xl p-4">
-          <h3 class="font-display font-bold text-sm text-black/60 uppercase tracking-wide mb-3 flex items-center gap-2">
+          <h3 class="font-display font-bold text-black/60 text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
             <span class="w-2 h-2 bg-orange rounded-full"></span>
             Weekly Vendors
           </h3>
@@ -201,7 +239,7 @@ const base = import.meta.env.BASE_URL;
         <!-- Community Partners -->
         {thisWeek.communityPartners.length > 0 && (
           <div class="bg-white rounded-xl p-4">
-            <h3 class="font-display font-bold text-sm text-black/60 uppercase tracking-wide mb-3 flex items-center gap-2">
+            <h3 class="font-display font-bold text-black/60 text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
               <span class="w-2 h-2 bg-orange rounded-full"></span>
               Community Partners
             </h3>
@@ -216,41 +254,14 @@ const base = import.meta.env.BASE_URL;
         )}
       </div>
 
-      <!-- CTA -->
+      <!-- CTA — hidden for now
       <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
         <a href={`${base}/vendors`} class="inline-flex items-center justify-center gap-2 bg-orange text-white font-display font-bold px-6 py-3 rounded-md hover:bg-orange/90 transition-colors text-center">
           Meet All Vendors
         </a>
       </div>
-    </div>
-  </section>
+      -->
 
-  <!-- Social Follow -->
-  <section class="bg-cream py-10">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h2 class="font-display font-bold text-xl text-black mb-4">
-        Follow for Weekly Updates
-      </h2>
-      <div class="flex flex-wrap justify-center gap-4">
-        <a
-          href={siteConfig.contact.facebook}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Follow us on Facebook"
-          class="inline-flex items-center justify-center hover:opacity-80 transition-opacity"
-        >
-          <span class="social-icon-mask w-16 h-16 md:w-20 md:h-20 inline-block" style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-FACEBOOK-ICON.png'); mask-image: url('${base}/icons/FM-FACEBOOK-ICON.png');`}></span>
-        </a>
-        <a
-          href={siteConfig.contact.instagram}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Follow us on Instagram"
-          class="inline-flex items-center justify-center hover:opacity-80 transition-opacity"
-        >
-          <span class="social-icon-mask w-16 h-16 md:w-20 md:h-20 inline-block" style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-INSTAGRAM-ICON.png'); mask-image: url('${base}/icons/FM-INSTAGRAM-ICON.png');`}></span>
-        </a>
-      </div>
     </div>
   </section>
 
