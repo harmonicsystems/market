@@ -1,43 +1,65 @@
-# Astro Starter Kit: Minimal
+# Kinderhook Farmers' Market
+
+Website for the [Kinderhook Farmers' Market](https://harmonicsystems.github.io/market/) in Kinderhook, NY — Saturdays 8:30 AM – 12:30 PM on the Village Green, May through October.
+
+Built as a community resource and village economic development hub, covering vendors, KBPA member businesses, historic landmarks, seasonal produce, and community recipes.
+
+## Tech stack
+
+- **[Astro 5](https://astro.build)** — static site generation
+- **[Tailwind CSS 4](https://tailwindcss.com)** — styling
+- **Content Collections** with Zod schemas — typed Markdown for vendors, businesses, landmarks, and recipes
+- **GitHub Pages** — hosted via GitHub Actions on every push to `main`
+
+## Local development
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Site runs at `http://localhost:4321/market/`.
 
-## 🚀 Project Structure
+| Command | Action |
+| :-- | :-- |
+| `npm run dev` | Start the local dev server |
+| `npm run build` | Build the production site to `./dist/` |
+| `npm run preview` | Preview the production build locally |
 
-Inside of your Astro project, you'll see the following folders and files:
+## Project layout
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```
+src/
+├── components/       Astro components (SEO, structured data, icons, hero blocks)
+├── content/          Markdown content collections — vendors, businesses, landmarks, recipes
+├── data/             JSON data (site config, this week's lineup)
+├── layouts/          BaseLayout with nav, footer, SEO
+└── pages/            Route files (one .astro per route)
+
+public/               Static assets (icons, images, favicon)
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Updating content
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Content lives in `src/content/` and `src/data/` — no code changes needed.
 
-Any static assets, like images, can be placed in the `public/` directory.
+- **This week's market:** edit `src/data/this-week.json`
+- **Add a vendor:** create `src/content/vendors/vendor-name.md`
+- **Add a business:** create `src/content/businesses/business-name.md`
+- **Add a landmark:** create `src/content/landmarks/landmark-name.md`
+- **Add a recipe:** create `src/content/recipes/recipe-name.md`
 
-## 🧞 Commands
+Zod schemas in `src/content.config.ts` validate each collection's frontmatter.
 
-All commands are run from the root of the project, from a terminal:
+## Deployment
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Any push to `main` triggers `.github/workflows/deploy.yml`, which builds with Astro and publishes to GitHub Pages. The base path is `/market` (configured in `astro.config.mjs`).
 
-## 👀 Want to learn more?
+## Credits
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- Designed by [Susanne Lamb](https://susannelamb.com) — hand-drawn icons, dividers, sunflower banner, and signature
+- Built and maintained by [Harmonic Systems](https://github.com/harmonicsystems)
+
+## License
+
+MIT — see [LICENSE](./LICENSE).
