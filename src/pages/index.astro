@@ -51,10 +51,10 @@ const base = import.meta.env.BASE_URL;
       <!-- Follow for weekly updates — hearts inline with the text so they stay
            attached when text wraps on narrow viewports. socials always below. -->
       <div class="flex flex-col items-center justify-center gap-3">
-        <p class="font-display font-bold text-black text-lg md:text-xl uppercase tracking-widest text-center">
-          <span class="social-icon-mask inline-block w-5 h-5 md:w-6 md:h-6 align-middle mr-2" style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-HEART-ICON.png'); mask-image: url('${base}/icons/FM-HEART-ICON.png');`} aria-hidden="true"></span>
+        <p class="font-display font-bold text-black text-sm sm:text-lg md:text-xl uppercase tracking-wider md:tracking-widest text-center whitespace-nowrap">
+          <span class="social-icon-mask inline-block w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 align-middle mr-1.5 sm:mr-2" style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-HEART-ICON.png'); mask-image: url('${base}/icons/FM-HEART-ICON.png');`} aria-hidden="true"></span>
           Follow for Weekly Updates
-          <span class="social-icon-mask inline-block w-5 h-5 md:w-6 md:h-6 align-middle ml-2" style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-HEART-ICON.png'); mask-image: url('${base}/icons/FM-HEART-ICON.png');`} aria-hidden="true"></span>
+          <span class="social-icon-mask inline-block w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 align-middle ml-1.5 sm:ml-2" style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-HEART-ICON.png'); mask-image: url('${base}/icons/FM-HEART-ICON.png');`} aria-hidden="true"></span>
         </p>
         <div class="flex flex-wrap justify-center items-center gap-4">
           <a href={siteConfig.contact.facebook} target="_blank" rel="noopener noreferrer" aria-label="Follow us on Facebook" class="inline-flex items-center justify-center hover:opacity-80 transition-opacity">
