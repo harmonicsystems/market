@@ -334,7 +334,6 @@ Edit `src/data/this-week.json` — update date, theme, music, vendors, events.
 ## Notes
 
 - **Designer:** Susanne Lamb ([susannelamb.com](https://susannelamb.com)) — hand-drawn Procreate icons, dividers, sunflower banner, signature. Credit in footer links to her site.
-- The "It's OK!" tagline comes from Martin Van Buren's nickname "Old Kinderhook" — possibly the origin of the word "okay"
 - The KBPA website (kinderhookbusiness.com) appears to be down — we now host the most complete KBPA member directory
 - Jack Shainman Gallery: The School is open Saturdays, same as the market — natural synergy
 - The Dutch Farming Heritage Trail connects Van Alen House to Lindenwald — great day trip content

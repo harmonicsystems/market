@@ -19,6 +19,4 @@ Lindenwald was the home of Martin Van Buren, the 8th President of the United Sta
 
 The estate is managed by the National Park Service and offers ranger-guided tours of the mansion during the warmer months. The grounds are open year-round at no charge, with walking paths through the historic landscape.
 
-Van Buren's nickname "Old Kinderhook" — abbreviated to "OK" — may have given rise to one of the most widely used words in the English language. Supporters formed "OK Clubs" during his 1840 presidential campaign, helping to popularize the expression.
-
 The site connects to the Luykas Van Alen House via the 1.7-mile Dutch Farming Heritage Trail, making it easy to visit both landmarks on foot or by bike.
