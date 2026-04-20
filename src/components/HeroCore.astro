@@ -33,8 +33,10 @@ const base = import.meta.env.BASE_URL;
 const sizes = fluid
   ? {
       banner: 'w-full max-w-[200px] sm:max-w-[240px]',
-      titleLine1: 'text-[clamp(2.5rem,11vw,4rem)]',
-      titleLine2: 'text-[clamp(1.875rem,8.5vw,3rem)]',
+      title: 'w-full max-w-[480px] sm:max-w-[560px]',
+      titleLine1: 'text-[clamp(1.875rem,8vw,3.125rem)] tracking-[0.08em]',
+      titleLine2: 'text-[clamp(1.5rem,6.5vw,2.375rem)] tracking-[0.1em]',
+      farmers: 'my-1',
       divider: 'w-full max-w-sm mt-3 mb-5',
       schedule: 'text-[clamp(0.95rem,3.8vw,1.35rem)] mb-2',
       time: 'text-[clamp(1.25rem,5vw,1.875rem)]',
@@ -44,8 +46,10 @@ const sizes = fluid
   : {
       // Fixed sizes for 1080×1080 share canvas
       banner: 'w-[360px]',
-      titleLine1: 'text-[96px]',
-      titleLine2: 'text-[72px]',
+      title: 'w-[640px]',
+      titleLine1: 'text-[64px]',
+      titleLine2: 'text-[52px]',
+      farmers: 'my-2',
       divider: 'w-[520px] mt-4 mb-8',
       schedule: 'text-[32px] mb-4',
       time: 'text-[44px]',
@@ -63,10 +67,16 @@ const sizes = fluid
   ></span>
 </div>
 
-<!-- KINDERHOOK / FARMERS MARKET -->
-<h1 class="mb-2 font-display uppercase tracking-wide inline-block">
-  <span class={`block text-black leading-none ${sizes.titleLine1}`}>Kinderhook</span>
-  <span class={`block text-black leading-none mt-1 whitespace-nowrap ${sizes.titleLine2}`}>Farmers Market</span>
+<!-- KINDERHOOK / FARMERS / MARKET — three lines justified flush to the same width -->
+<h1 class={`mb-2 font-logo font-bold uppercase text-black mx-auto ${sizes.title}`}>
+  <span class={`block text-center leading-none ${sizes.titleLine1}`} aria-hidden="true">Kinderhook</span>
+  <span class="sr-only">Kinderhook Farmers Market</span>
+  <span
+    class={`block w-full ${sizes.farmers}`}
+    style={`aspect-ratio: 1384 / 288; background-color: #2E1F2F; -webkit-mask-image: url('${base}/farmers-clean.svg'); mask-image: url('${base}/farmers-clean.svg'); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;`}
+    aria-hidden="true"
+  ></span>
+  <span class={`block text-center leading-none ${sizes.titleLine2}`} aria-hidden="true">Market</span>
 </h1>
 
 <!-- Hand-drawn underline -->

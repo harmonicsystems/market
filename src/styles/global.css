@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'PP Gatwick';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('/market/fonts/PPGatwick-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'PP Gatwick';
+  font-style: normal;
+  font-weight: 100 300;
+  font-display: swap;
+  src: url('/market/fonts/PPGatwick-Ultralight.woff') format('woff');
+}
+
 /* Kinderhook Farmers Market Design Tokens
    Warm, floral, agricultural — aubergine + gold + olive */
 @theme {
@@ -13,7 +29,7 @@
   --color-white: #FFFFFF;
 
   /* Font Families */
-  --font-logo: 'Aoboshi One', Georgia, serif;
+  --font-logo: 'PP Gatwick', Georgia, serif;
   --font-display: 'DM Serif Display', Georgia, serif;
   --font-body: 'Lora', Georgia, serif;
   --font-accent: 'DM Serif Display', Georgia, serif;
