@@ -80,4 +80,24 @@ const landmarks = defineCollection({
   }),
 });
 
-export const collections = { vendors, businesses, recipes, landmarks };
+const events = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/events' }),
+  schema: z.object({
+    title: z.string(),
+    slug: z.string(),
+    host: z.string(),
+    hostLink: optionalUrl,
+    date: z.string(),           // ISO date, e.g. 2026-05-30
+    endDate: optionalString,    // optional for multi-day runs
+    time: optionalString,       // e.g. "6–8 PM"
+    location: optionalString,   // e.g. "The School"
+    address: optionalString,    // e.g. "25 Broad Street, Kinderhook, NY"
+    link: optionalUrl,
+    image: optionalString,
+    category: z.enum(['art', 'library', 'music', 'community', 'food', 'other']).default('other'),
+    description: optionalString,
+    featured: z.boolean().default(false),
+  }),
+});
+
+export const collections = { vendors, businesses, recipes, landmarks, events };

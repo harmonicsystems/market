@@ -72,21 +72,23 @@ const base = import.meta.env.BASE_URL;
   <section class="bg-white pt-[15px] pb-8 md:pb-12">
     <!-- Purple "NEXT MARKET:" banner — full-bleed across the page -->
     <div class="bg-purple py-3 md:py-4 mb-6 md:mb-8">
-      <p class="text-center font-display text-white uppercase tracking-wide text-[clamp(1.875rem,8.5vw,3rem)] leading-none">Next Market:</p>
+      <p class="text-center font-logo font-bold text-white uppercase tracking-[0.08em] text-[clamp(1.875rem,8.5vw,3rem)] leading-none">Next Market:</p>
     </div>
     <div class="max-w-4xl mx-auto px-4">
       <!-- Header -->
       <div class="text-center mb-6">
-        <h2 class="font-display font-bold text-2xl md:text-3xl text-black mb-1">
+        <h2 class="font-logo font-bold uppercase tracking-[0.08em] text-2xl md:text-3xl text-black mb-1">
           {thisWeek.displayDate}
         </h2>
         <p class="text-orange font-display font-bold text-lg">{thisWeek.theme}</p>
-        <p class="text-black/60 mt-2">
+        <p class="text-black mt-2">
           {siteConfig.schedule.startTime} – {siteConfig.schedule.endTime} • Village Green
         </p>
-        <p id="weather-widget" class="text-black/70 text-sm mt-2">
-          <span id="weather-temp">…</span> <span class="text-black/40">·</span> <span id="weather-desc">Loading forecast</span>
-        </p>
+        {marketInfo.inSeason && marketInfo.daysUntil <= 7 && (
+          <p id="weather-widget" class="text-black text-sm mt-2">
+            <span id="weather-temp">…</span> <span class="text-black">·</span> <span id="weather-desc">Loading forecast</span>
+          </p>
+        )}
       </div>
 
       <!-- Lineup Grid - Mobile Stacked, Desktop Side-by-Side -->
@@ -101,12 +103,12 @@ const base = import.meta.env.BASE_URL;
               {thisWeek.music ? (
                 <p class="font-display font-bold text-lg text-black">{thisWeek.music.name}</p>
               ) : (
-                <p class="font-display font-bold text-lg text-black/60 italic">Lineup coming soon</p>
+                <p class="font-display font-bold text-lg text-black italic">Lineup coming soon</p>
               )}
             </div>
           </div>
           {thisWeek.music && (
-            <p class="text-black/70 text-sm">{thisWeek.music.time}</p>
+            <p class="text-black text-sm">{thisWeek.music.time}</p>
           )}
         </div>
 
@@ -120,7 +122,7 @@ const base = import.meta.env.BASE_URL;
                 <p class="font-display font-bold text-lg text-black">{thisWeek.specialEvents[0].name}</p>
               </div>
             </div>
-            <p class="text-black/70 text-sm">{thisWeek.specialEvents[0].description}</p>
+            <p class="text-black text-sm">{thisWeek.specialEvents[0].description}</p>
           </div>
         )}
       </div>
@@ -129,7 +131,7 @@ const base = import.meta.env.BASE_URL;
       <div class="mt-6 space-y-4">
         <!-- Guest Vendors -->
         <div class="bg-white rounded-xl p-4">
-          <h3 class="font-display font-bold text-black/60 text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
+          <h3 class="font-display font-bold text-black text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
             <span class="w-2 h-2 bg-orange rounded-full"></span>
             Guest Vendors
           </h3>
@@ -145,13 +147,13 @@ const base = import.meta.env.BASE_URL;
               ))}
             </ul>
           ) : (
-            <p class="text-black/60 italic">Lineup coming soon.</p>
+            <p class="text-black italic">Lineup coming soon.</p>
           )}
         </div>
 
         <!-- Regular Vendors -->
         <div class="bg-white rounded-xl p-4">
-          <h3 class="font-display font-bold text-black/60 text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
+          <h3 class="font-display font-bold text-black text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
             <span class="w-2 h-2 bg-orange rounded-full"></span>
             Weekly Vendors
           </h3>
@@ -167,20 +169,20 @@ const base = import.meta.env.BASE_URL;
               ))}
             </ul>
           ) : (
-            <p class="text-black/60 italic">Lineup coming soon.</p>
+            <p class="text-black italic">Lineup coming soon.</p>
           )}
         </div>
 
         <!-- Community Partners -->
         {thisWeek.communityPartners.length > 0 && (
           <div class="bg-white rounded-xl p-4">
-            <h3 class="font-display font-bold text-black/60 text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
+            <h3 class="font-display font-bold text-black text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
               <span class="w-2 h-2 bg-orange rounded-full"></span>
               Community Partners
             </h3>
             <ul class="flex flex-wrap gap-2">
               {thisWeek.communityPartners.map((partner: string) => (
-                <li class="bg-white px-3 py-1 rounded-md text-sm text-black/80 border border-orange/20">
+                <li class="bg-white px-3 py-1 rounded-md text-sm text-black border border-orange/20">
                   {partner}
                 </li>
               ))}

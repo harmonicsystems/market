@@ -59,7 +59,7 @@ const difficultyColors: Record<string, string> = {
           {recipe.data.title}
         </h1>
         {recipe.data.contributor && (
-          <p class="text-black/60">
+          <p class="text-black">
             Recipe by <span class="font-semibold text-black">{recipe.data.contributor}</span>
           </p>
         )}
@@ -70,25 +70,25 @@ const difficultyColors: Record<string, string> = {
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           {recipe.data.prepTime && (
             <div>
-              <p class="text-black/60 text-sm">Prep Time</p>
+              <p class="text-black text-sm">Prep Time</p>
               <p class="font-display font-bold text-black">{recipe.data.prepTime}</p>
             </div>
           )}
           {recipe.data.cookTime && (
             <div>
-              <p class="text-black/60 text-sm">Cook Time</p>
+              <p class="text-black text-sm">Cook Time</p>
               <p class="font-display font-bold text-black">{recipe.data.cookTime}</p>
             </div>
           )}
           {recipe.data.servings && (
             <div>
-              <p class="text-black/60 text-sm">Servings</p>
+              <p class="text-black text-sm">Servings</p>
               <p class="font-display font-bold text-black">{recipe.data.servings}</p>
             </div>
           )}
           {recipe.data.difficulty && (
             <div>
-              <p class="text-black/60 text-sm">Difficulty</p>
+              <p class="text-black text-sm">Difficulty</p>
               <p class="font-display font-bold text-black capitalize">{recipe.data.difficulty}</p>
             </div>
           )}
@@ -106,7 +106,7 @@ const difficultyColors: Record<string, string> = {
           </h2>
           <div class="flex flex-wrap gap-2">
             {recipe.data.produce.map((item: string) => (
-              <span class="bg-white px-3 py-1 rounded-md text-black/80 font-medium">
+              <span class="bg-white px-3 py-1 rounded-md text-black font-medium">
                 {item}
               </span>
             ))}
@@ -116,7 +116,7 @@ const difficultyColors: Record<string, string> = {
 
       <!-- Recipe Content -->
       <div class="bg-white rounded-xl shadow-md p-6 md:p-8">
-        <div class="prose prose-lg max-w-none prose-headings:font-display prose-headings:font-bold prose-h2:text-2xl prose-h2:text-black prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-xl prose-h3:text-black prose-ul:my-4 prose-li:my-1 prose-p:text-black/80 prose-strong:text-black">
+        <div class="prose prose-lg max-w-none prose-headings:font-display prose-headings:font-bold prose-h2:text-2xl prose-h2:text-black prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-xl prose-h3:text-black prose-ul:my-4 prose-li:my-1 prose-p:text-black prose-strong:text-black">
           <Content />
         </div>
       </div>
@@ -125,7 +125,7 @@ const difficultyColors: Record<string, string> = {
       {recipe.data.tags && recipe.data.tags.length > 0 && (
         <div class="mt-6 flex flex-wrap gap-2">
           {recipe.data.tags.map((tag: string) => (
-            <span class="bg-cream text-black/60 text-sm px-3 py-1 rounded-md">
+            <span class="bg-cream text-black text-sm px-3 py-1 rounded-md">
               #{tag}
             </span>
           ))}
@@ -134,7 +134,7 @@ const difficultyColors: Record<string, string> = {
 
       <!-- Share / Print -->
       <div class="mt-8 flex flex-wrap gap-4">
-        <button onclick="window.print()" class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-md shadow-sm hover:shadow-md transition-shadow text-black/70">
+        <button onclick="window.print()" class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-md shadow-sm hover:shadow-md transition-shadow text-black">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
           </svg>

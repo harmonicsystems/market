@@ -39,7 +39,7 @@ const categoryLabels: Record<string, string> = {
         <h1 class="font-display font-bold text-4xl md:text-5xl text-black mb-4">
           Our Vendors
         </h1>
-        <p class="text-black/90 text-lg max-w-2xl mx-auto">
+        <p class="text-black text-lg max-w-2xl mx-auto">
           Meet the farmers, artisans, and makers who bring the best of the Hudson Valley to Kinderhook every Saturday.
         </p>
       </div>
@@ -65,10 +65,10 @@ const categoryLabels: Record<string, string> = {
                   </a>
                 </h3>
                 <p class="text-purple text-sm font-medium mb-3">{vendor.data.tagline}</p>
-                <p class="text-black/70 text-sm mb-4">{vendor.data.description}</p>
+                <p class="text-black text-sm mb-4">{vendor.data.description}</p>
                 <div class="flex flex-wrap gap-2">
                   {vendor.data.categories.map((cat: string) => (
-                    <span class="bg-cream text-black/70 text-xs px-2 py-1 rounded-md">
+                    <span class="bg-cream text-black text-xs px-2 py-1 rounded-md">
                       {categoryLabels[cat] || cat}
                     </span>
                   ))}
@@ -85,7 +85,7 @@ const categoryLabels: Record<string, string> = {
           <span class="bg-orange text-white text-sm px-3 py-1 rounded-md">Rotating</span>
           Guest Vendors
         </h2>
-        <p class="text-black/70 mb-6">
+        <p class="text-black mb-6">
           These talented vendors join us on select Saturdays throughout the season. Check our weekly announcements to see who's coming!
         </p>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -103,10 +103,10 @@ const categoryLabels: Record<string, string> = {
                   </a>
                 </h3>
                 <p class="text-purple text-sm font-medium mb-3">{vendor.data.tagline}</p>
-                <p class="text-black/70 text-sm mb-4">{vendor.data.description}</p>
+                <p class="text-black text-sm mb-4">{vendor.data.description}</p>
                 <div class="flex flex-wrap gap-2">
                   {vendor.data.categories.map((cat: string) => (
-                    <span class="bg-cream text-black/70 text-xs px-2 py-1 rounded-md">
+                    <span class="bg-cream text-black text-xs px-2 py-1 rounded-md">
                       {categoryLabels[cat] || cat}
                     </span>
                   ))}
@@ -122,7 +122,7 @@ const categoryLabels: Record<string, string> = {
         <h2 class="font-display font-bold text-2xl text-black mb-4">
           Interested in Becoming a Vendor?
         </h2>
-        <p class="text-black/70 mb-6 max-w-xl mx-auto">
+        <p class="text-black mb-6 max-w-xl mx-auto">
           We're always looking for local farmers, artisans, and food producers to join our market family.
         </p>
         <a href={`${base}/contact`} class="inline-block bg-orange text-white font-display font-bold px-6 py-3 rounded-md hover:bg-orange/90 transition-colors">

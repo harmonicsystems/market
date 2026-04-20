@@ -28,3 +28,11 @@ pnpm-debug.log*
 
 # Claude Code workspace
 .claude/
+
+# Raw designer drops and asset backups (not shipped)
+public/icons/_original_backup/
+pp-gatwick-webfont/
+PPGatwick-Free for personal use/
+/farmers.svg
+NOPARKINGKFM.png
+Farmers MarketOPEN2026 (379 x 419 px).png

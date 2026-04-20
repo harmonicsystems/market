@@ -79,6 +79,23 @@ html {
   border: 1px solid rgba(46, 31, 47, 0.1);
 }
 
+/* Sunflower banner — 2-frame sprite animated via mask-position.
+   Replaces the original 228KB GIF with a 27KB PNG + CSS animation. */
+.sunflower-banner {
+  -webkit-mask-size: 200% 100%;
+          mask-size: 200% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  animation: sunflower-flip 0.34s step-end infinite;
+}
+@keyframes sunflower-flip {
+  0%  { -webkit-mask-position: 0 0;    mask-position: 0 0; }
+  50% { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sunflower-banner { animation: none; -webkit-mask-position: 0 0; mask-position: 0 0; }
+}
+
 /* Social icons rendered from hand-drawn PNGs, tinted via CSS mask */
 .social-icon-mask {
   -webkit-mask-size: contain;

@@ -39,7 +39,7 @@ const sortedBusinesses = allBusinesses.sort((a, b) => a.data.name.localeCompare(
         <h1 class="font-display font-bold text-4xl md:text-5xl text-black mb-4">
           Kinderhook Business Directory
         </h1>
-        <p class="text-black/90 text-lg max-w-2xl mx-auto">
+        <p class="text-black text-lg max-w-2xl mx-auto">
           Discover the businesses, organizations, and community partners that make Kinderhook a vibrant village in the Hudson Valley. All members of the <strong>Kinderhook Business and Professional Association</strong>.
         </p>
       </div>
@@ -64,7 +64,7 @@ const sortedBusinesses = allBusinesses.sort((a, b) => a.data.name.localeCompare(
               <span class="inline-block bg-orange/10 text-orange text-xs font-medium px-2 py-1 rounded-md mb-3">
                 {typeLabels[biz.data.type] || biz.data.type}
               </span>
-              <p class="text-black/70 text-sm">{biz.data.description}</p>
+              <p class="text-black text-sm">{biz.data.description}</p>
               {biz.data.website && (
                 <a
                   href={biz.data.website}
@@ -88,7 +88,7 @@ const sortedBusinesses = allBusinesses.sort((a, b) => a.data.name.localeCompare(
         <h2 class="font-display font-bold text-2xl text-black mb-4">
           About the KBPA
         </h2>
-        <p class="text-black/70 mb-4 max-w-2xl mx-auto">
+        <p class="text-black mb-4 max-w-2xl mx-auto">
           The <strong>Kinderhook Business and Professional Association</strong> works to support local businesses, promote economic development, and enhance the quality of life in Kinderhook. The KBPA sponsors the Kinderhook Farmers Market and other community events throughout the year.
         </p>
         <div class="flex flex-wrap justify-center gap-4">

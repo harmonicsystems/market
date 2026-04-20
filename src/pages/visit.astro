@@ -30,7 +30,7 @@ const typeIcons: Record<string, string> = {
         <h1 class="font-display font-bold text-4xl md:text-5xl text-black mb-4">
           Plan Your Visit
         </h1>
-        <p class="text-black/90 text-lg max-w-2xl mx-auto">
+        <p class="text-black text-lg max-w-2xl mx-auto">
           Everything you need to know for a great market day in Kinderhook.
         </p>
       </div>
@@ -45,14 +45,14 @@ const typeIcons: Record<string, string> = {
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <p class="text-black/50 font-display">Interactive Leaflet map coming soon</p>
+                <p class="text-black font-display">Interactive Leaflet map coming soon</p>
               </div>
             </div>
             <div class="p-6">
               <h2 class="font-display font-bold text-xl text-black mb-2">
                 {siteConfig.location.name}
               </h2>
-              <p class="text-black/70 mb-4">{siteConfig.location.address}</p>
+              <p class="text-black mb-4">{siteConfig.location.address}</p>
               <a
                 href={`https://www.google.com/maps/search/?api=1&query=${siteConfig.location.coordinates.lat},${siteConfig.location.coordinates.lng}`}
                 target="_blank"
@@ -80,8 +80,8 @@ const typeIcons: Record<string, string> = {
               </div>
               <div>
                 <h3 class="font-display font-bold text-lg text-black mb-1">When</h3>
-                <p class="text-black/80 font-semibold">{siteConfig.schedule.day}s, {siteConfig.schedule.startTime} - {siteConfig.schedule.endTime}</p>
-                <p class="text-black/60 text-sm mt-1">May through October</p>
+                <p class="text-black font-semibold">{siteConfig.schedule.day}s, {siteConfig.schedule.startTime} - {siteConfig.schedule.endTime}</p>
+                <p class="text-black text-sm mt-1">May through October</p>
               </div>
             </div>
           </div>
@@ -96,7 +96,7 @@ const typeIcons: Record<string, string> = {
               </div>
               <div>
                 <h3 class="font-display font-bold text-lg text-black mb-1">Parking</h3>
-                <p class="text-black/70">Free street parking is available throughout the village. Additional parking can be found in the municipal lot behind the Village Hall.</p>
+                <p class="text-black">Free street parking is available throughout the village. Additional parking can be found in the municipal lot behind the Village Hall.</p>
               </div>
             </div>
           </div>
@@ -111,7 +111,7 @@ const typeIcons: Record<string, string> = {
               </div>
               <div>
                 <h3 class="font-display font-bold text-lg text-black mb-1">What to Bring</h3>
-                <ul class="text-black/70 space-y-1">
+                <ul class="text-black space-y-1">
                   <li>• Reusable shopping bags</li>
                   <li>• Cash (some vendors are cash-only)</li>
                   <li>• A cooler for perishables on hot days</li>
@@ -131,7 +131,7 @@ const typeIcons: Record<string, string> = {
               </div>
               <div>
                 <h3 class="font-display font-bold text-lg text-black mb-1">Accessibility</h3>
-                <p class="text-black/70">The Village Green is a flat, open space accessible to wheelchairs and strollers. Service animals are welcome.</p>
+                <p class="text-black">The Village Green is a flat, open space accessible to wheelchairs and strollers. Service animals are welcome.</p>
               </div>
             </div>
           </div>
@@ -150,7 +150,7 @@ const typeIcons: Record<string, string> = {
                 <span class="opacity-50"><MarketIcon name={typeIcons[landmark.data.type] || 'ok'} class="w-10 h-10" /></span>
               </div>
               <h3 class="font-display font-bold text-lg text-black mb-2">{landmark.data.name}</h3>
-              <p class="text-black/70 text-sm">{landmark.data.tagline}</p>
+              <p class="text-black text-sm">{landmark.data.tagline}</p>
               {landmark.data.admission === 'Free' && (
                 <span class="inline-block mt-2 bg-orange/20 text-orange text-xs font-bold px-2 py-0.5 rounded-md">Free</span>
               )}

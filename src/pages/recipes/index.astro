@@ -30,7 +30,7 @@ const seasonColors: Record<string, string> = {
         <h1 class="font-display font-bold text-4xl md:text-5xl text-black mb-4">
           Seasonal Recipes
         </h1>
-        <p class="text-black/90 text-lg max-w-2xl mx-auto">
+        <p class="text-black text-lg max-w-2xl mx-auto">
           Delicious recipes featuring fresh produce from the Kinderhook Farmers Market. Cook with the seasons!
         </p>
       </div>
@@ -45,7 +45,7 @@ const seasonColors: Record<string, string> = {
               <div class="p-6">
                 <div class="flex flex-wrap gap-2 mb-3">
                   {recipe.data.season?.map((s: string) => (
-                    <span class={`text-xs px-2 py-1 rounded-md font-medium ${seasonColors[s] || 'bg-cream text-black/70'}`}>
+                    <span class={`text-xs px-2 py-1 rounded-md font-medium ${seasonColors[s] || 'bg-cream text-black'}`}>
                       {s.charAt(0).toUpperCase() + s.slice(1)}
                     </span>
                   ))}
@@ -60,7 +60,7 @@ const seasonColors: Record<string, string> = {
                     {recipe.data.title}
                   </a>
                 </h2>
-                <div class="flex flex-wrap gap-4 text-sm text-black/60 mb-4">
+                <div class="flex flex-wrap gap-4 text-sm text-black mb-4">
                   {recipe.data.prepTime && (
                     <span class="flex items-center gap-1">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,7 +89,7 @@ const seasonColors: Record<string, string> = {
                 {recipe.data.produce && recipe.data.produce.length > 0 && (
                   <div class="flex flex-wrap gap-1">
                     {recipe.data.produce.map((item: string) => (
-                      <span class="bg-cream text-black/70 text-xs px-2 py-1 rounded-md">
+                      <span class="bg-cream text-black text-xs px-2 py-1 rounded-md">
                         {item}
                       </span>
                     ))}
@@ -107,7 +107,7 @@ const seasonColors: Record<string, string> = {
         </div>
       ) : (
         <div class="text-center py-12">
-          <p class="text-black/60">Recipes coming soon!</p>
+          <p class="text-black">Recipes coming soon!</p>
         </div>
       )}
 
@@ -116,7 +116,7 @@ const seasonColors: Record<string, string> = {
         <h2 class="font-display font-bold text-2xl text-black mb-4">
           Share Your Recipe!
         </h2>
-        <p class="text-black/70 mb-6 max-w-xl mx-auto">
+        <p class="text-black mb-6 max-w-xl mx-auto">
           Have a favorite recipe using produce from the market? We'd love to feature it in our community collection.
         </p>
         <a href={`${base}/contact`} class="inline-block bg-orange text-white font-display font-bold px-6 py-3 rounded-md hover:bg-orange/90 transition-colors">

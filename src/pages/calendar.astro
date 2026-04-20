@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StructuredData from '../components/StructuredData.astro';
+import MarketIcon from '../components/MarketIcon.astro';
+import { getCollection } from 'astro:content';
+import siteConfig from '../data/site-config.json';
+import thisWeek from '../data/this-week.json';
+
+const base = import.meta.env.BASE_URL;
+
+// Build a synthetic "market" event so the market always anchors the calendar.
+const marketEvent = {
+  data: {
+    title: 'Kinderhook Farmers Market',
+    slug: '__market__',
+    host: 'Kinderhook Farmers Market',
+    hostLink: undefined,
+    date: thisWeek.date,
+    time: `${siteConfig.schedule.startTime} – ${siteConfig.schedule.endTime}`,
+    location: siteConfig.location.name,
+    address: siteConfig.location.address,
+    link: `${base}/`,
+    category: 'food' as const,
+    description: thisWeek.theme ? `${thisWeek.theme} — ${siteConfig.tagline}` : siteConfig.tagline,
+    featured: true,
+  },
+};
+
+// Pull events, keep upcoming only, sort by date.
+const todayIso = new Date().toISOString().slice(0, 10);
+const allEvents = await getCollection('events');
+const upcoming = [marketEvent, ...allEvents]
+  .filter((e) => (e.data.endDate || e.data.date) >= todayIso)
+  .sort((a, b) => a.data.date.localeCompare(b.data.date));
+
+// Group into "This Saturday", "This Weekend" (Sun), "Upcoming".
+function dayOfWeek(iso: string) {
+  return new Date(iso + 'T12:00:00').getDay(); // 0 Sun .. 6 Sat
+}
+function daysAway(iso: string) {
+  const a = new Date(iso + 'T12:00:00').getTime();
+  const b = new Date(todayIso + 'T12:00:00').getTime();
+  return Math.round((a - b) / 86_400_000);
+}
+
+const thisSaturday = upcoming.filter((e) => dayOfWeek(e.data.date) === 6 && daysAway(e.data.date) <= 6);
+const thisSunday   = upcoming.filter((e) => dayOfWeek(e.data.date) === 0 && daysAway(e.data.date) <= 6);
+const later        = upcoming.filter((e) => !thisSaturday.includes(e) && !thisSunday.includes(e));
+
+const groups = [
+  { heading: 'This Saturday', events: thisSaturday },
+  { heading: 'This Sunday',   events: thisSunday },
+  { heading: 'Upcoming',      events: later },
+].filter((g) => g.events.length > 0);
+
+const categoryIcon: Record<string, string> = {
+  art: 'brush',
+  library: 'history',
+  music: 'music',
+  community: 'heart',
+  food: 'apple',
+  other: 'star',
+};
+
+function formatDate(iso: string) {
+  return new Date(iso + 'T12:00:00').toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+---
+
+<BaseLayout
+  title="Calendar"
+  description="Upcoming events in and around Kinderhook, NY — the farmers market, Jack Shainman gallery openings, Kinderhook Memorial Library events, and more happening in our Hudson Valley village."
+  canonicalPath="/calendar"
+>
+  <StructuredData slot="head" type="breadcrumb" data={{ items: [{ name: 'Home', url: '/' }, { name: 'Calendar', url: '/calendar' }] }} />
+
+  <!-- Hero -->
+  <section class="bg-cream py-10 md:py-12">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h1 class="font-display font-bold text-4xl md:text-5xl text-black mb-4">
+        What's Happening in Kinderhook
+      </h1>
+      <p class="text-black text-lg max-w-2xl mx-auto">
+        The Saturday market plus gallery openings, library programs, and community events happening around the village.
+      </p>
+    </div>
+  </section>
+
+  <!-- Event list -->
+  <section class="bg-cream pb-16">
+    <div class="max-w-4xl mx-auto px-4">
+      {groups.length === 0 ? (
+        <div class="bg-white rounded-xl shadow-md p-8 text-center">
+          <p class="text-black">No upcoming events on the calendar yet. Check back soon — or <a href={`${base}/contact`} class="gold-link text-orange font-semibold">let us know</a> about one.</p>
+        </div>
+      ) : (
+        <div class="space-y-10">
+          {groups.map((group) => (
+            <div>
+              <h2 class="font-logo font-bold uppercase tracking-[0.08em] text-2xl text-black mb-4">{group.heading}</h2>
+              <div class="space-y-4">
+                {group.events.map((event) => (
+                  <article class="bg-white rounded-xl shadow-md p-5 md:p-6 flex items-start gap-4">
+                    <MarketIcon name={categoryIcon[event.data.category] || 'star'} class="w-10 h-10 shrink-0 mt-1" />
+                    <div class="flex-1">
+                      <p class="text-xs uppercase tracking-widest text-orange font-semibold mb-1">{formatDate(event.data.date)}</p>
+                      <h3 class="font-display font-bold text-xl text-black mb-1">
+                        {event.data.link ? (
+                          <a href={event.data.link} class="gold-link" rel="noopener" target="_blank">{event.data.title}</a>
+                        ) : (
+                          event.data.title
+                        )}
+                      </h3>
+                      <p class="text-sm text-black mb-2">
+                        {event.data.hostLink ? (
+                          <a href={event.data.hostLink} class="gold-link" rel="noopener" target="_blank">{event.data.host}</a>
+                        ) : (
+                          event.data.host
+                        )}
+                        {event.data.time && <span> · {event.data.time}</span>}
+                        {event.data.location && <span> · {event.data.location}</span>}
+                      </p>
+                      {event.data.description && <p class="text-black text-sm">{event.data.description}</p>}
+                      {event.data.address && <p class="text-black text-xs mt-2 italic">{event.data.address}</p>}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <!-- Submit an event CTA -->
+      <div class="mt-12 bg-purple rounded-2xl p-8 text-center text-white">
+        <h2 class="font-display font-bold text-2xl mb-3">Have something happening?</h2>
+        <p class="text-white/90 mb-5 max-w-xl mx-auto">
+          Running a gallery opening, library talk, or community event in Kinderhook? We'll cross-promote it here.
+        </p>
+        <a href={`${base}/contact`} class="inline-block bg-white text-black font-display font-bold px-6 py-3 rounded-md hover:bg-white/90 transition-colors">
+          Submit an Event
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
