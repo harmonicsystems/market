@@ -41,7 +41,7 @@ const base = import.meta.env.BASE_URL;
       imageAlt={ogImageAlt}
       canonicalPath={canonicalPath}
     />
-    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <link rel="icon" type="image/png" href={`${base}/icons/FM-SUNFLOWER-ICON.png`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
@@ -59,7 +59,7 @@ const base = import.meta.env.BASE_URL;
 
     <header class="bg-cream sticky top-0 z-50">
       <nav class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-        <a href={base} id="header-logo" class="font-logo text-sm md:text-base tracking-wide text-black uppercase opacity-0 transition-opacity duration-300">
+        <a href={base} id="header-logo" class="font-logo text-[11px] sm:text-sm md:text-base tracking-wide text-black uppercase opacity-0 transition-opacity duration-300 whitespace-nowrap">
           Kinderhook Farmers Market
         </a>
 
@@ -118,12 +118,13 @@ const base = import.meta.env.BASE_URL;
           rel="noopener noreferrer"
           aria-label="Designed by Susanne Lamb — susannelamb.com"
           class="inline-block"
+          style="mix-blend-mode: screen;"
         >
           <img
             src={`${base}/icons/DESIGNED-BY-SUSANNE-LAMB.png`}
             alt="Designed by Susanne Lamb"
             class="block w-56 md:w-64 h-auto mx-auto"
-            style="filter: invert(1) grayscale(1) contrast(1.2); mix-blend-mode: screen;"
+            style="filter: invert(1) grayscale(1) contrast(1.2);"
           />
         </a>
       </div>
