@@ -60,107 +60,155 @@ const dateRest = commaIdx > 0 ? displayDate.slice(commaIdx + 1).trim() : display
   const ctx = canvas.getContext('2d');
   const downloadBtn = document.getElementById('download-card-btn');
 
-  // Break displayDate for layout: "Saturday, May 9, 2026" → "Saturday" + "May 9, 2026"
-  const commaIdx = displayDate.indexOf(',');
-  const dayName = commaIdx > 0 ? displayDate.slice(0, commaIdx) : '';
-  const dateRest = commaIdx > 0 ? displayDate.slice(commaIdx + 1).trim() : displayDate;
+  // ── Asset loading ────────────────────────────────────────────────────────
+  // We rebuild the homepage hero on a 1080×1080 canvas. The three image assets
+  // we need — the sunflower banner, the "FARMERS" lockup SVG, and the
+  // hand-drawn divider — are loaded up front and tinted at draw time with
+  // source-in so they render as flat aubergine silhouettes.
+  const baseUrl = (base || '/').replace(/\/$/, '');
+  function loadImage(src) {
+    const img = new Image();
+    const ready = new Promise((resolve) => {
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+    });
+    img.src = src;
+    return { img, ready };
+  }
+  const banner = loadImage(`${baseUrl}/icons/FM-SUNFLOWER-TOP_BANNER-STATIC.png`);
+  const farmers = loadImage(`${baseUrl}/farmers-clean.svg`);
+  const divider = loadImage(`${baseUrl}/icons/FM-DIVIDER_2.png`);
 
-  // Load the static sunflower banner (matches preview).
-  // Note: do NOT set crossOrigin — the asset is same-origin, and setting
-  // crossOrigin="anonymous" can silently fail on static hosts that don't
-  // send CORS headers, leaving bannerImg.complete=true but the image
-  // unrenderable onto the canvas.
-  const bannerImg = new Image();
-  const bannerSrc = (base || '/').replace(/\/$/, '') + '/icons/FM-SUNFLOWER-TOP_BANNER-STATIC.png';
-  const bannerReady = new Promise((resolve) => {
-    bannerImg.onload = () => resolve(true);
-    bannerImg.onerror = () => resolve(false);
-  });
-  bannerImg.src = bannerSrc;
+  // Tint an image onto the main canvas by rendering it to a scratch canvas,
+  // then flood-filling with `source-in` so the fill color only shows where
+  // the source's alpha was set.
+  function drawTinted(img, x, y, w, h, color) {
+    if (!img.complete || !img.naturalWidth) return;
+    const tmp = document.createElement('canvas');
+    tmp.width = w;
+    tmp.height = h;
+    const tctx = tmp.getContext('2d');
+    tctx.drawImage(img, 0, 0, w, h);
+    tctx.globalCompositeOperation = 'source-in';
+    tctx.fillStyle = color;
+    tctx.fillRect(0, 0, w, h);
+    ctx.drawImage(tmp, x, y);
+  }
+
+  function wrapText(text, x, y, maxWidth, lineHeight) {
+    const words = text.split(' ');
+    let line = '';
+    let yy = y;
+    for (const word of words) {
+      const test = line ? line + ' ' + word : word;
+      if (ctx.measureText(test).width > maxWidth && line) {
+        ctx.fillText(line, x, yy);
+        yy += lineHeight;
+        line = word;
+      } else {
+        line = test;
+      }
+    }
+    if (line) ctx.fillText(line, x, yy);
+    return yy; // last line's y
+  }
 
   async function generateCard() {
-    // Make sure the banner has finished loading before we try to draw it.
-    await bannerReady;
-    if (bannerImg.decode) {
-      try { await bannerImg.decode(); } catch {}
+    await Promise.all([banner.ready, farmers.ready, divider.ready]);
+    for (const img of [banner.img, farmers.img, divider.img]) {
+      if (img.decode) { try { await img.decode(); } catch {} }
     }
-    const w = 1080;
-    const h = 1080;
+
+    const W = 1080;
+    const H = 1080;
+    const cream = '#f4f2d9';
     const aubergine = '#2E1F2F';
-    const gold = '#DFA926';
-    const darkGold = '#B8860B';
 
+    // Background
+    ctx.fillStyle = cream;
+    ctx.fillRect(0, 0, W, H);
     ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
 
-    // ═══ HEADER: Aubergine with banner + stacked KINDERHOOK / FARMERS MARKET ═══
-    const headerH = 460;
-    ctx.fillStyle = aubergine;
-    ctx.fillRect(0, 0, w, headerH);
-
-    // Banner (sunflower + leaves) — tinted gold, centered
-    if (bannerImg.complete && bannerImg.naturalWidth > 0) {
-      const bannerW = 520;
-      const bannerH = bannerW * (bannerImg.naturalHeight / bannerImg.naturalWidth);
-      const bannerX = (w - bannerW) / 2;
-      const bannerY = 40;
-
-      const tmpCanvas = document.createElement('canvas');
-      tmpCanvas.width = bannerW;
-      tmpCanvas.height = bannerH;
-      const tmpCtx = tmpCanvas.getContext('2d');
-      tmpCtx.drawImage(bannerImg, 0, 0, bannerW, bannerH);
-      tmpCtx.globalCompositeOperation = 'source-in';
-      tmpCtx.fillStyle = gold;
-      tmpCtx.fillRect(0, 0, bannerW, bannerH);
-      ctx.drawImage(tmpCanvas, bannerX, bannerY);
+    // Sunflower banner — tinted aubergine, centered under the top edge
+    if (banner.img.naturalWidth) {
+      const bw = 360;
+      const bh = bw * (banner.img.naturalHeight / banner.img.naturalWidth);
+      drawTinted(banner.img, (W - bw) / 2, 60, bw, bh, aubergine);
     }
 
-    // KINDERHOOK — big, gold, PP Gatwick Bold
-    ctx.fillStyle = gold;
-    ctx.font = '700 96px PP Gatwick, Georgia, serif';
-    ctx.fillText('KINDERHOOK', w / 2, 320);
-
-    // FARMERS MARKET — smaller (mirrors hero proportions ~72%)
-    ctx.font = '700 68px PP Gatwick, Georgia, serif';
-    ctx.fillText('FARMERS MARKET', w / 2, 400);
-
-    // ═══ BODY: Gold, spacious, day+date on one line ═══
-    ctx.fillStyle = gold;
-    ctx.fillRect(0, headerH, w, h - headerH);
-
-    // Day + Date on one line
-    const dayDate = dayName ? `${dayName}, ${dateRest}` : dateRest;
+    // KINDERHOOK — large serif wordmark
     ctx.fillStyle = aubergine;
-    ctx.font = 'bold 76px DM Serif Display, Georgia, serif';
-    ctx.fillText(dayDate, w / 2, headerH + 140);
+    ctx.font = '700 112px "DM Serif Display", "PP Gatwick", Georgia, serif';
+    ctx.fillText('KINDERHOOK', W / 2, 290);
 
-    // Time + Location
-    ctx.fillStyle = 'rgba(46, 31, 47, 0.7)';
-    ctx.font = '400 36px Lora, Georgia, serif';
-    ctx.fillText('8:30 AM – 12:30 PM  ·  Village Green', w / 2, headerH + 200);
-
-    // Theme (no music)
-    if (theme) {
-      ctx.fillStyle = aubergine;
-      ctx.font = 'bold 60px DM Serif Display, Georgia, serif';
-      ctx.fillText(theme, w / 2, headerH + 320);
+    // FARMERS — SVG lockup, centered below KINDERHOOK
+    if (farmers.img.naturalWidth) {
+      const fw = 760;
+      const fh = fw * (288 / 1384);
+      drawTinted(farmers.img, (W - fw) / 2, 310, fw, fh, aubergine);
     }
 
-    // Footer — subtle location line
-    ctx.fillStyle = 'rgba(46, 31, 47, 0.5)';
-    ctx.font = '500 26px Lora, Georgia, serif';
-    ctx.fillText('KINDERHOOK, NY  ·  RAIN OR SHINE', w / 2, h - 80);
+    // MARKET — smaller serif wordmark
+    ctx.fillStyle = aubergine;
+    ctx.font = '700 80px "DM Serif Display", "PP Gatwick", Georgia, serif';
+    ctx.fillText('MARKET', W / 2, 520);
 
-    // URL — very subtle
-    ctx.fillStyle = 'rgba(46, 31, 47, 0.3)';
-    ctx.font = '400 22px Lora, Georgia, serif';
-    ctx.fillText('kinderhookfarmersmarket.com', w / 2, h - 40);
+    // Hand-drawn divider
+    if (divider.img.naturalWidth) {
+      const dw = 520;
+      const dh = dw * (divider.img.naturalHeight / divider.img.naturalWidth);
+      drawTinted(divider.img, (W - dw) / 2, 560, dw, dh, aubergine);
+    }
+
+    // Specific date — e.g. "SATURDAY, MAY 2, 2026"
+    ctx.fillStyle = aubergine;
+    ctx.font = '700 44px "DM Serif Display", Georgia, serif';
+    ctx.fillText(displayDate.toUpperCase(), W / 2, 640);
+
+    // Time
+    ctx.font = '400 56px "DM Serif Display", Georgia, serif';
+    ctx.fillText('8:30 AM – 12:30 PM', W / 2, 720);
+
+    // Tagline — wraps to two lines at 1080px
+    ctx.font = '400 30px "Lora", Georgia, serif';
+    wrapText(
+      'Fresh local produce, artisan goods, and live music in the heart of the Hudson Valley.',
+      W / 2, 820, 820, 42
+    );
+
+    // "Follow for Weekly Updates" — echo of homepage CTA
+    ctx.fillStyle = aubergine;
+    ctx.font = '700 28px "DM Serif Display", Georgia, serif';
+    ctx.fillText('♥  FOLLOW FOR WEEKLY UPDATES  ♥', W / 2, 970);
+
+    // Subtle URL footer
+    ctx.fillStyle = 'rgba(46, 31, 47, 0.55)';
+    ctx.font = '400 22px "Lora", Georgia, serif';
+    ctx.fillText('kinderhookfarmersmarket.com  ·  Rain or Shine', W / 2, 1030);
   }
 
   // Instagram button → same flow as download (Instagram has no web share URL scheme)
   const instagramBtn = document.getElementById('share-instagram-btn');
   if (instagramBtn) {
     instagramBtn.addEventListener('click', () => downloadBtn.click());
+  }
+
+  // Build the caption text that rides along with the image when the user
+  // invokes the native share sheet. Since the image itself is the clean hero,
+  // everything the image *doesn't* include — theme, music, location — lives
+  // in the caption so it still travels with the post.
+  function buildShareText() {
+    const parts = [
+      `Kinderhook Farmers Market — ${displayDate}`,
+      '8:30 AM – 12:30 PM · Village Green, Kinderhook NY',
+    ];
+    if (theme) parts.push(theme);
+    if (music && music.name) {
+      parts.push(`Live music: ${music.name}${music.time ? ' · ' + music.time : ''}`);
+    }
+    parts.push('See you there! #KinderhookFarmersMarket');
+    return parts.join('\n');
   }
 
   downloadBtn.addEventListener('click', async () => {
@@ -178,7 +226,7 @@ const dateRest = commaIdx > 0 ? displayDate.slice(commaIdx + 1).trim() : display
           await navigator.share({
             files: [file],
             title: 'Kinderhook Farmers Market',
-            text: `Join us at the Kinderhook Farmers Market - ${displayDate}!`
+            text: buildShareText(),
           });
           return;
         } catch (err) {
