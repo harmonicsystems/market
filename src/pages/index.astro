@@ -9,7 +9,6 @@ import siteConfig from '../data/site-config.json';
 import thisWeek from '../data/this-week.json';
 import musicSchedule from '../data/music-schedule.json';
 import weeklyVendors from '../data/weekly-vendors.json';
-import sponsors from '../data/sponsors.json';
 
 // Default to the season's weekly vendor roster; per-week override in this-week.json wins if present.
 const regularVendorNames: string[] =
@@ -237,21 +236,6 @@ const base = import.meta.env.BASE_URL;
       </div>
       -->
 
-    </div>
-  </section>
-
-  <!-- Sponsors -->
-  <section class="bg-cream py-12 border-t border-black/10">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h2 class="font-display font-bold text-2xl md:text-3xl text-black mb-2">Market Sponsors</h2>
-      <p class="text-black/70 text-sm mb-6 italic">{sponsors.note}</p>
-      <ul class="flex flex-wrap justify-center gap-3">
-        {sponsors.sponsors.map((s) => (
-          <li class="bg-white px-4 py-2 rounded-md text-black font-display text-sm md:text-base shadow-sm">
-            {s.name}
-          </li>
-        ))}
-      </ul>
     </div>
   </section>
 

@@ -1,11 +1,36 @@
 {
-  "note": "Logos to come",
+  "note": "Logos coming soon — tiles are designed to swap in logo images when they arrive.",
   "sponsors": [
-    { "name": "Berkshire Hathaway Home Services Blake Realty" },
-    { "name": "Columbia County Tourism" },
-    { "name": "Herringtons" },
-    { "name": "Julia Jayne Pilates" },
-    { "name": "Todd Farrell's Car Care Center" },
-    { "name": "Valkin Properties" }
+    {
+      "name": "Berkshire Hathaway HomeServices Blake Realtors",
+      "shortName": "BHHS Blake Realtors",
+      "url": "https://kinderhook.blakerealtors.com/",
+      "logo": null
+    },
+    {
+      "name": "Columbia County Tourism",
+      "url": "https://columbiacountytourism.org/",
+      "logo": null
+    },
+    {
+      "name": "Herrington's",
+      "url": "https://herringtons.com/",
+      "logo": null
+    },
+    {
+      "name": "Julia Jayne Pilates",
+      "url": "https://www.juliajaynepilates.com/",
+      "logo": null
+    },
+    {
+      "name": "Todd Farrell's Car Care Center",
+      "url": "https://www.toddfarrells.com/",
+      "logo": null
+    },
+    {
+      "name": "Valkin Properties",
+      "url": "https://www.valkinproperties.com/",
+      "logo": null
+    }
   ]
 }
