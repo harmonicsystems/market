@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StructuredData from '../../components/StructuredData.astro';
+import MarketIcon from '../../components/MarketIcon.astro';
+import { getCollection, render } from 'astro:content';
+import musicSchedule from '../../data/music-schedule.json';
+
+export async function getStaticPaths() {
+  const performers = await getCollection('performers');
+  return performers
+    .filter((p) => p.data.active)
+    .map((performer) => ({
+      params: { slug: performer.data.slug },
+      props: { performer },
+    }));
+}
+
+const { performer } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const todayIso = new Date().toISOString().slice(0, 10);
+
+// Auto-aggregate every market date this performer is on the schedule.
+const dates = musicSchedule.performances
+  .filter((p) => p.performerSlug === performer.data.slug)
+  .sort((a, b) => a.date.localeCompare(b.date));
+
+const upcoming = dates.filter((d) => d.date >= todayIso);
+const past = dates.filter((d) => d.date < todayIso);
+
+function formatDate(iso: string) {
+  return new Date(iso + 'T12:00:00').toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+
+// Body content (markdown body of the performer's .md file)
+const { Content } = await render(performer);
+
+// Build the streaming / link tiles, only including links the profile carries.
+type LinkTile = { href: string; label: string; iconBg: string };
+const links: LinkTile[] = [];
+const d = performer.data;
+function igUrl(handle: string) {
+  if (handle.startsWith('http')) return handle;
+  return `https://instagram.com/${handle.replace(/^@/, '')}`;
+}
+if (d.website) links.push({ href: d.website, label: 'Website', iconBg: '#2E1F2F' });
+if (d.instagram) links.push({ href: igUrl(d.instagram), label: 'Instagram', iconBg: '#2E1F2F' });
+if (d.facebook) links.push({ href: d.facebook, label: 'Facebook', iconBg: '#2E1F2F' });
+if (d.spotify) links.push({ href: d.spotify, label: 'Spotify', iconBg: '#2E1F2F' });
+if (d.bandcamp) links.push({ href: d.bandcamp, label: 'Bandcamp', iconBg: '#2E1F2F' });
+if (d.youtube) links.push({ href: d.youtube, label: 'YouTube', iconBg: '#2E1F2F' });
+if (d.soundcloud) links.push({ href: d.soundcloud, label: 'SoundCloud', iconBg: '#2E1F2F' });
+if (d.appleMusic) links.push({ href: d.appleMusic, label: 'Apple Music', iconBg: '#2E1F2F' });
+if (d.tipJar) links.push({ href: d.tipJar, label: 'Tip Jar', iconBg: '#B8860B' });
+if (d.email) links.push({ href: `mailto:${d.email}`, label: 'Email', iconBg: '#2E1F2F' });
+---
+
+<BaseLayout
+  title={`${performer.data.name} — Live at the Market`}
+  description={`${performer.data.name} performs at the Kinderhook Farmers Market. ${dates.length} ${dates.length === 1 ? 'date' : 'dates'} on the 2026 season schedule. ${performer.data.genre ?? ''}`.trim()}
+  canonicalPath={`/performers/${performer.data.slug}`}
+>
+  <StructuredData
+    slot="head"
+    type="breadcrumb"
+    data={{ items: [
+      { name: 'Home', url: '/' },
+      { name: 'Music', url: '/music' },
+      { name: performer.data.name, url: `/performers/${performer.data.slug}` },
+    ] }}
+  />
+
+  <!-- Hero -->
+  <section class="bg-cream py-10 md:py-14">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <p class="font-logo uppercase tracking-[0.08em] text-sm text-black/60 mb-3">Kinderhook Farmers Market · Live Music</p>
+      <h1 class="font-display font-bold text-4xl md:text-5xl text-black mb-2">{performer.data.name}</h1>
+      {performer.data.genre && (
+        <p class="text-purple font-display font-semibold text-lg">{performer.data.genre}</p>
+      )}
+    </div>
+  </section>
+
+  <!-- Bio (markdown body) -->
+  <section class="bg-cream pb-8">
+    <div class="max-w-2xl mx-auto px-4 prose prose-neutral text-black">
+      <Content />
+    </div>
+  </section>
+
+  <!-- Links / streaming / tip jar -->
+  {links.length > 0 && (
+    <section class="bg-cream pb-12">
+      <div class="max-w-2xl mx-auto px-4">
+        <h2 class="font-logo uppercase tracking-[0.08em] text-sm text-black/70 mb-4 text-center">Listen · Follow · Tip</h2>
+        <ul class="flex flex-wrap justify-center gap-3">
+          {links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 bg-white rounded-md px-4 py-2 shadow-sm hover:shadow-md transition-shadow text-black font-display font-medium"
+              >
+                <span class="w-2 h-2 rounded-full" style={`background-color: ${link.iconBg};`} aria-hidden="true"></span>
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- Performance dates — auto-aggregated from the season schedule -->
+  <section class="bg-cream pb-16">
+    <div class="max-w-2xl mx-auto px-4">
+      <h2 class="font-logo uppercase tracking-[0.08em] text-sm text-black/70 mb-6 text-center">Market Dates</h2>
+
+      {dates.length === 0 ? (
+        <p class="text-black text-center italic">No upcoming dates on the current schedule.</p>
+      ) : (
+        <div class="space-y-6">
+          {upcoming.length > 0 && (
+            <div>
+              <h3 class="font-display font-bold text-xl text-black mb-3">Upcoming</h3>
+              <ul class="space-y-2">
+                {upcoming.map((d) => (
+                  <li class="bg-white rounded-md px-4 py-3 shadow-sm flex items-center gap-3">
+                    <MarketIcon name="music" class="w-5 h-5 shrink-0" />
+                    <div class="flex-1">
+                      <p class="text-black font-display font-medium">{formatDate(d.date)}</p>
+                      <p class="text-black/70 text-sm">{musicSchedule.time} · Village Green</p>
+                      {d.act !== performer.data.name && (
+                        <p class="text-black/60 text-xs italic mt-0.5">Listed as: {d.act}</p>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {past.length > 0 && (
+            <div>
+              <h3 class="font-display font-bold text-xl text-black mb-3">Previously this season</h3>
+              <ul class="space-y-2">
+                {past.map((d) => (
+                  <li class="bg-white rounded-md px-4 py-3 shadow-sm flex items-center gap-3 opacity-60">
+                    <MarketIcon name="music" class="w-5 h-5 shrink-0" />
+                    <div class="flex-1">
+                      <p class="text-black font-display font-medium">{formatDate(d.date)}</p>
+                      <p class="text-black/70 text-sm">{musicSchedule.time} · Village Green</p>
+                      {d.act !== performer.data.name && (
+                        <p class="text-black/60 text-xs italic mt-0.5">Listed as: {d.act}</p>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+
+      <p class="mt-10 text-center">
+        <a href={`${base}/music`} class="text-purple font-display font-bold underline decoration-2 underline-offset-4 hover:text-orange transition-colors">
+          ← All performers + season schedule
+        </a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

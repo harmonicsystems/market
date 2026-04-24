@@ -5,6 +5,7 @@ import { Image } from 'astro:assets';
 import MarketIcon from '../components/MarketIcon.astro';
 import HeroCore from '../components/HeroCore.astro';
 import ShareableMarketCard from '../components/ShareableMarketCard.astro';
+import { getCollection } from 'astro:content';
 import welcomeImage from '../assets/images/decorative/welcome-kinderhook.webp';
 import siteConfig from '../data/site-config.json';
 import thisWeek from '../data/this-week.json';
@@ -36,6 +37,16 @@ if (usingRosterDefault) {
 const scheduledMusic = musicSchedule.performances.find((p) => p.date === thisWeek.date);
 const musicAct = scheduledMusic?.act ?? thisWeek.music?.name ?? null;
 const musicTime = scheduledMusic ? musicSchedule.time : thisWeek.music?.time ?? null;
+
+// Link the act name to /performers/[slug] when a profile exists.
+const performerProfiles = await getCollection('performers');
+const activePerformerSlugs = new Set(
+  performerProfiles.filter((p) => p.data.active).map((p) => p.data.slug)
+);
+const musicHref =
+  scheduledMusic?.performerSlug && activePerformerSlugs.has(scheduledMusic.performerSlug)
+    ? `${import.meta.env.BASE_URL}/performers/${scheduledMusic.performerSlug}`
+    : null;
 
 // Calculate days until next market
 function getNextMarketInfo() {
@@ -154,7 +165,13 @@ const base = import.meta.env.BASE_URL;
           <div class="flex-1">
             <p class="font-display font-bold text-black text-sm uppercase tracking-widest">Live Music</p>
             {musicAct ? (
-              <p class="font-display font-bold text-xl md:text-2xl text-black leading-tight">{musicAct}</p>
+              <p class="font-display font-bold text-xl md:text-2xl text-black leading-tight">
+                {musicHref ? (
+                  <a href={musicHref} class="hover:text-orange transition-colors underline decoration-2 underline-offset-4 [text-decoration-skip-ink:auto]">
+                    {musicAct}
+                  </a>
+                ) : musicAct}
+              </p>
             ) : (
               <p class="font-display font-bold text-lg text-black italic">Lineup coming soon</p>
             )}

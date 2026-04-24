@@ -2,9 +2,14 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import StructuredData from '../components/StructuredData.astro';
 import MarketIcon from '../components/MarketIcon.astro';
+import { getCollection } from 'astro:content';
 import musicSchedule from '../data/music-schedule.json';
 
 const base = import.meta.env.BASE_URL;
+
+// Performers with profiles get their act name linked to /performers/[slug].
+const performers = await getCollection('performers');
+const activePerformerSlugs = new Set(performers.filter((p) => p.data.active).map((p) => p.data.slug));
 
 // Group performances by month for readable display.
 function formatDate(iso: string) {
@@ -70,7 +75,16 @@ const todayIso = new Date().toISOString().slice(0, 10);
                       <p class="text-xs uppercase tracking-widest text-orange font-semibold mb-1">
                         {formatDate(p.date)}
                       </p>
-                      <p class="font-display font-bold text-xl text-black">{p.act}</p>
+                      <p class="font-display font-bold text-xl text-black">
+                        {p.performerSlug && activePerformerSlugs.has(p.performerSlug) ? (
+                          <a
+                            href={`${base}/performers/${p.performerSlug}`}
+                            class="hover:text-orange transition-colors underline decoration-2 underline-offset-4 [text-decoration-skip-ink:auto]"
+                          >
+                            {p.act}
+                          </a>
+                        ) : p.act}
+                      </p>
                       {p.note && <p class="text-black text-sm italic mt-1">{p.note}</p>}
                       <p class="text-black text-sm mt-1">{musicSchedule.time}</p>
                     </div>

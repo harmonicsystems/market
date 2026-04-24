@@ -100,4 +100,28 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { vendors, businesses, recipes, landmarks, events };
+// Performers — music acts that play the market. Each entity gets a durable
+// profile page at /performers/[slug] that auto-aggregates appearances from
+// the season schedule, plus optional streaming / tip-jar / contact links.
+const performers = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/performers' }),
+  schema: z.object({
+    name: z.string(),
+    slug: z.string(),
+    genre: optionalString,           // e.g. "Bluegrass / Old-time"
+    image: optionalString,           // optional press photo
+    website: optionalUrl,
+    instagram: optionalString,       // handle or full URL
+    facebook: optionalUrl,
+    youtube: optionalUrl,
+    spotify: optionalUrl,
+    bandcamp: optionalUrl,
+    soundcloud: optionalUrl,
+    appleMusic: optionalUrl,
+    tipJar: optionalUrl,             // Venmo / PayPal / Buy Me a Coffee
+    email: optionalString,
+    active: z.boolean().default(true),
+  }),
+});
+
+export const collections = { vendors, businesses, recipes, landmarks, events, performers };
