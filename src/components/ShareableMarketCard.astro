@@ -113,79 +113,112 @@ const dateRest = commaIdx > 0 ? displayDate.slice(commaIdx + 1).trim() : display
     return yy; // last line's y
   }
 
+  // Ensure the webfonts the hero uses are actually loaded before we stamp
+  // text onto the canvas. Without this the browser may fall back to Georgia
+  // the first time the button is clicked, then render PP Gatwick on later
+  // clicks — we want the first export to match what's on screen.
+  async function ensureFonts() {
+    if (!document.fonts || !document.fonts.load) return;
+    try {
+      await Promise.all([
+        document.fonts.load('700 64px "PP Gatwick"'),
+        document.fonts.load('700 56px "PP Gatwick"'),
+        document.fonts.load('400 32px "DM Serif Display"'),
+        document.fonts.load('400 44px "DM Serif Display"'),
+        document.fonts.load('400 26px "Lora"'),
+      ]);
+    } catch {}
+  }
+
   async function generateCard() {
-    await Promise.all([banner.ready, farmers.ready, divider.ready]);
+    await Promise.all([banner.ready, farmers.ready, divider.ready, ensureFonts()]);
     for (const img of [banner.img, farmers.img, divider.img]) {
       if (img.decode) { try { await img.decode(); } catch {} }
     }
 
+    // Mirrors HeroCore.astro fluid=false fixed sizes exactly (the same sizes
+    // the /share/[week] route renders at), so the canvas output is pixel-
+    // equivalent to the HTML hero with the week's date stamped in.
     const W = 1080;
     const H = 1080;
     const cream = '#f4f2d9';
     const aubergine = '#2E1F2F';
 
-    // Background
     ctx.fillStyle = cream;
     ctx.fillRect(0, 0, W, H);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
 
-    // Sunflower banner — tinted aubergine, centered under the top edge
-    if (banner.img.naturalWidth) {
-      const bw = 360;
-      const bh = bw * (banner.img.naturalHeight / banner.img.naturalWidth);
-      drawTinted(banner.img, (W - bw) / 2, 60, bw, bh, aubergine);
-    }
+    // Vertical layout mirrors HeroCore: banner → KINDERHOOK → FARMERS → MARKET
+    // → divider → schedule → time, stacked centered. Starting y lets the whole
+    // block sit visually centered on the 1080 canvas with room below for the
+    // extra tagline + CTA.
+    let y = 150;
 
-    // KINDERHOOK — large serif wordmark
+    // Sunflower banner — 360 wide, aspect 320/123 per the source asset.
+    const bw = 360;
+    const bh = bw * (123 / 320);
+    drawTinted(banner.img, (W - bw) / 2, y, bw, bh, aubergine);
+    y += bh - 4; // HeroCore uses -mb-1 to let the banner kiss the title
+
+    // KINDERHOOK — 64px PP Gatwick Bold, tracking ~0.08em
     ctx.fillStyle = aubergine;
-    ctx.font = '700 112px "DM Serif Display", "PP Gatwick", Georgia, serif';
-    ctx.fillText('KINDERHOOK', W / 2, 290);
+    ctx.font = '700 64px "PP Gatwick", Georgia, serif';
+    ctx.letterSpacing = '5px'; // ~0.08em
+    y += 64; // baseline
+    ctx.fillText('KINDERHOOK', W / 2, y);
+    y += 8; // HeroCore `my-1` on FARMERS ≈ 8px top margin
 
-    // FARMERS — SVG lockup, centered below KINDERHOOK
-    if (farmers.img.naturalWidth) {
-      const fw = 760;
-      const fh = fw * (288 / 1384);
-      drawTinted(farmers.img, (W - fw) / 2, 310, fw, fh, aubergine);
-    }
+    // FARMERS — farmers-clean.svg, 640 wide, aspect 1384/288
+    const fw = 640;
+    const fh = fw * (288 / 1384);
+    drawTinted(farmers.img, (W - fw) / 2, y, fw, fh, aubergine);
+    y += fh + 8; // `my-1` bottom
 
-    // MARKET — smaller serif wordmark
-    ctx.fillStyle = aubergine;
-    ctx.font = '700 80px "DM Serif Display", "PP Gatwick", Georgia, serif';
-    ctx.fillText('MARKET', W / 2, 520);
+    // MARKET — 52px PP Gatwick Bold, tracking ~0.1em
+    ctx.font = '700 52px "PP Gatwick", Georgia, serif';
+    ctx.letterSpacing = '5px';
+    y += 52;
+    ctx.fillText('MARKET', W / 2, y);
+    y += 16; // HeroCore divider `mt-4`
 
-    // Hand-drawn divider
-    if (divider.img.naturalWidth) {
-      const dw = 520;
-      const dh = dw * (divider.img.naturalHeight / divider.img.naturalWidth);
-      drawTinted(divider.img, (W - dw) / 2, 560, dw, dh, aubergine);
-    }
+    // Hand-drawn divider — FM-DIVIDER_2.png, 520 wide, aspect 20/1
+    const dw = 520;
+    const dh = dw / 20;
+    drawTinted(divider.img, (W - dw) / 2, y, dw, dh, aubergine);
+    y += dh + 32; // `mb-8`
 
-    // Specific date — e.g. "SATURDAY, MAY 2, 2026"
-    ctx.fillStyle = aubergine;
-    ctx.font = '700 44px "DM Serif Display", Georgia, serif';
-    ctx.fillText(displayDate.toUpperCase(), W / 2, 640);
+    // Specific date — slots in where HeroCore renders scheduleText.
+    ctx.letterSpacing = '2px';
+    ctx.font = '700 32px "DM Serif Display", Georgia, serif';
+    y += 32;
+    ctx.fillText(displayDate.toUpperCase(), W / 2, y);
+    y += 16; // `mb-4`
 
     // Time
-    ctx.font = '400 56px "DM Serif Display", Georgia, serif';
-    ctx.fillText('8:30 AM – 12:30 PM', W / 2, 720);
+    ctx.letterSpacing = '0px';
+    ctx.font = '400 44px "DM Serif Display", Georgia, serif';
+    y += 44;
+    ctx.fillText('8:30 AM – 12:30 PM', W / 2, y);
 
-    // Tagline — wraps to two lines at 1080px
-    ctx.font = '400 30px "Lora", Georgia, serif';
-    wrapText(
+    // ── Below the hero block: tagline + CTA ────────────────────────────────
+    y += 64;
+    ctx.font = '400 26px "Lora", Georgia, serif';
+    y = wrapText(
       'Fresh local produce, artisan goods, and live music in the heart of the Hudson Valley.',
-      W / 2, 820, 820, 42
+      W / 2, y, 820, 38
     );
 
-    // "Follow for Weekly Updates" — echo of homepage CTA
-    ctx.fillStyle = aubergine;
-    ctx.font = '700 28px "DM Serif Display", Georgia, serif';
-    ctx.fillText('♥  FOLLOW FOR WEEKLY UPDATES  ♥', W / 2, 970);
+    y += 60;
+    ctx.font = '700 24px "DM Serif Display", Georgia, serif';
+    ctx.letterSpacing = '2px';
+    ctx.fillText('♥  FOLLOW FOR WEEKLY UPDATES  ♥', W / 2, y);
 
     // Subtle URL footer
+    ctx.letterSpacing = '0px';
     ctx.fillStyle = 'rgba(46, 31, 47, 0.55)';
-    ctx.font = '400 22px "Lora", Georgia, serif';
-    ctx.fillText('kinderhookfarmersmarket.com  ·  Rain or Shine', W / 2, 1030);
+    ctx.font = '400 20px "Lora", Georgia, serif';
+    ctx.fillText('kinderhookfarmersmarket.com  ·  Rain or Shine', W / 2, H - 40);
   }
 
   // Instagram button → same flow as download (Instagram has no web share URL scheme)
