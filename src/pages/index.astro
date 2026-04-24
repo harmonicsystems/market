@@ -4,6 +4,7 @@ import StructuredData from '../components/StructuredData.astro';
 import { Image } from 'astro:assets';
 import MarketIcon from '../components/MarketIcon.astro';
 import HeroCore from '../components/HeroCore.astro';
+import ShareableMarketCard from '../components/ShareableMarketCard.astro';
 import welcomeImage from '../assets/images/decorative/welcome-kinderhook.webp';
 import siteConfig from '../data/site-config.json';
 import thisWeek from '../data/this-week.json';
@@ -11,10 +12,25 @@ import musicSchedule from '../data/music-schedule.json';
 import weeklyVendors from '../data/weekly-vendors.json';
 
 // Default to the season's weekly vendor roster; per-week override in this-week.json wins if present.
-const regularVendorNames: string[] =
-  thisWeek.regularVendors.length > 0
-    ? thisWeek.regularVendors
-    : weeklyVendors.vendors.map((v) => v.name);
+const usingRosterDefault = thisWeek.regularVendors.length === 0;
+const regularVendorNames: string[] = usingRosterDefault
+  ? weeklyVendors.vendors.map((v) => v.name)
+  : thisWeek.regularVendors;
+
+// Group the default roster by category so the homepage can render columns.
+// Order preserved from weekly-vendors.json.
+const weeklyCategoryOrder: string[] = [];
+const weeklyByCategory: Record<string, string[]> = {};
+if (usingRosterDefault) {
+  for (const v of weeklyVendors.vendors) {
+    const cat = v.category ?? 'Other';
+    if (!weeklyByCategory[cat]) {
+      weeklyByCategory[cat] = [];
+      weeklyCategoryOrder.push(cat);
+    }
+    weeklyByCategory[cat].push(v.name);
+  }
+}
 
 // Look up this week's performer from the season schedule; fall back to this-week.json override.
 const scheduledMusic = musicSchedule.performances.find((p) => p.date === thisWeek.date);
@@ -85,11 +101,11 @@ const base = import.meta.env.BASE_URL;
   <section class="bg-white pt-[15px] pb-8 md:pb-12">
     <!-- Purple "NEXT MARKET:" banner — full-bleed across the page -->
     <div class="bg-purple py-3 md:py-4 mb-6 md:mb-8">
-      <p class="text-center font-logo font-bold text-white uppercase tracking-[0.08em] text-[clamp(1.875rem,8.5vw,3rem)] leading-none">Next Market:</p>
+      <p class="text-center font-logo font-bold text-cream uppercase tracking-[0.08em] text-[clamp(1.875rem,8.5vw,3rem)] leading-none">Next Market:</p>
     </div>
-    <div class="max-w-4xl mx-auto px-4">
-      <!-- Header -->
-      <div class="text-center mb-6">
+    <div class="max-w-2xl mx-auto px-4">
+      <!-- Primary info — the core screenshot-worthy block -->
+      <div class="text-center mb-8">
         <h2 class="font-logo font-bold uppercase tracking-[0.08em] text-2xl md:text-3xl text-black mb-1">
           {(() => {
             const [day, ...rest] = thisWeek.displayDate.split(',');
@@ -102,8 +118,10 @@ const base = import.meta.env.BASE_URL;
             );
           })()}
         </h2>
-        <p class="text-orange font-display font-bold text-lg">{thisWeek.theme}</p>
-        <p class="text-black mt-2">
+        {thisWeek.theme && (
+          <p class="text-black font-display font-bold text-lg mt-2">{thisWeek.theme}</p>
+        )}
+        <p class="text-black mt-3">
           {siteConfig.schedule.startTime} – {siteConfig.schedule.endTime}
         </p>
         <p class="mt-1">
@@ -111,7 +129,7 @@ const base = import.meta.env.BASE_URL;
             href="https://www.google.com/maps/search/?api=1&query=Kinderhook+Village+Green+Kinderhook+NY+12106"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-black underline decoration-2 underline-offset-[6px] [text-decoration-skip-ink:auto] hover:text-orange transition-colors"
+            class="text-black underline decoration-2 underline-offset-[6px] [text-decoration-skip-ink:auto] hover:text-black transition-colors"
           >
             Village Green
           </a>
@@ -123,119 +141,125 @@ const base = import.meta.env.BASE_URL;
         )}
       </div>
 
-      <!-- Lineup Grid - Mobile Stacked, Desktop Side-by-Side -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+      <!-- Music + Special Event — flat typographic rows, flanked by rules
+           so the section reads as a single shareable info block. -->
+      <div class="border-t border-b border-black/15 divide-y divide-black/10">
+        <!-- Live Music -->
+        <div class="py-6 flex items-center gap-4">
+          <span
+            class="social-icon-mask block w-12 h-12 md:w-14 md:h-14 shrink-0"
+            style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png');`}
+            aria-hidden="true"
+          ></span>
+          <div class="flex-1">
+            <p class="font-display font-bold text-black text-sm uppercase tracking-widest">Live Music</p>
+            {musicAct ? (
+              <p class="font-display font-bold text-xl md:text-2xl text-black leading-tight">{musicAct}</p>
+            ) : (
+              <p class="font-display font-bold text-lg text-black italic">Lineup coming soon</p>
+            )}
+            {musicTime && (
+              <p class="text-black text-sm mt-0.5">{musicTime}</p>
+            )}
+          </div>
+        </div>
 
-        <!-- Music -->
-        <div class="bg-gradient-to-br from-purple/10 to-purple/5 rounded-xl p-4 md:p-5 card-bordered">
-          <div class="flex items-center gap-3 mb-3">
-            <span class="social-icon-mask block w-12 h-12 shrink-0" style={`background-color: #5D3C54; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png');`} aria-hidden="true"></span>
-            <div>
-              <p class="font-display font-bold text-purple text-lg md:text-xl uppercase tracking-widest">Live Music</p>
-              {musicAct ? (
-                <p class="font-display font-bold text-lg text-black">{musicAct}</p>
-              ) : (
-                <p class="font-display font-bold text-lg text-black italic">Lineup coming soon</p>
+        {thisWeek.specialEvents.length > 0 && (
+          <div class="py-6 flex items-center gap-4">
+            <span
+              class="social-icon-mask block w-12 h-12 md:w-14 md:h-14 shrink-0"
+              style={`background-color: #B8860B; -webkit-mask-image: url('${base}/icons/FM-STAR-ICON.png'); mask-image: url('${base}/icons/FM-STAR-ICON.png');`}
+              aria-hidden="true"
+            ></span>
+            <div class="flex-1">
+              <p class="font-display font-bold text-orange text-sm uppercase tracking-widest">Special Event</p>
+              <p class="font-display font-bold text-xl md:text-2xl text-black leading-tight">{thisWeek.specialEvents[0].name}</p>
+              {thisWeek.specialEvents[0].time && (
+                <p class="text-black text-sm mt-0.5">{thisWeek.specialEvents[0].time}</p>
+              )}
+              {thisWeek.specialEvents[0].description && (
+                <p class="text-black text-sm mt-1">{thisWeek.specialEvents[0].description}</p>
               )}
             </div>
           </div>
-          {musicTime && (
-            <p class="text-black text-sm">{musicTime}</p>
-          )}
-          <p class="mt-3">
-            <a href={`${base}/music`} class="text-purple font-display font-bold text-sm underline decoration-2 underline-offset-4 hover:text-orange transition-colors">
-              See full season lineup →
-            </a>
-          </p>
-        </div>
+        )}
+      </div>
 
-        <!-- Special Events -->
-        {thisWeek.specialEvents.length > 0 && (
-          <div class="bg-gradient-to-br from-orange/10 to-orange/5 rounded-xl p-4 md:p-5 card-bordered">
-            <div class="flex items-center gap-3 mb-3">
-              <span class="social-icon-mask block w-12 h-12 shrink-0" style={`background-color: #B8860B; -webkit-mask-image: url('${base}/icons/FM-STAR-ICON.png'); mask-image: url('${base}/icons/FM-STAR-ICON.png');`} aria-hidden="true"></span>
+      <!-- Share the market — brought up from the footer so it's inline with
+           the Next Market info. Gives people a clear hand-off to social right
+           where the shareable content lives. -->
+      <div class="my-8 md:my-10 text-center">
+        <ShareableMarketCard
+          date={thisWeek.date}
+          displayDate={thisWeek.displayDate}
+          theme={thisWeek.theme}
+          music={thisWeek.music}
+          tone="dark"
+        />
+      </div>
+
+      <!-- Weekly Vendors — categorized columns (default season roster) or
+           flat list (per-week override from this-week.json). -->
+      <div>
+        <h3 class="font-display font-bold text-black text-lg md:text-xl uppercase tracking-widest mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 bg-orange rounded-full"></span>
+          Weekly Vendors
+        </h3>
+        {regularVendorNames.length === 0 ? (
+          <p class="text-black italic">Lineup coming soon.</p>
+        ) : usingRosterDefault ? (
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
+            {weeklyCategoryOrder.map((cat) => (
               <div>
-                <p class="font-display font-bold text-orange text-lg md:text-xl uppercase tracking-widest">Special Event</p>
-                <p class="font-display font-bold text-lg text-black">{thisWeek.specialEvents[0].name}</p>
+                <p class="font-logo uppercase tracking-[0.08em] text-xs text-black/60 mb-2 pb-1 border-b border-black/10">{cat}</p>
+                <ul class="space-y-1">
+                  {weeklyByCategory[cat].map((name) => (
+                    <li class="text-black">{name}</li>
+                  ))}
+                </ul>
               </div>
-            </div>
-            <p class="text-black text-sm">{thisWeek.specialEvents[0].description}</p>
+            ))}
           </div>
+        ) : (
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1">
+            {regularVendorNames.map((vendor: string) => (
+              <li class="text-black">{vendor}</li>
+            ))}
+          </ul>
         )}
       </div>
 
-      <!-- Vendors Lists - Clean, Scannable -->
-      <div class="mt-6 space-y-4">
-        <!-- Guest Vendors -->
-        <div class="bg-white rounded-xl p-4">
-          <h3 class="font-display font-bold text-black text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
-            <span class="w-2 h-2 bg-orange rounded-full"></span>
-            Guest Vendors
-          </h3>
-          {thisWeek.guestVendors.length > 0 ? (
-            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {thisWeek.guestVendors.map((vendor: string) => (
-                <li class="flex items-center gap-2 text-black">
-                  <svg class="w-4 h-4 text-orange shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                  </svg>
-                  <span class="font-medium">{vendor}</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p class="text-black italic">Lineup coming soon.</p>
-          )}
-        </div>
-
-        <!-- Regular Vendors -->
-        <div class="bg-white rounded-xl p-4">
-          <h3 class="font-display font-bold text-black text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
-            <span class="w-2 h-2 bg-orange rounded-full"></span>
-            Weekly Vendors
-          </h3>
-          {regularVendorNames.length > 0 ? (
-            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {regularVendorNames.map((vendor: string) => (
-                <li class="flex items-center gap-2 text-black">
-                  <svg class="w-4 h-4 text-orange shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                  </svg>
-                  <span>{vendor}</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p class="text-black italic">Lineup coming soon.</p>
-          )}
-        </div>
-
-        <!-- Community Partners -->
-        {thisWeek.communityPartners.length > 0 && (
-          <div class="bg-white rounded-xl p-4">
-            <h3 class="font-display font-bold text-black text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
-              <span class="w-2 h-2 bg-orange rounded-full"></span>
-              Community Partners
-            </h3>
-            <ul class="flex flex-wrap gap-2">
-              {thisWeek.communityPartners.map((partner: string) => (
-                <li class="bg-white px-3 py-1 rounded-md text-sm text-black border border-orange/20">
-                  {partner}
-                </li>
-              ))}
-            </ul>
-          </div>
+      <!-- Guest Vendors -->
+      <div class="mt-8">
+        <h3 class="font-display font-bold text-black text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 bg-orange rounded-full"></span>
+          Guest Vendors
+        </h3>
+        {thisWeek.guestVendors.length > 0 ? (
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1">
+            {thisWeek.guestVendors.map((vendor: string) => (
+              <li class="text-black font-medium">{vendor}</li>
+            ))}
+          </ul>
+        ) : (
+          <p class="text-black italic">Lineup coming soon.</p>
         )}
       </div>
 
-      <!-- CTA — hidden for now
-      <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-        <a href={`${base}/vendors`} class="inline-flex items-center justify-center gap-2 bg-orange text-white font-display font-bold px-6 py-3 rounded-md hover:bg-orange/90 transition-colors text-center">
-          Meet All Vendors
-        </a>
-      </div>
-      -->
-
+      <!-- Community Partners -->
+      {thisWeek.communityPartners.length > 0 && (
+        <div class="mt-8">
+          <h3 class="font-display font-bold text-black text-lg md:text-xl uppercase tracking-widest mb-3 flex items-center gap-2">
+            <span class="w-2 h-2 bg-orange rounded-full"></span>
+            Community Partners
+          </h3>
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1">
+            {thisWeek.communityPartners.map((partner: string) => (
+              <li class="text-black">{partner}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   </section>
 

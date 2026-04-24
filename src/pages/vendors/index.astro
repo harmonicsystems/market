@@ -22,13 +22,14 @@ for (const v of allVendors) {
 }
 
 type RosterEntry =
-  | { kind: 'rich'; name: string; note?: string; vendor: (typeof allVendors)[number] }
-  | { kind: 'plain'; name: string; note?: string };
+  | { kind: 'rich'; name: string; note?: string; category?: string; vendor: (typeof allVendors)[number] }
+  | { kind: 'plain'; name: string; note?: string; category?: string };
 
-function resolveEntry(raw: string | { name: string; slug?: string; note?: string }): RosterEntry {
+function resolveEntry(raw: string | { name: string; slug?: string; note?: string; category?: string }): RosterEntry {
   const name = typeof raw === 'string' ? raw : raw.name;
   const note = typeof raw === 'object' ? raw.note : undefined;
   const slug = typeof raw === 'object' ? raw.slug : undefined;
+  const category = typeof raw === 'object' ? raw.category : undefined;
   const norm = normalize(name);
   const match =
     (slug && allVendors.find((v) => v.data.slug === slug)) ||
@@ -38,12 +39,32 @@ function resolveEntry(raw: string | { name: string; slug?: string; note?: string
       const vn = normalize(v.data.name);
       return vn.startsWith(norm + ' ') || norm.startsWith(vn + ' ');
     });
-  return match ? { kind: 'rich', name, note, vendor: match } : { kind: 'plain', name, note };
+  return match ? { kind: 'rich', name, note, category, vendor: match } : { kind: 'plain', name, note, category };
 }
 
 const weekly = weeklyVendors.vendors.map(resolveEntry);
 const returning = weeklyVendors.returningInMayOrJune.map(resolveEntry);
 const occasional = weeklyVendors.occasional.map(resolveEntry);
+
+// Group weekly vendors by category, preserving JSON order.
+const weeklyCategoryOrder: string[] = [];
+const weeklyByCategory: Record<string, RosterEntry[]> = {};
+for (const entry of weekly) {
+  const cat = entry.category ?? 'Other';
+  if (!weeklyByCategory[cat]) {
+    weeklyByCategory[cat] = [];
+    weeklyCategoryOrder.push(cat);
+  }
+  weeklyByCategory[cat].push(entry);
+}
+
+const categoryIcon: Record<string, string> = {
+  'From the Farm': 'apple',
+  'Food & Drink': 'apple',
+  'Home & Body': 'brush',
+  'Community': 'heart',
+  'Other': 'star',
+};
 
 const categoryLabels: Record<string, string> = {
   'baked-goods': 'Baked Goods',
@@ -77,20 +98,84 @@ const categoryLabels: Record<string, string> = {
         </p>
       </div>
 
+      {/* ── Weekly Vendors — grouped by category ───────────────────────── */}
+      <div class="mb-16">
+        <h2 class="font-display font-bold text-2xl text-black mb-2 flex items-center gap-3">
+          <span class="text-sm px-3 py-1 rounded-md bg-orange text-cream">Weekly</span>
+          Weekly Vendors
+        </h2>
+        <p class="text-black/80 text-sm mb-8">Here every Saturday of the 2026 season.</p>
+
+        <div class="space-y-8">
+          {weeklyCategoryOrder.map((cat) => {
+            const entries = weeklyByCategory[cat];
+            const rich = entries.filter((e) => e.kind === 'rich');
+            const plain = entries.filter((e) => e.kind === 'plain');
+            return (
+              <div>
+                <h3 class="font-logo uppercase tracking-[0.08em] text-sm text-black/70 mb-4 flex items-center gap-2 pb-2 border-b border-black/10">
+                  <MarketIcon name={categoryIcon[cat] || 'star'} class="w-5 h-5 shrink-0" />
+                  {cat}
+                </h3>
+
+                {rich.length > 0 && (
+                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
+                    {rich.map((entry: any) => (
+                      <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <a href={`${base}/vendors/${entry.vendor.data.slug}`} class="block">
+                          <div class="h-40 bg-gradient-to-br from-orange/20 to-cream flex items-center justify-center">
+                            <span class="opacity-30"><MarketIcon name="apple" class="w-16 h-16" /></span>
+                          </div>
+                        </a>
+                        <div class="p-6">
+                          <h4 class="font-display font-bold text-xl text-black mb-1">
+                            <a href={`${base}/vendors/${entry.vendor.data.slug}`} class="hover:text-orange transition-colors">
+                              {entry.name}
+                            </a>
+                          </h4>
+                          {entry.vendor.data.tagline && (
+                            <p class="text-black text-sm font-medium mb-3">{entry.vendor.data.tagline}</p>
+                          )}
+                          {entry.note && <p class="text-black/70 text-xs italic mb-3">{entry.note}</p>}
+                          {entry.vendor.data.description && (
+                            <p class="text-black text-sm mb-4">{entry.vendor.data.description}</p>
+                          )}
+                          <div class="flex flex-wrap gap-2">
+                            {entry.vendor.data.categories.map((c: string) => (
+                              <span class="bg-cream text-black text-xs px-2 py-1 rounded-md">
+                                {categoryLabels[c] || c}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                )}
+
+                {plain.length > 0 && (
+                  <ul class="flex flex-wrap gap-2">
+                    {plain.map((entry: any) => (
+                      <li class="bg-white rounded-md px-4 py-2 shadow-sm">
+                        <span class="font-display font-medium text-black">{entry.name}</span>
+                        {entry.note && <span class="text-black/60 text-xs italic ml-1">— {entry.note}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── Returning / Occasional — flat lists ─────────────────────────── */}
       {[
-        {
-          heading: 'Weekly Vendors',
-          subheading: 'Here every Saturday of the 2026 season.',
-          badge: 'Weekly',
-          badgeClass: 'bg-orange text-white',
-          rich: weekly.filter((e) => e.kind === 'rich'),
-          plain: weekly.filter((e) => e.kind === 'plain'),
-        },
         {
           heading: 'Returning in May / June',
           subheading: 'Favorites returning as their seasons get underway.',
           badge: 'Returning',
-          badgeClass: 'bg-purple text-white',
+          badgeClass: 'bg-purple text-cream',
           rich: returning.filter((e) => e.kind === 'rich'),
           plain: returning.filter((e) => e.kind === 'plain'),
         },
@@ -126,7 +211,7 @@ const categoryLabels: Record<string, string> = {
                       </a>
                     </h3>
                     {entry.vendor.data.tagline && (
-                      <p class="text-purple text-sm font-medium mb-3">{entry.vendor.data.tagline}</p>
+                      <p class="text-black text-sm font-medium mb-3">{entry.vendor.data.tagline}</p>
                     )}
                     {entry.note && <p class="text-black/70 text-xs italic mb-3">{entry.note}</p>}
                     {entry.vendor.data.description && (
@@ -146,16 +231,11 @@ const categoryLabels: Record<string, string> = {
           )}
 
           {section.plain.length > 0 && (
-            <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            <ul class="flex flex-wrap gap-2">
               {section.plain.map((entry: any) => (
-                <li class="bg-white rounded-md px-4 py-3 shadow-sm flex items-center gap-2">
-                  <svg class="w-4 h-4 text-orange shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                  </svg>
-                  <span class="text-black">
-                    <span class="font-medium">{entry.name}</span>
-                    {entry.note && <span class="text-black/60 text-xs italic ml-1">— {entry.note}</span>}
-                  </span>
+                <li class="bg-white rounded-md px-4 py-2 shadow-sm">
+                  <span class="font-display font-medium text-black">{entry.name}</span>
+                  {entry.note && <span class="text-black/60 text-xs italic ml-1">— {entry.note}</span>}
                 </li>
               ))}
             </ul>
@@ -169,7 +249,7 @@ const categoryLabels: Record<string, string> = {
         <p class="text-black mb-6 max-w-xl mx-auto">
           We're always looking for local farmers, artisans, and food producers to join our market family.
         </p>
-        <a href={`${base}/contact`} class="inline-block bg-orange text-white font-display font-bold px-6 py-3 rounded-md hover:bg-orange/90 transition-colors">
+        <a href={`${base}/contact`} class="inline-block bg-orange text-cream font-display font-bold px-6 py-3 rounded-md hover:bg-orange/90 transition-colors">
           Apply to Vend
         </a>
       </div>

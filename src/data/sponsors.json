@@ -1,36 +1,35 @@
 {
-  "note": "Logos coming soon — tiles are designed to swap in logo images when they arrive.",
   "sponsors": [
     {
       "name": "Berkshire Hathaway HomeServices Blake Realtors",
       "shortName": "BHHS Blake Realtors",
-      "url": "https://kinderhook.blakerealtors.com/",
-      "logo": null
+      "url": "https://www.bhhsblakerealtors.com/columbia",
+      "logo": "/icons/sponsors/berkshire-hathaway.png"
     },
     {
       "name": "Columbia County Tourism",
       "url": "https://columbiacountytourism.org/",
-      "logo": null
+      "logo": "/icons/sponsors/columbia-county-tourism.png"
     },
     {
       "name": "Herrington's",
       "url": "https://herringtons.com/",
-      "logo": null
+      "logo": "/icons/sponsors/herringtons.png"
     },
     {
       "name": "Julia Jayne Pilates",
       "url": "https://www.juliajaynepilates.com/",
-      "logo": null
+      "logo": "/icons/sponsors/julia-jayne-pilates.png"
     },
     {
       "name": "Todd Farrell's Car Care Center",
       "url": "https://www.toddfarrells.com/",
-      "logo": null
+      "logo": "/icons/sponsors/todd-farrells.png"
     },
     {
       "name": "Valkin Properties",
       "url": "https://www.valkinproperties.com/",
-      "logo": null
+      "logo": "/icons/sponsors/valkin-properties.png"
     }
   ]
 }

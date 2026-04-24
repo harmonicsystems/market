@@ -7,10 +7,10 @@ const base = import.meta.env.BASE_URL;
 
 const colors = [
   { name: 'Orange',  hex: '#B8860B', varName: '--color-orange', twClass: 'bg-orange',  notes: 'Dark goldenrod. Primary accent, CTAs, highlights.' },
-  { name: 'Purple',  hex: '#5D3C54', varName: '--color-purple', twClass: 'bg-purple',  notes: 'Deep plum. Secondary accent, taglines, category alternatives.' },
+  { name: 'Purple',  hex: '#2E1F2F', varName: '--color-purple', twClass: 'bg-purple',  notes: 'Deep plum. Secondary accent, taglines, category alternatives.' },
   { name: 'Black',   hex: '#2E1F2F', varName: '--color-black',  twClass: 'bg-black',   notes: 'Deep aubergine. Text, headings, dark sections.' },
   { name: 'Cream',   hex: '#DFA926', varName: '--color-cream',  twClass: 'bg-cream',   notes: 'Golden amber (yellow). Sitewide background.' },
-  { name: 'White',   hex: '#FFFFFF', varName: '--color-white',  twClass: 'bg-white',   notes: 'Card surfaces, text on dark.' },
+  { name: 'White',   hex: '#f4f2d9', varName: '--color-white',  twClass: 'bg-white',   notes: 'Card surfaces, text on dark.' },
 ];
 
 const activeFonts = [
@@ -152,27 +152,27 @@ const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
               <span class="text-xs text-black">Seen on: / (inside hero)</span>
             </header>
             <div class="p-6 bg-cream">
-              <div class="bg-black text-white rounded-xl p-6 max-w-3xl mx-auto">
+              <div class="bg-black text-cream rounded-xl p-6 max-w-3xl mx-auto">
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
                   <div>
                     <p class="font-logo uppercase tracking-wide text-xs mb-1" style="color: #DFA926;">When</p>
                     <p class="font-display font-bold text-lg">Every Saturday</p>
-                    <p class="text-white/70 text-sm mt-1">8:30 AM – 12:30 PM</p>
+                    <p class="text-cream/70 text-sm mt-1">8:30 AM – 12:30 PM</p>
                   </div>
                   <div class="sm:border-l sm:border-white/20">
                     <p class="font-logo uppercase tracking-wide text-xs mb-1" style="color: #DFA926;">Where</p>
                     <p class="font-display font-bold text-lg">Village Green</p>
-                    <p class="text-white/70 text-sm mt-1">Kinderhook, NY</p>
+                    <p class="text-cream/70 text-sm mt-1">Kinderhook, NY</p>
                   </div>
                   <div class="sm:border-l sm:border-white/20">
                     <p class="font-logo uppercase tracking-wide text-xs mb-1" style="color: #DFA926;">Season</p>
                     <p class="font-display font-bold text-lg">May – October</p>
-                    <p class="text-white/70 text-sm mt-1">Rain or Shine</p>
+                    <p class="text-cream/70 text-sm mt-1">Rain or Shine</p>
                   </div>
                   <div class="sm:border-l sm:border-white/20">
                     <p class="font-logo uppercase tracking-wide text-xs mb-1" style="color: #DFA926;">This Saturday</p>
                     <p class="font-display font-bold text-lg">⛅ 68°F</p>
-                    <p class="text-white/70 text-sm mt-1">Partly cloudy</p>
+                    <p class="text-cream/70 text-sm mt-1">Partly cloudy</p>
                   </div>
                 </div>
               </div>
@@ -205,11 +205,11 @@ const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
                 <div class="flex items-center gap-3 mb-3">
                   <span
                     class="social-icon-mask block w-12 h-12 shrink-0"
-                    style={`background-color: #5D3C54; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
+                    style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
                     aria-hidden="true"
                   ></span>
                   <div>
-                    <p class="text-xs text-purple font-semibold uppercase tracking-wide">Live Music</p>
+                    <p class="text-xs text-black font-semibold uppercase tracking-wide">Live Music</p>
                     <p class="font-display font-bold text-lg text-black italic">Lineup coming soon</p>
                   </div>
                 </div>
@@ -274,7 +274,7 @@ const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
               <span class="text-xs text-black">Orange CTA — used for main actions</span>
             </header>
             <div class="p-6 bg-white flex flex-wrap gap-4">
-              <span class="inline-flex items-center justify-center gap-2 bg-orange text-white font-display font-bold px-6 py-3 rounded-md">
+              <span class="inline-flex items-center justify-center gap-2 bg-orange text-cream font-display font-bold px-6 py-3 rounded-md">
                 Meet All Vendors
               </span>
               <span class="inline-flex items-center justify-center gap-2 bg-black text-cream font-display font-bold px-6 py-3 rounded-md">
@@ -306,16 +306,16 @@ const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
               <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">FOOTER</code>
               <span class="text-xs text-black">Seen on: every page, bottom</span>
             </header>
-            <div class="bg-black text-white p-8">
+            <div class="bg-black text-cream p-8">
               <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
                 <div>
                   <h3 class="font-logo text-base tracking-wide uppercase mb-3">Kinderhook Farmers Market</h3>
-                  <p class="text-white/80">Village Green, Broad St &amp; Albany Ave</p>
-                  <p class="text-white/80">Kinderhook, NY 12106</p>
+                  <p class="text-cream/80">Village Green, Broad St &amp; Albany Ave</p>
+                  <p class="text-cream/80">Kinderhook, NY 12106</p>
                 </div>
                 <div>
                   <h3 class="font-display font-bold mb-3">Quick Links</h3>
-                  <ul class="space-y-1 text-white/80">
+                  <ul class="space-y-1 text-cream/80">
                     <li>Our Vendors</li>
                     <li>Discover Kinderhook</li>
                     <li>Business Directory</li>
@@ -323,9 +323,9 @@ const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
                 </div>
                 <div>
                   <h3 class="font-display font-bold mb-3">Connect</h3>
-                  <p class="text-white/80">Contact form</p>
-                  <p class="text-white/80">info@kinderhook…</p>
-                  <p class="text-white/80">Facebook</p>
+                  <p class="text-cream/80">Contact form</p>
+                  <p class="text-cream/80">info@kinderhook…</p>
+                  <p class="text-cream/80">Facebook</p>
                 </div>
               </div>
             </div>
@@ -361,7 +361,7 @@ const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
           <div class="bg-cream p-4 rounded-md border border-black/10">
             <p class="text-black font-medium">Black on cream — 7.27:1 ✓</p>
-            <p class="text-white">White on cream — fails</p>
+            <p class="text-cream">White on cream — fails</p>
             <p class="text-orange">Orange on cream — fails</p>
           </div>
           <div class="bg-white p-4 rounded-md border border-black/10">
@@ -369,7 +369,7 @@ const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
             <p class="text-orange">Orange on white — large only</p>
           </div>
           <div class="bg-black p-4 rounded-md">
-            <p class="text-white font-medium">White on black — ✓</p>
+            <p class="text-cream font-medium">White on black — ✓</p>
             <p class="text-cream">Cream on black — ✓</p>
             <p class="text-orange">Orange on black — ✓ large</p>
           </div>

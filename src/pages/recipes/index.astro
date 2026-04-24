@@ -7,14 +7,14 @@ const allRecipes = await getCollection('recipes');
 
 const difficultyColors: Record<string, string> = {
   easy: 'bg-orange/15 text-orange border border-orange/40',
-  medium: 'bg-orange text-white',
-  hard: 'bg-purple text-white',
+  medium: 'bg-orange text-cream',
+  hard: 'bg-purple text-cream',
 };
 
 const seasonColors: Record<string, string> = {
   spring: 'bg-orange/20 text-orange',
-  summer: 'bg-orange text-white',
-  fall: 'bg-purple/20 text-purple',
+  summer: 'bg-orange text-cream',
+  fall: 'bg-purple/20 text-black',
   winter: 'bg-black text-cream',
 };
 ---
@@ -119,7 +119,7 @@ const seasonColors: Record<string, string> = {
         <p class="text-black mb-6 max-w-xl mx-auto">
           Have a favorite recipe using produce from the market? We'd love to feature it in our community collection.
         </p>
-        <a href={`${base}/contact`} class="inline-block bg-orange text-white font-display font-bold px-6 py-3 rounded-md hover:bg-orange/90 transition-colors">
+        <a href={`${base}/contact`} class="inline-block bg-orange text-cream font-display font-bold px-6 py-3 rounded-md hover:bg-orange/90 transition-colors">
           Submit a Recipe
         </a>
       </div>

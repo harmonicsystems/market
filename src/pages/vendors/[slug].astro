@@ -88,7 +88,7 @@ const categoryLabels: Record<string, string> = {
       <!-- Hero -->
       <header class="mb-8">
         <div class="flex flex-wrap gap-2 mb-4">
-          <span class={`text-sm px-3 py-1 rounded-md font-medium ${vendor.data.vendorType === 'regular' ? 'bg-orange text-white' : 'bg-purple text-white'}`}>
+          <span class={`text-sm px-3 py-1 rounded-md font-medium ${vendor.data.vendorType === 'regular' ? 'bg-orange text-cream' : 'bg-purple text-cream'}`}>
             {vendor.data.vendorType === 'regular' ? 'Weekly Vendor' : 'Guest Vendor'}
           </span>
           {vendor.data.categories.map((cat: string) => (
@@ -101,7 +101,7 @@ const categoryLabels: Record<string, string> = {
           {vendor.data.name}
         </h1>
         {vendor.data.tagline && (
-          <p class="text-purple font-display font-semibold text-lg mb-4">{vendor.data.tagline}</p>
+          <p class="text-black font-display font-semibold text-lg mb-4">{vendor.data.tagline}</p>
         )}
         {vendor.data.description && (
           <p class="text-black text-lg">{vendor.data.description}</p>
@@ -200,7 +200,7 @@ const categoryLabels: Record<string, string> = {
                 class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition-shadow block"
               >
                 <h3 class="font-display font-bold text-black mb-1">{rv.data.name}</h3>
-                <p class="text-purple text-sm font-medium mb-2">{rv.data.tagline}</p>
+                <p class="text-black text-sm font-medium mb-2">{rv.data.tagline}</p>
                 <div class="flex flex-wrap gap-1">
                   {rv.data.categories.slice(0, 3).map((cat: string) => (
                     <span class="bg-cream text-black text-xs px-2 py-0.5 rounded-md">
@@ -215,11 +215,11 @@ const categoryLabels: Record<string, string> = {
       )}
 
       <!-- CTA -->
-      <div class="bg-gradient-to-r from-orange to-purple rounded-2xl p-8 text-center text-white">
+      <div class="bg-gradient-to-r from-orange to-purple rounded-2xl p-8 text-center text-cream">
         <h2 class="font-display font-bold text-2xl mb-3">
           Visit the Market This Saturday
         </h2>
-        <p class="text-white/90 mb-5">
+        <p class="text-cream/90 mb-5">
           Find {vendor.data.name} and all our vendors on the Village Green in Kinderhook, NY.
         </p>
         <a href={`${base}/visit`} class="inline-block bg-white text-black font-display font-bold px-6 py-3 rounded-md hover:bg-white/90 transition-colors">

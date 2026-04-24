@@ -1,19 +1,22 @@
 {
   "vendors": [
-    { "name": "Albany Distilling" },
-    { "name": "Cedar Ridge Farm Ghent" },
-    { "name": "Damsel Garden", "slug": "damsel-garden" },
-    { "name": "Glencadia Greenhouses" },
-    { "name": "Hamrah's Lebanese Foods & Takeaway" },
-    { "name": "Heritage Hill Pork", "note": "Formerly Lovers Leap Farm" },
-    { "name": "Hickory Creek Farms" },
-    { "name": "Kipling & Raven Dog Treats" },
-    { "name": "Mort's Maple" },
-    { "name": "O'Boys Soaps" },
-    { "name": "Our Old House Bakery" },
-    { "name": "River House Market", "slug": "river-house-market" },
-    { "name": "Valatie Food Pantry" },
-    { "name": "Worldling's Pleasure" }
+    { "name": "Cedar Ridge Farm Ghent", "category": "From the Farm" },
+    { "name": "Damsel Garden", "slug": "damsel-garden", "category": "From the Farm" },
+    { "name": "Glencadia Greenhouses", "category": "From the Farm" },
+    { "name": "Heritage Hill Pork", "note": "Formerly Lovers Leap Farm", "category": "From the Farm" },
+    { "name": "Hickory Creek Farms", "category": "From the Farm" },
+    { "name": "Mort's Maple", "category": "From the Farm" },
+    { "name": "River House Market", "slug": "river-house-market", "category": "From the Farm" },
+
+    { "name": "Albany Distilling", "category": "Food & Drink" },
+    { "name": "Hamrah's Lebanese Foods & Takeaway", "category": "Food & Drink" },
+    { "name": "Our Old House Bakery", "category": "Food & Drink" },
+    { "name": "Worldling's Pleasure", "category": "Food & Drink" },
+
+    { "name": "Kipling & Raven Dog Treats", "category": "Home & Body" },
+    { "name": "O'Boys Soaps", "category": "Home & Body" },
+
+    { "name": "Valatie Food Pantry", "category": "Community" }
   ],
   "returningInMayOrJune": [
     "Overlook Farms",

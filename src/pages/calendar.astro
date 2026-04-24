@@ -168,7 +168,7 @@ const categoryIcon: Record<string, string> = {
                   <article class="bg-white rounded-xl shadow-md overflow-hidden border-l-4 border-orange">
                     <div class="flex items-stretch">
                       {/* Date badge */}
-                      <div class="bg-orange text-white flex flex-col items-center justify-center px-5 py-4 min-w-[84px]">
+                      <div class="bg-orange text-cream flex flex-col items-center justify-center px-5 py-4 min-w-[84px]">
                         <span class="text-xs uppercase tracking-widest font-semibold">{formatWeekday(event.date)}</span>
                         <span class="text-3xl font-display font-bold leading-none mt-1">{dayOfMonth(event.date)}</span>
                       </div>
@@ -180,8 +180,8 @@ const categoryIcon: Record<string, string> = {
                           {event.location && <span> · {event.location}</span>}
                         </p>
                         {event.music && (
-                          <p class="text-sm text-purple flex items-center gap-1">
-                            <span class="social-icon-mask inline-block w-4 h-4 shrink-0" style={`background-color: #5D3C54; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png');`} aria-hidden="true"></span>
+                          <p class="text-sm text-black flex items-center gap-1">
+                            <span class="social-icon-mask inline-block w-4 h-4 shrink-0" style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png');`} aria-hidden="true"></span>
                             <span><strong>Live Music:</strong> {event.music}</span>
                           </p>
                         )}
@@ -227,9 +227,9 @@ const categoryIcon: Record<string, string> = {
       )}
 
       <!-- Submit CTA -->
-      <div class="mt-12 bg-purple rounded-2xl p-8 text-center text-white">
+      <div class="mt-12 bg-purple rounded-2xl p-8 text-center text-cream">
         <h2 class="font-display font-bold text-2xl mb-3">Have something happening?</h2>
-        <p class="text-white/90 mb-5 max-w-xl mx-auto">
+        <p class="text-cream/90 mb-5 max-w-xl mx-auto">
           Running a gallery opening, library talk, or community event in Kinderhook? We'll cross-promote it here.
         </p>
         <a href={`${base}/contact`} class="inline-block bg-white text-black font-display font-bold px-6 py-3 rounded-md hover:bg-white/90 transition-colors">

@@ -86,7 +86,7 @@ else if (month >= 8 && month <= 9) currentSeason = 'fall';
           <button
             class={`px-6 py-3 rounded-md font-display font-bold transition-colors season-tab ${
               key === currentSeason
-                ? `bg-${season.color} text-white`
+                ? `bg-${season.color} text-cream`
                 : 'bg-white text-black hover:bg-black/5'
             }`}
             data-season={key}
@@ -170,11 +170,11 @@ else if (month >= 8 && month <= 9) currentSeason = 'fall';
       ))}
 
       <!-- Recipes CTA -->
-      <div class="mt-12 bg-gradient-to-r from-orange to-purple rounded-2xl p-8 text-center text-white">
+      <div class="mt-12 bg-gradient-to-r from-orange to-purple rounded-2xl p-8 text-center text-cream">
         <h2 class="font-display font-bold text-2xl mb-4">
           Looking for Recipe Ideas?
         </h2>
-        <p class="text-white/90 mb-6 max-w-xl mx-auto">
+        <p class="text-cream/90 mb-6 max-w-xl mx-auto">
           Check out our collection of seasonal recipes submitted by community members and local chefs.
         </p>
         <a href={`${base}/recipes`} class="inline-block bg-white text-black font-display font-bold px-6 py-3 rounded-md hover:bg-white/90 transition-colors">
@@ -192,12 +192,12 @@ else if (month >= 8 && month <= 9) currentSeason = 'fall';
 
         // Update tabs
         document.querySelectorAll('.season-tab').forEach(t => {
-          t.classList.remove('bg-orange', 'bg-purple', 'text-white');
+          t.classList.remove('bg-orange', 'bg-purple', 'text-cream');
           t.classList.add('bg-white', 'text-black');
         });
         tab.classList.remove('bg-white', 'text-black');
         const colors = { spring: 'bg-orange', summer: 'bg-orange', fall: 'bg-purple' };
-        tab.classList.add(colors[season as keyof typeof colors], 'text-white');
+        tab.classList.add(colors[season as keyof typeof colors], 'text-cream');
 
         // Update content
         document.querySelectorAll('.season-content').forEach(content => {

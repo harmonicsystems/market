@@ -75,7 +75,7 @@ const featured = allLandmarks.filter(l => l.data.featured);
                 </a>
               </h2>
               {landmark.data.tagline && (
-                <p class="text-purple text-sm font-medium mb-2">{landmark.data.tagline}</p>
+                <p class="text-black text-sm font-medium mb-2">{landmark.data.tagline}</p>
               )}
               <p class="text-black text-sm line-clamp-3">{landmark.data.description}</p>
               {landmark.data.admission === 'Free' && (
@@ -103,7 +103,7 @@ const featured = allLandmarks.filter(l => l.data.featured);
               >
                 <h3 class="font-display font-bold text-black mb-1">{landmark.data.name}</h3>
                 {landmark.data.tagline && (
-                  <p class="text-purple text-sm font-medium mb-2">{landmark.data.tagline}</p>
+                  <p class="text-black text-sm font-medium mb-2">{landmark.data.tagline}</p>
                 )}
                 <p class="text-black text-sm">{landmark.data.description}</p>
                 <div class="flex flex-wrap gap-3 mt-3 text-xs text-black">
@@ -126,18 +126,18 @@ const featured = allLandmarks.filter(l => l.data.featured);
       ))}
 
       <!-- Trip planning CTA -->
-      <div class="bg-purple rounded-2xl p-8 text-center text-white">
+      <div class="bg-purple rounded-2xl p-8 text-center text-cream">
         <h2 class="font-display font-bold text-2xl mb-3">
           Plan Your Kinderhook Day Trip
         </h2>
-        <p class="text-white/90 mb-5 max-w-xl mx-auto">
+        <p class="text-cream/90 mb-5 max-w-xl mx-auto">
           Start with the Saturday farmers' market on the Village Green, explore historic sites and galleries, then enjoy lunch at a local restaurant. It's all walkable.
         </p>
         <div class="flex flex-wrap justify-center gap-3">
           <a href={`${base}/visit`} class="inline-block bg-white text-black font-display font-bold px-6 py-3 rounded-md hover:bg-white/90 transition-colors">
             Plan Your Visit
           </a>
-          <a href={`${base}/businesses`} class="inline-block bg-white/20 text-white font-display font-bold px-6 py-3 rounded-md hover:bg-white/30 transition-colors">
+          <a href={`${base}/businesses`} class="inline-block bg-white/20 text-cream font-display font-bold px-6 py-3 rounded-md hover:bg-white/30 transition-colors">
             Local Businesses
           </a>
         </div>
