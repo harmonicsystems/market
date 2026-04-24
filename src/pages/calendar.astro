@@ -99,6 +99,10 @@ const allEvents = [...marketSaturdays, ...communityEvents]
   .filter((e) => e.date >= todayIso)
   .sort((a, b) => a.date.localeCompare(b.date));
 
+// Dates that already have a market anchor — community events on these dates
+// don't need their own redundant date stamp in the calendar render.
+const marketDates = new Set(marketSaturdays.map((e) => e.date));
+
 // ── Group by month for the primary view ─────────────────────────────────────
 function monthKey(iso: string) {
   return new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
@@ -188,10 +192,12 @@ const categoryIcon: Record<string, string> = {
                 ) : (
                   <article class="bg-white rounded-xl shadow-md overflow-hidden ml-0 md:ml-8">
                     <div class="flex items-start gap-4 p-5 md:p-6">
-                      <div class="flex flex-col items-center justify-center min-w-[60px]">
-                        <span class="text-[10px] uppercase tracking-widest text-black/70 font-semibold">{formatWeekday(event.date)}</span>
-                        <span class="text-2xl font-display font-bold text-black leading-none mt-0.5">{dayOfMonth(event.date)}</span>
-                      </div>
+                      {!marketDates.has(event.date) && (
+                        <div class="flex flex-col items-center justify-center min-w-[60px]">
+                          <span class="text-[10px] uppercase tracking-widest text-black/70 font-semibold">{formatWeekday(event.date)}</span>
+                          <span class="text-2xl font-display font-bold text-black leading-none mt-0.5">{dayOfMonth(event.date)}</span>
+                        </div>
+                      )}
                       <div class="flex-1">
                         <div class="flex items-center gap-2 mb-1">
                           <MarketIcon name={categoryIcon[event.category || 'other'] || 'star'} class="w-6 h-6 shrink-0" />
