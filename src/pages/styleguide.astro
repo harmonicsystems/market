@@ -1,58 +1,85 @@
 ---
-// Design reference page — dev tool for exploring fonts, colors, and icons.
+// Design reference + palette playground.
 // Not linked from main navigation. Visit /styleguide directly.
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const base = import.meta.env.BASE_URL;
 
-const colors = [
-  { name: 'Orange',  hex: '#B8860B', varName: '--color-orange', twClass: 'bg-orange',  notes: 'Dark goldenrod. Primary accent, CTAs, highlights.' },
-  { name: 'Purple',  hex: '#2E1F2F', varName: '--color-purple', twClass: 'bg-purple',  notes: 'Deep plum. Secondary accent, taglines, category alternatives.' },
-  { name: 'Black',   hex: '#2E1F2F', varName: '--color-black',  twClass: 'bg-black',   notes: 'Deep aubergine. Text, headings, dark sections.' },
-  { name: 'Cream',   hex: '#DFA926', varName: '--color-cream',  twClass: 'bg-cream',   notes: 'Golden amber (yellow). Sitewide background.' },
-  { name: 'White',   hex: '#f4f2d9', varName: '--color-white',  twClass: 'bg-white',   notes: 'Card surfaces, text on dark.' },
+// ── Current palette (matches src/styles/global.css) ─────────────────────────
+const currentPalette = [
+  { name: 'Cream',     hex: '#f4f2d9', varName: '--color-cream',  twClass: 'bg-cream',  notes: 'Sitewide background. Pale, warm, low-stimulation.' },
+  { name: 'Aubergine', hex: '#2E1F2F', varName: '--color-black',  twClass: 'bg-black',  notes: 'Body text, headings, footer & banner backgrounds. Bound to bg-black/text-black.' },
+  { name: 'Purple',    hex: '#5D3C54', varName: '--color-purple', twClass: 'bg-purple', notes: 'NEXT MARKET banner, secondary accents, music labels.' },
+  { name: 'Orange',    hex: '#B8860B', varName: '--color-orange', twClass: 'bg-orange', notes: 'Goldenrod. Primary CTAs, special-event labels, calendar date badges.' },
+  { name: 'White',     hex: '#FFFFFF', varName: '--color-white',  twClass: 'bg-white', notes: 'Card surfaces, sponsor tiles, footer text.' },
+];
+
+// ── Alternative palettes for the lab ────────────────────────────────────────
+// Each palette overrides the four brand custom properties scoped to the lab
+// container. Tailwind 4's @theme pulls utility colors from these vars, so
+// bg-cream / text-black / etc. inside the container repaint instantly.
+const alternativePalettes = [
+  {
+    id: 'current',
+    name: 'Current',
+    blurb: 'What ships today — pale cream + aubergine + plum + goldenrod.',
+    colors: { cream: '#f4f2d9', black: '#2E1F2F', purple: '#5D3C54', orange: '#B8860B' },
+  },
+  {
+    id: 'earthy',
+    name: 'Earthy',
+    blurb: 'Terracotta + forest + sand. Warmer, more agricultural.',
+    colors: { cream: '#F5EBD8', black: '#2D2A24', purple: '#3F5A3A', orange: '#C25A2C' },
+  },
+  {
+    id: 'heritage',
+    name: 'Heritage',
+    blurb: 'Federalist navy + ivory + burgundy + brass. Picks up the village\'s historic palette.',
+    colors: { cream: '#F2EBD9', black: '#1B2A3D', purple: '#7A1F2A', orange: '#C99A3A' },
+  },
+  {
+    id: 'orchard',
+    name: 'Orchard',
+    blurb: 'Apple + leaf + cream + acorn. The Hudson Valley fruit-stand color story.',
+    colors: { cream: '#F4F1E1', black: '#2A1F1A', purple: '#6E2C28', orange: '#D58A2A' },
+  },
+  {
+    id: 'meadow',
+    name: 'Meadow',
+    blurb: 'Wildflower-leaning. Sage + plum + butter + dusk.',
+    colors: { cream: '#EFEFD8', black: '#262830', purple: '#675178', orange: '#D9A24E' },
+  },
+  {
+    id: 'cool',
+    name: 'Coastal',
+    blurb: 'Cooler tones. Mist + slate + dusty rose + brass. Stress-test for legibility.',
+    colors: { cream: '#ECEFE8', black: '#22323A', purple: '#7E5764', orange: '#C29144' },
+  },
 ];
 
 const activeFonts = [
-  { name: 'PP Gatwick Bold',   varName: '--font-logo',    twClass: 'font-logo',    usage: 'Logo/brand only — header, footer, homepage hero. Matches market signage.' },
-  { name: 'DM Serif Display',  varName: '--font-display', twClass: 'font-display', usage: 'All headings.' },
-  { name: 'Lora',              varName: '--font-body',    twClass: 'font-body',    usage: 'Body text.' },
-];
-
-const displaySizes = [
-  { label: 'Hero (text-8xl)',     className: 'text-8xl'     },
-  { label: 'Display (text-5xl)',  className: 'text-5xl'     },
-  { label: 'Heading (text-3xl)',  className: 'text-3xl'     },
-  { label: 'Body (text-base)',    className: 'text-base'    },
+  { name: 'PP Gatwick Bold',  varName: '--font-logo',    twClass: 'font-logo',    usage: 'KINDERHOOK / FARMERS / MARKET wordmark only.' },
+  { name: 'DM Serif Display', varName: '--font-display', twClass: 'font-display', usage: 'Headings throughout the site, button labels.' },
+  { name: 'Lora',             varName: '--font-body',    twClass: 'font-body',    usage: 'Body copy.' },
 ];
 
 const icons = [
-  'FM-APPLE-ICON.png',
-  'FM-BIKE-ICON.png',
-  'FM-BIRD-ICON.png',
-  'FM-BRUSH-ICON.png',
-  'FM-HISTORY-ICON.png',
-  'FM-MUSIC-ICON.png',
-  'FM-OK-ICON.png',
-  'FM-STAR-ICON.png',
-  'FM-SUNFLOWER-ICON.png',
-  'FM-FACEBOOK-ICON.png',
-  'FM-INSTAGRAM-ICON.png',
-  'FM-NEXTDOOR-ICON.png',
-  'FM-DOWNLOAD-ICON.png',
+  'FM-APPLE-ICON.png', 'FM-BIKE-ICON.png', 'FM-BIRD-ICON.png', 'FM-BRUSH-ICON.png',
+  'FM-HISTORY-ICON.png', 'FM-MUSIC-ICON.png', 'FM-OK-ICON.png', 'FM-STAR-ICON.png',
+  'FM-SUNFLOWER-ICON.png', 'FM-HEART-ICON.png', 'FM-FACEBOOK-ICON.png',
+  'FM-INSTAGRAM-ICON.png', 'FM-NEXTDOOR-ICON.png', 'FM-DOWNLOAD-ICON.png',
 ];
-
 const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
 ---
 
 <BaseLayout
   title="Design Reference"
-  description="Internal design system reference — colors, fonts, and icons."
+  description="Internal design system reference and palette playground."
   canonicalPath="/styleguide"
 >
   <meta slot="head" name="robots" content="noindex,nofollow" />
 
-  <div class="bg-white text-black min-h-screen">
+  <div class="bg-cream text-black min-h-screen">
     <div class="max-w-6xl mx-auto px-4 py-8 md:py-12">
 
       <!-- Header -->
@@ -60,287 +87,199 @@ const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
         <p class="font-display italic text-orange text-sm uppercase tracking-widest mb-2">Internal tool</p>
         <h1 class="font-display font-bold text-4xl md:text-5xl mb-3">Design Reference</h1>
         <p class="text-black max-w-2xl">
-          Live reference for colors, fonts, and icons. Not linked from navigation. Use side-by-side with the rest of the site to pick and compare.
+          Live palette playground + system reference. The Palette Lab below scopes its overrides to a single preview block, so swatches don't recolor the rest of this page.
         </p>
         <nav class="mt-6 flex flex-wrap gap-4 text-sm font-display">
-          <a href="#components" class="underline underline-offset-4 hover:text-orange">Components</a>
-          <a href="#colors"     class="underline underline-offset-4 hover:text-orange">Colors</a>
+          <a href="#lab"        class="underline underline-offset-4 hover:text-orange">Palette Lab</a>
+          <a href="#palette"    class="underline underline-offset-4 hover:text-orange">Current Palette</a>
           <a href="#fonts"      class="underline underline-offset-4 hover:text-orange">Fonts</a>
+          <a href="#components" class="underline underline-offset-4 hover:text-orange">Components</a>
           <a href="#icons"      class="underline underline-offset-4 hover:text-orange">Icons</a>
           <a href="#dividers"   class="underline underline-offset-4 hover:text-orange">Dividers</a>
         </nav>
-
-        <div class="mt-6 p-4 bg-cream/40 border border-orange/30 rounded-md text-sm">
-          <p class="font-display font-bold mb-1">For the designer</p>
-          <p class="text-black">
-            Each element below has a <code class="font-mono text-xs bg-black/5 px-1 py-0.5 rounded">CODE_TAG</code> next to it.
-            Screenshot an element, drop it into your Procreate file, and reference it by its tag
-            (e.g., <code class="font-mono text-xs bg-black/5 px-1 py-0.5 rounded">CARD_LIVE_MUSIC</code>). That way we can talk about exactly the same thing.
-          </p>
-        </div>
       </header>
 
-      <!-- Components ─────────────────────────────── -->
-      <section id="components" class="mb-14 scroll-mt-20">
-        <h2 class="font-display font-bold text-2xl md:text-3xl mb-2">Components</h2>
-        <p class="text-black mb-6 max-w-2xl">Real site elements rendered in their actual styling. Each is on its native background — screenshot the whole white card, or just the component inside.</p>
+      <!-- ═══ PALETTE LAB ════════════════════════════════════════════════════ -->
+      <section id="lab" class="mb-16 scroll-mt-20">
+        <h2 class="font-display font-bold text-2xl md:text-3xl mb-2">Palette Lab</h2>
+        <p class="text-black mb-6 max-w-2xl">
+          Click a palette to repaint the homepage preview below. The custom inputs at the bottom let you tweak any of the four brand colors — useful for trying small shifts without committing.
+        </p>
 
-        <div class="space-y-8">
+        <!-- Preset swatches -->
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6" id="palette-swatches">
+          {alternativePalettes.map((p) => (
+            <button
+              type="button"
+              class="palette-swatch text-left border-2 border-black/15 rounded-lg p-3 bg-white hover:border-orange transition-colors"
+              data-palette-id={p.id}
+              data-cream={p.colors.cream}
+              data-black={p.colors.black}
+              data-purple={p.colors.purple}
+              data-orange={p.colors.orange}
+            >
+              <p class="font-display font-bold text-base mb-1">{p.name}</p>
+              <p class="text-xs text-black/70 mb-2 leading-snug">{p.blurb}</p>
+              <div class="flex gap-1">
+                <span class="block w-5 h-5 rounded-sm border border-black/10" style={`background:${p.colors.cream}`}></span>
+                <span class="block w-5 h-5 rounded-sm border border-black/10" style={`background:${p.colors.black}`}></span>
+                <span class="block w-5 h-5 rounded-sm border border-black/10" style={`background:${p.colors.purple}`}></span>
+                <span class="block w-5 h-5 rounded-sm border border-black/10" style={`background:${p.colors.orange}`}></span>
+              </div>
+            </button>
+          ))}
+        </div>
 
+        <!-- Custom palette inputs -->
+        <details class="mb-6 border border-black/15 rounded-lg p-4 bg-white">
+          <summary class="cursor-pointer font-display font-bold text-sm">Custom palette</summary>
+          <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <label class="flex flex-col text-xs">
+              <span class="font-mono text-black/70 mb-1">--color-cream</span>
+              <input type="color" id="color-cream-input" value="#f4f2d9" class="h-10 w-full cursor-pointer" />
+            </label>
+            <label class="flex flex-col text-xs">
+              <span class="font-mono text-black/70 mb-1">--color-black</span>
+              <input type="color" id="color-black-input" value="#2e1f2f" class="h-10 w-full cursor-pointer" />
+            </label>
+            <label class="flex flex-col text-xs">
+              <span class="font-mono text-black/70 mb-1">--color-purple</span>
+              <input type="color" id="color-purple-input" value="#5d3c54" class="h-10 w-full cursor-pointer" />
+            </label>
+            <label class="flex flex-col text-xs">
+              <span class="font-mono text-black/70 mb-1">--color-orange</span>
+              <input type="color" id="color-orange-input" value="#b8860b" class="h-10 w-full cursor-pointer" />
+            </label>
+          </div>
+          <p class="mt-4 text-xs text-black/70">
+            Active palette hexes appear here once selected:
+            <span id="active-palette-readout" class="font-mono ml-2"></span>
+          </p>
+        </details>
+
+        <!-- Live preview — this is the actual homepage NEXT MARKET section,
+             scoped so palette overrides only affect this container. -->
+        <div
+          id="palette-preview"
+          class="rounded-2xl overflow-hidden border-2 border-black/15 shadow-lg"
+          style="--color-cream:#f4f2d9; --color-black:#2E1F2F; --color-purple:#5D3C54; --color-orange:#B8860B;"
+        >
           <!-- WIP banner -->
-          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
-            <header class="flex flex-wrap items-baseline justify-between gap-2 p-4 border-b border-black/5 bg-white">
-              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">BANNER_WIP</code>
-              <span class="text-xs text-black">Seen on: every page, top</span>
-            </header>
-            <div class="p-6 bg-white">
-              <p class="text-xs text-black mb-2 italic">Actual render:</p>
-              <div role="note" class="bg-black text-cream text-center text-xs md:text-sm px-4 py-2 font-display tracking-wide">
-                <strong class="font-bold uppercase tracking-widest">Work in Progress:</strong>
-                <span class="opacity-90">This site is for demonstration only &mdash; information may not be accurate.</span>
-              </div>
-            </div>
-          </article>
+          <div role="note" class="bg-black text-cream text-center text-xs px-4 py-2 font-display tracking-wide">
+            <strong class="font-bold uppercase tracking-widest">Preview:</strong>
+            <span class="opacity-90">Live homepage rendering with the selected palette.</span>
+          </div>
 
-          <!-- Nav -->
-          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
-            <header class="flex flex-wrap items-baseline justify-between gap-2 p-4 border-b border-black/5 bg-white">
-              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">HEADER_NAV</code>
-              <span class="text-xs text-black">Seen on: every page</span>
-            </header>
-            <div class="p-6 bg-cream">
-              <nav class="max-w-6xl mx-auto flex items-center justify-between bg-cream">
-                <a href="#" class="font-logo text-sm md:text-base tracking-wide text-black uppercase">Kinderhook Farmers Market</a>
-                <ul class="hidden md:flex items-center gap-6 font-display font-semibold text-sm tracking-wide text-black">
-                  <li><span class="hover:underline decoration-2 underline-offset-4">Vendors</span></li>
-                  <li><span class="hover:underline decoration-2 underline-offset-4">Discover</span></li>
-                  <li><span class="hover:underline decoration-2 underline-offset-4">Visit</span></li>
-                  <li><span class="hover:underline decoration-2 underline-offset-4">About</span></li>
-                  <li><span class="bg-black text-cream px-4 py-2 rounded-md">Contact</span></li>
-                </ul>
-              </nav>
-            </div>
-          </article>
+          <!-- Header -->
+          <header class="bg-cream">
+            <nav class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+              <span class="font-logo text-sm tracking-wide text-black uppercase whitespace-nowrap">Kinderhook Farmers Market</span>
+              <ul class="hidden md:flex items-center gap-6 font-display font-semibold text-sm tracking-wide text-black">
+                <li>Vendors</li>
+                <li>Music</li>
+                <li>Discover</li>
+                <li>Calendar</li>
+                <li><span class="bg-black text-cream px-4 py-2 rounded-md">Contact</span></li>
+              </ul>
+            </nav>
+          </header>
 
-          <!-- Hero block -->
-          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
-            <header class="flex flex-wrap items-baseline justify-between gap-2 p-4 border-b border-black/5 bg-white">
-              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">HERO_BLOCK</code>
-              <span class="text-xs text-black">Seen on: /</span>
-            </header>
-            <div class="p-6 bg-cream">
-              <div class="text-center">
-                <div class="flex justify-center mb-0 -mb-2">
-                  <span
-                    class="social-icon-mask block w-full max-w-[200px] aspect-[320/123]"
-                    style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-SUNFLOWER-TOP_BANNER.gif'); mask-image: url('${base}/icons/FM-SUNFLOWER-TOP_BANNER.gif'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
-                    aria-hidden="true"
-                  ></span>
-                </div>
-                <h1 class="mb-4 font-logo uppercase tracking-wide inline-block">
-                  <span class="block text-4xl md:text-5xl text-black leading-none">Kinderhook</span>
-                  <span class="block text-3xl md:text-4xl text-black leading-none mt-2 whitespace-nowrap">Farmers Market</span>
-                </h1>
-              </div>
-            </div>
-          </article>
-
-          <!-- Essential info grid -->
-          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
-            <header class="flex flex-wrap items-baseline justify-between gap-2 p-4 border-b border-black/5 bg-white">
-              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">ESSENTIAL_INFO_GRID</code>
-              <span class="text-xs text-black">Seen on: / (inside hero)</span>
-            </header>
-            <div class="p-6 bg-cream">
-              <div class="bg-black text-cream rounded-xl p-6 max-w-3xl mx-auto">
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
-                  <div>
-                    <p class="font-logo uppercase tracking-wide text-xs mb-1" style="color: #DFA926;">When</p>
-                    <p class="font-display font-bold text-lg">Every Saturday</p>
-                    <p class="text-cream/70 text-sm mt-1">8:30 AM – 12:30 PM</p>
-                  </div>
-                  <div class="sm:border-l sm:border-white/20">
-                    <p class="font-logo uppercase tracking-wide text-xs mb-1" style="color: #DFA926;">Where</p>
-                    <p class="font-display font-bold text-lg">Village Green</p>
-                    <p class="text-cream/70 text-sm mt-1">Kinderhook, NY</p>
-                  </div>
-                  <div class="sm:border-l sm:border-white/20">
-                    <p class="font-logo uppercase tracking-wide text-xs mb-1" style="color: #DFA926;">Season</p>
-                    <p class="font-display font-bold text-lg">May – October</p>
-                    <p class="text-cream/70 text-sm mt-1">Rain or Shine</p>
-                  </div>
-                  <div class="sm:border-l sm:border-white/20">
-                    <p class="font-logo uppercase tracking-wide text-xs mb-1" style="color: #DFA926;">This Saturday</p>
-                    <p class="font-display font-bold text-lg">⛅ 68°F</p>
-                    <p class="text-cream/70 text-sm mt-1">Partly cloudy</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <!-- Section heading -->
-          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
-            <header class="flex flex-wrap items-baseline justify-between gap-2 p-4 border-b border-black/5 bg-white">
-              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">SECTION_HEADING</code>
-              <span class="text-xs text-black">Seen on: / ("This Week's Lineup"), also vendor & business pages</span>
-            </header>
-            <div class="p-6 bg-white">
-              <div class="text-center">
-                <h2 class="font-display font-bold text-2xl md:text-3xl text-black mb-1">Saturday, May 9, 2026</h2>
-                <p class="text-orange font-display font-bold text-lg">Opening Day!</p>
-                <p class="text-black mt-2">8:30 AM – 12:30 PM • Village Green</p>
-              </div>
-            </div>
-          </article>
-
-          <!-- Live music card -->
-          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
-            <header class="flex flex-wrap items-baseline justify-between gap-2 p-4 border-b border-black/5 bg-white">
-              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">CARD_LIVE_MUSIC</code>
-              <span class="text-xs text-black">Seen on: /</span>
-            </header>
-            <div class="p-6 bg-white">
-              <div class="bg-gradient-to-br from-purple/10 to-purple/5 rounded-xl p-4 md:p-5 border border-black/10 max-w-md">
-                <div class="flex items-center gap-3 mb-3">
-                  <span
-                    class="social-icon-mask block w-12 h-12 shrink-0"
-                    style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
-                    aria-hidden="true"
-                  ></span>
-                  <div>
-                    <p class="text-xs text-black font-semibold uppercase tracking-wide">Live Music</p>
-                    <p class="font-display font-bold text-lg text-black italic">Lineup coming soon</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <!-- Special event card -->
-          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
-            <header class="flex flex-wrap items-baseline justify-between gap-2 p-4 border-b border-black/5 bg-white">
-              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">CARD_SPECIAL_EVENT</code>
-              <span class="text-xs text-black">Seen on: /</span>
-            </header>
-            <div class="p-6 bg-white">
-              <div class="bg-gradient-to-br from-orange/10 to-orange/5 rounded-xl p-4 md:p-5 border border-black/10 max-w-md">
-                <div class="flex items-center gap-3 mb-3">
-                  <span
-                    class="social-icon-mask block w-12 h-12 shrink-0"
-                    style={`background-color: #B8860B; -webkit-mask-image: url('${base}/icons/FM-STAR-ICON.png'); mask-image: url('${base}/icons/FM-STAR-ICON.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
-                    aria-hidden="true"
-                  ></span>
-                  <div>
-                    <p class="text-xs text-orange font-semibold uppercase tracking-wide">Special Event</p>
-                    <p class="font-display font-bold text-lg text-black">Season Opening Celebration</p>
-                  </div>
-                </div>
-                <p class="text-black text-sm">Welcome back the market with local favorites</p>
-              </div>
-            </div>
-          </article>
-
-          <!-- Vendor row -->
-          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
-            <header class="flex flex-wrap items-baseline justify-between gap-2 p-4 border-b border-black/5 bg-white">
-              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">VENDOR_LIST_BLOCK</code>
-              <span class="text-xs text-black">Seen on: /</span>
-            </header>
-            <div class="p-6 bg-white">
-              <div class="bg-white rounded-xl p-4 max-w-md border border-black/5">
-                <h3 class="font-display font-bold text-sm text-black uppercase tracking-wide mb-3 flex items-center gap-2">
-                  <span class="w-2 h-2 bg-orange rounded-full"></span>
-                  Guest Vendors This Week
-                </h3>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {['Example Farm', 'Local Baker', 'Honey Co.', 'Soap Maker'].map(v => (
-                    <li class="flex items-center gap-2 text-black">
-                      <svg class="w-4 h-4 text-orange shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                      </svg>
-                      <span class="font-medium">{v}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </article>
-
-          <!-- Primary button -->
-          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
-            <header class="flex flex-wrap items-baseline justify-between gap-2 p-4 border-b border-black/5 bg-white">
-              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">BUTTON_PRIMARY</code>
-              <span class="text-xs text-black">Orange CTA — used for main actions</span>
-            </header>
-            <div class="p-6 bg-white flex flex-wrap gap-4">
-              <span class="inline-flex items-center justify-center gap-2 bg-orange text-cream font-display font-bold px-6 py-3 rounded-md">
-                Meet All Vendors
-              </span>
-              <span class="inline-flex items-center justify-center gap-2 bg-black text-cream font-display font-bold px-6 py-3 rounded-md">
-                Contact
-              </span>
-            </div>
-          </article>
-
-          <!-- Share bar -->
-          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
-            <header class="flex flex-wrap items-baseline justify-between gap-2 p-4 border-b border-black/5 bg-white">
-              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">SHARE_BAR</code>
-              <span class="text-xs text-black">Seen on: / (inside hero)</span>
-            </header>
-            <div class="p-6 bg-cream flex items-center justify-center gap-4">
-              <span class="font-display font-bold text-sm uppercase tracking-wide text-black">Share the market:</span>
-              {['FM-FACEBOOK-ICON.png','FM-NEXTDOOR-ICON.png','FM-INSTAGRAM-ICON.png','FM-DOWNLOAD-ICON.png'].map(f => (
+          <!-- Hero -->
+          <section class="bg-cream py-10 sm:py-14">
+            <div class="max-w-xl mx-auto px-4 text-center">
+              <div class="flex justify-center mb-1">
                 <span
-                  class="social-icon-mask w-10 h-10 inline-block"
-                  style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/${f}'); mask-image: url('${base}/icons/${f}'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
+                  class="block w-full max-w-[200px] aspect-[320/123]"
+                  style={`background-color: var(--color-black); -webkit-mask-image: url('${base}/icons/FM-SUNFLOWER-TOP_BANNER-STATIC.png'); mask-image: url('${base}/icons/FM-SUNFLOWER-TOP_BANNER-STATIC.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
+                  aria-hidden="true"
                 ></span>
-              ))}
+              </div>
+              <h1 class="font-logo font-bold uppercase text-black mb-2 leading-none">
+                <span class="block text-4xl tracking-[0.08em]">Kinderhook</span>
+                <span
+                  class="block w-full mx-auto my-1 max-w-[480px]"
+                  style={`aspect-ratio: 1384 / 288; background-color: var(--color-black); -webkit-mask-image: url('${base}/farmers-clean.svg'); mask-image: url('${base}/farmers-clean.svg'); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;`}
+                  aria-hidden="true"
+                ></span>
+                <span class="block text-2xl tracking-[0.1em]">Market</span>
+              </h1>
+              <div
+                class="mx-auto block mt-3 mb-5 w-full max-w-sm"
+                style={`aspect-ratio: 20 / 1; background-color: var(--color-black); -webkit-mask-image: url('${base}/icons/FM-DIVIDER_2.png'); mask-image: url('${base}/icons/FM-DIVIDER_2.png'); -webkit-mask-size: 100% 100%; mask-size: 100% 100%;`}
+                aria-hidden="true"
+              ></div>
+              <p class="font-display uppercase tracking-wide text-black text-base mb-2">Every Saturday, May – October</p>
+              <p class="font-display text-black text-xl">8:30 AM – 12:30 PM</p>
+              <p class="text-black mt-5 text-sm">Fresh local produce, artisan goods, and live music in the heart of the Hudson Valley.</p>
             </div>
-          </article>
+          </section>
+
+          <!-- NEXT MARKET banner -->
+          <div class="bg-purple py-3">
+            <p class="text-center font-logo font-bold text-cream uppercase tracking-[0.08em] text-3xl leading-none">Next Market:</p>
+          </div>
+
+          <!-- NEXT MARKET body -->
+          <section class="bg-white pt-6 pb-10">
+            <div class="max-w-2xl mx-auto px-4">
+              <div class="text-center mb-6">
+                <h2 class="font-logo font-bold uppercase tracking-[0.08em] text-2xl text-black mb-1">
+                  <span class="block">Saturday,</span>
+                  <span class="block">May 2, 2026</span>
+                </h2>
+                <p class="text-purple font-display font-bold text-lg mt-2">Opening Day — Early Spring Market</p>
+                <p class="text-black mt-3">8:30 AM – 12:30 PM</p>
+                <p class="mt-1">
+                  <span class="text-black underline decoration-2 underline-offset-[6px]">Village Green</span>
+                </p>
+              </div>
+
+              <div class="border-t border-b border-black/15 divide-y divide-black/10">
+                <div class="py-5 flex items-center gap-4">
+                  <span
+                    class="block w-12 h-12 shrink-0"
+                    style={`background-color: var(--color-purple); -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
+                  ></span>
+                  <div class="flex-1">
+                    <p class="font-display font-bold text-purple text-sm uppercase tracking-widest">Live Music</p>
+                    <p class="font-display font-bold text-xl text-black leading-tight">Alley Cats</p>
+                    <p class="text-black text-sm mt-0.5">10:00 AM – 12:00 PM</p>
+                  </div>
+                </div>
+                <div class="py-5 flex items-center gap-4">
+                  <span
+                    class="block w-12 h-12 shrink-0"
+                    style={`background-color: var(--color-orange); -webkit-mask-image: url('${base}/icons/FM-STAR-ICON.png'); mask-image: url('${base}/icons/FM-STAR-ICON.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
+                  ></span>
+                  <div class="flex-1">
+                    <p class="font-display font-bold text-orange text-sm uppercase tracking-widest">Special Event</p>
+                    <p class="font-display font-bold text-xl text-black leading-tight">Season Opening Celebration</p>
+                    <p class="text-black text-sm mt-1">Welcome back the market for the 2026 season!</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-8 text-center">
+                <span class="inline-flex items-center justify-center gap-2 bg-orange text-cream font-display font-bold px-6 py-3 rounded-md">Meet All Vendors</span>
+              </div>
+            </div>
+          </section>
 
           <!-- Footer -->
-          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
-            <header class="flex flex-wrap items-baseline justify-between gap-2 p-4 border-b border-black/5 bg-white">
-              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">FOOTER</code>
-              <span class="text-xs text-black">Seen on: every page, bottom</span>
-            </header>
-            <div class="bg-black text-cream p-8">
-              <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
-                <div>
-                  <h3 class="font-logo text-base tracking-wide uppercase mb-3">Kinderhook Farmers Market</h3>
-                  <p class="text-cream/80">Village Green, Broad St &amp; Albany Ave</p>
-                  <p class="text-cream/80">Kinderhook, NY 12106</p>
-                </div>
-                <div>
-                  <h3 class="font-display font-bold mb-3">Quick Links</h3>
-                  <ul class="space-y-1 text-cream/80">
-                    <li>Our Vendors</li>
-                    <li>Discover Kinderhook</li>
-                    <li>Business Directory</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 class="font-display font-bold mb-3">Connect</h3>
-                  <p class="text-cream/80">Contact form</p>
-                  <p class="text-cream/80">info@kinderhook…</p>
-                  <p class="text-cream/80">Facebook</p>
-                </div>
-              </div>
-            </div>
-          </article>
-
+          <div class="bg-black text-cream p-6 text-center">
+            <p class="font-logo uppercase tracking-[0.08em] text-sm mb-3">Market Sponsors</p>
+            <p class="text-cream/70 text-xs">[Logos render in cream against the footer aubergine]</p>
+          </div>
         </div>
       </section>
 
-      <!-- Colors ─────────────────────────────── -->
-      <section id="colors" class="mb-14 scroll-mt-20">
-        <h2 class="font-display font-bold text-2xl md:text-3xl mb-6">Colors</h2>
+      <!-- ═══ CURRENT PALETTE ════════════════════════════════════════════════ -->
+      <section id="palette" class="mb-14 scroll-mt-20">
+        <h2 class="font-display font-bold text-2xl md:text-3xl mb-6">Current Palette</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {colors.map(c => (
+          {currentPalette.map(c => (
             <div class="border border-black/10 rounded-lg overflow-hidden flex flex-col">
-              <div class={`${c.twClass} h-28 border-b border-black/10`}></div>
+              <div class="h-28 border-b border-black/10" style={`background:${c.hex}`}></div>
               <div class="p-4 bg-white">
                 <div class="flex items-baseline justify-between mb-1">
                   <h3 class="font-display font-bold text-lg">{c.name}</h3>
@@ -356,62 +295,181 @@ const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
           ))}
         </div>
 
-        <!-- Contrast matrix -->
-        <h3 class="font-display font-bold text-xl mt-8 mb-3">Text on backgrounds</h3>
+        <h3 class="font-display font-bold text-xl mt-8 mb-3">Contrast checks</h3>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
           <div class="bg-cream p-4 rounded-md border border-black/10">
-            <p class="text-black font-medium">Black on cream — 7.27:1 ✓</p>
-            <p class="text-cream">White on cream — fails</p>
-            <p class="text-orange">Orange on cream — fails</p>
+            <p class="text-black font-medium">Aubergine on cream — 12.8:1 ✓</p>
+            <p class="text-purple">Purple on cream — 7.6:1 ✓</p>
+            <p class="text-orange">Orange on cream — 2.8:1 (large only)</p>
           </div>
           <div class="bg-white p-4 rounded-md border border-black/10">
-            <p class="text-black font-medium">Black on white — ✓</p>
+            <p class="text-black font-medium">Aubergine on white — ✓</p>
+            <p class="text-purple">Purple on white — ✓</p>
             <p class="text-orange">Orange on white — large only</p>
           </div>
           <div class="bg-black p-4 rounded-md">
-            <p class="text-cream font-medium">White on black — ✓</p>
-            <p class="text-cream">Cream on black — ✓</p>
-            <p class="text-orange">Orange on black — ✓ large</p>
+            <p class="text-cream font-medium">Cream on aubergine — ✓</p>
+            <p class="text-orange">Orange on aubergine — ✓ large</p>
           </div>
         </div>
       </section>
 
-      <!-- Active fonts ─────────────────────────────── -->
+      <!-- ═══ FONTS ══════════════════════════════════════════════════════════ -->
       <section id="fonts" class="mb-14 scroll-mt-20">
-        <h2 class="font-display font-bold text-2xl md:text-3xl mb-6">Active fonts</h2>
-        <p class="text-black mb-6">Fonts currently loaded sitewide.</p>
-
-        <div class="space-y-8">
+        <h2 class="font-display font-bold text-2xl md:text-3xl mb-6">Fonts</h2>
+        <div class="space-y-6">
           {activeFonts.map(f => (
             <div class="border border-black/10 rounded-lg p-5 bg-white">
-              <div class="flex flex-wrap items-baseline gap-3 mb-4 pb-3 border-b border-black/10">
+              <div class="flex flex-wrap items-baseline gap-3 mb-3 pb-3 border-b border-black/10">
                 <h3 class="font-display font-bold text-xl">{f.name}</h3>
                 <code class="text-xs font-mono text-black">var({f.varName})</code>
                 <code class="text-xs font-mono text-black">.{f.twClass}</code>
               </div>
               <p class="text-sm text-black mb-4 italic">{f.usage}</p>
-              <div class={`${f.twClass} space-y-3`}>
-                {displaySizes.map(s => (
-                  <div>
-                    <p class="text-xs text-black font-mono mb-1">{s.label}</p>
-                    <p class={`${s.className} leading-tight`}>Kinderhook Farmers Market</p>
-                  </div>
-                ))}
-                <div class="pt-2 border-t border-black/10 mt-4">
-                  <p class="text-xs text-black font-mono mb-1">Paragraph</p>
-                  <p class="text-base">The quick brown fox jumps over the lazy dog. Every Saturday, May through October — fresh local produce, artisan goods, and live music on the Village Green.</p>
-                </div>
+              <div class={`${f.twClass}`}>
+                <p class="text-4xl mb-2 leading-none">Kinderhook Farmers Market</p>
+                <p class="text-base">The quick brown fox jumps over the lazy dog. Every Saturday, May through October — fresh local produce, artisan goods, and live music on the Village Green.</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      <!-- Icons ─────────────────────────────── -->
+      <!-- ═══ COMPONENTS ═════════════════════════════════════════════════════ -->
+      <section id="components" class="mb-14 scroll-mt-20">
+        <h2 class="font-display font-bold text-2xl md:text-3xl mb-2">Components in use</h2>
+        <p class="text-black mb-6 max-w-2xl">Each is rendered with current site styling. Tag any element by its <code class="font-mono text-xs bg-black/5 px-1 py-0.5 rounded">CODE_TAG</code> when discussing.</p>
+
+        <div class="space-y-6">
+          <!-- BANNER_WIP -->
+          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
+            <header class="flex items-baseline justify-between gap-2 p-3 border-b border-black/5">
+              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">BANNER_WIP</code>
+              <span class="text-xs text-black/70">every page, top</span>
+            </header>
+            <div class="p-4">
+              <div class="bg-black text-cream text-center text-xs px-4 py-2 font-display tracking-wide">
+                <strong class="font-bold uppercase tracking-widest">Work in Progress:</strong>
+                <span class="opacity-90">This site is for demonstration only — information may not be accurate.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- BANNER_NEXT_MARKET -->
+          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
+            <header class="flex items-baseline justify-between gap-2 p-3 border-b border-black/5">
+              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">BANNER_NEXT_MARKET</code>
+              <span class="text-xs text-black/70">homepage</span>
+            </header>
+            <div class="p-0">
+              <div class="bg-purple py-3">
+                <p class="text-center font-logo font-bold text-cream uppercase tracking-[0.08em] text-2xl leading-none">Next Market:</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- ROW_LIVE_MUSIC -->
+          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
+            <header class="flex items-baseline justify-between gap-2 p-3 border-b border-black/5">
+              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">ROW_LIVE_MUSIC</code>
+              <span class="text-xs text-black/70">homepage NEXT MARKET section</span>
+            </header>
+            <div class="p-4 bg-white">
+              <div class="py-4 flex items-center gap-4 max-w-md">
+                <span
+                  class="block w-12 h-12 shrink-0"
+                  style={`background-color: #5D3C54; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
+                ></span>
+                <div class="flex-1">
+                  <p class="font-display font-bold text-purple text-sm uppercase tracking-widest">Live Music</p>
+                  <p class="font-display font-bold text-xl text-black leading-tight">Alley Cats</p>
+                  <p class="text-black text-sm mt-0.5">10:00 AM – 12:00 PM</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ROW_SPECIAL_EVENT -->
+          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
+            <header class="flex items-baseline justify-between gap-2 p-3 border-b border-black/5">
+              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">ROW_SPECIAL_EVENT</code>
+              <span class="text-xs text-black/70">homepage NEXT MARKET section</span>
+            </header>
+            <div class="p-4 bg-white">
+              <div class="py-4 flex items-center gap-4 max-w-md">
+                <span
+                  class="block w-12 h-12 shrink-0"
+                  style={`background-color: #B8860B; -webkit-mask-image: url('${base}/icons/FM-STAR-ICON.png'); mask-image: url('${base}/icons/FM-STAR-ICON.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
+                ></span>
+                <div class="flex-1">
+                  <p class="font-display font-bold text-orange text-sm uppercase tracking-widest">Special Event</p>
+                  <p class="font-display font-bold text-xl text-black leading-tight">Season Opening Celebration</p>
+                  <p class="text-black text-sm mt-1">Welcome back the market for the 2026 season!</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- VENDOR_CATEGORY -->
+          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
+            <header class="flex items-baseline justify-between gap-2 p-3 border-b border-black/5">
+              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">VENDOR_CATEGORY</code>
+              <span class="text-xs text-black/70">homepage Weekly Vendors</span>
+            </header>
+            <div class="p-4 bg-white">
+              <p class="font-logo uppercase tracking-[0.08em] text-xs text-black/60 mb-2 pb-1 border-b border-black/10">From the Farm</p>
+              <ul class="space-y-1">
+                <li class="text-black">Cedar Ridge Farm Ghent</li>
+                <li class="text-black">Damsel Garden</li>
+                <li class="text-black">Glencadia Greenhouses</li>
+                <li class="text-black">Heritage Hill Pork</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- BUTTON_PRIMARY -->
+          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
+            <header class="flex items-baseline justify-between gap-2 p-3 border-b border-black/5">
+              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">BUTTON_PRIMARY</code>
+              <span class="text-xs text-black/70">CTAs across the site</span>
+            </header>
+            <div class="p-4 bg-white flex flex-wrap gap-4">
+              <span class="inline-flex items-center justify-center bg-orange text-cream font-display font-bold px-6 py-3 rounded-md">Apply to Vend</span>
+              <span class="inline-flex items-center justify-center bg-purple text-cream font-display font-bold px-6 py-3 rounded-md">Submit an Event</span>
+              <span class="inline-flex items-center justify-center bg-black text-cream font-display font-bold px-4 py-2 rounded-md">Contact</span>
+            </div>
+          </article>
+
+          <!-- CALENDAR_ANCHOR -->
+          <article class="border border-black/10 rounded-lg bg-white overflow-hidden">
+            <header class="flex items-baseline justify-between gap-2 p-3 border-b border-black/5">
+              <code class="font-mono text-xs bg-orange/15 text-orange px-2 py-1 rounded">CALENDAR_ANCHOR</code>
+              <span class="text-xs text-black/70">/calendar</span>
+            </header>
+            <div class="p-4 bg-cream">
+              <article class="bg-white rounded-xl shadow-md overflow-hidden border-l-4 border-orange max-w-lg">
+                <div class="flex items-stretch">
+                  <div class="bg-orange text-cream flex flex-col items-center justify-center px-5 py-4 min-w-[84px]">
+                    <span class="text-xs uppercase tracking-widest font-semibold">Sat</span>
+                    <span class="text-3xl font-display font-bold leading-none mt-1">2</span>
+                  </div>
+                  <div class="flex-1 p-5">
+                    <h3 class="font-display font-bold text-xl text-black mb-1">Kinderhook Farmers Market — Opening Day</h3>
+                    <p class="text-sm text-black/80 mb-2">8:30 AM – 12:30 PM · Village Green</p>
+                    <p class="text-sm text-black"><strong>Live Music:</strong> Alley Cats</p>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ═══ ICONS ══════════════════════════════════════════════════════════ -->
       <section id="icons" class="mb-14 scroll-mt-20">
         <h2 class="font-display font-bold text-2xl md:text-3xl mb-2">Icons</h2>
         <p class="text-black mb-6">Hand-drawn Procreate icons. Files live in <code class="font-mono text-sm bg-black/5 px-1 py-0.5 rounded">public/icons/</code>.</p>
-
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {icons.map(filename => (
             <div class="border border-black/10 rounded-lg p-4 bg-white text-center flex flex-col items-center">
@@ -424,12 +482,10 @@ const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
         </div>
       </section>
 
-      <!-- Dividers ─────────────────────────────── -->
+      <!-- ═══ DIVIDERS ═══════════════════════════════════════════════════════ -->
       <section id="dividers" class="mb-14 scroll-mt-20">
         <h2 class="font-display font-bold text-2xl md:text-3xl mb-2">Dividers</h2>
-        <p class="text-black mb-6">Decorative horizontal dividers.</p>
-
-        <div class="space-y-6">
+        <div class="space-y-4">
           {dividers.map(filename => (
             <div class="py-4 border border-black/10 rounded-lg bg-white px-6">
               <div class="flex items-center justify-center mb-3">
@@ -443,4 +499,58 @@ const dividers = ['FM-DIVIDER_1.png', 'FM-DIVIDER_2.png', 'FM-DIVIDER_3.png'];
 
     </div>
   </div>
+
+  <script>
+    const preview = document.getElementById('palette-preview');
+    const readout = document.getElementById('active-palette-readout');
+    const inputs = {
+      cream: document.getElementById('color-cream-input') as HTMLInputElement,
+      black: document.getElementById('color-black-input') as HTMLInputElement,
+      purple: document.getElementById('color-purple-input') as HTMLInputElement,
+      orange: document.getElementById('color-orange-input') as HTMLInputElement,
+    };
+
+    function applyPalette(p: { cream: string; black: string; purple: string; orange: string }) {
+      if (!preview) return;
+      preview.style.setProperty('--color-cream', p.cream);
+      preview.style.setProperty('--color-black', p.black);
+      preview.style.setProperty('--color-purple', p.purple);
+      preview.style.setProperty('--color-orange', p.orange);
+      // Sync the color-input pickers
+      inputs.cream.value = p.cream;
+      inputs.black.value = p.black.toLowerCase();
+      inputs.purple.value = p.purple.toLowerCase();
+      inputs.orange.value = p.orange.toLowerCase();
+      if (readout) {
+        readout.textContent = `cream ${p.cream} · aubergine ${p.black} · purple ${p.purple} · orange ${p.orange}`;
+      }
+    }
+
+    document.querySelectorAll<HTMLButtonElement>('.palette-swatch').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        applyPalette({
+          cream: btn.dataset.cream!,
+          black: btn.dataset.black!,
+          purple: btn.dataset.purple!,
+          orange: btn.dataset.orange!,
+        });
+        document.querySelectorAll('.palette-swatch').forEach((b) => b.classList.remove('border-orange'));
+        btn.classList.add('border-orange');
+      });
+    });
+
+    // Live custom-input editing
+    function readCustom() {
+      applyPalette({
+        cream: inputs.cream.value,
+        black: inputs.black.value,
+        purple: inputs.purple.value,
+        orange: inputs.orange.value,
+      });
+    }
+    Object.values(inputs).forEach((input) => input?.addEventListener('input', readCustom));
+
+    // Initialize readout with the current palette
+    applyPalette({ cream: '#f4f2d9', black: '#2E1F2F', purple: '#5D3C54', orange: '#B8860B' });
+  </script>
 </BaseLayout>
