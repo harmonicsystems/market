@@ -411,6 +411,7 @@ for i, w in enumerate([14, 40, 30, 22, 14, 40], 1):
 
 village_events = [
     ["2026-05-09", "Open Maker Hours — Mother's Day Card Making", "Super Stories", "10:00am - 12:00pm", "community", ""],
+    ["2026-05-23", "Village-Wide Spring Yard Sale", "Village of Kinderhook", "9:00am until sold out", "community", ""],
     ["2026-05-30", "Kinderhook Makers Market (Extended Market Day)", "Kinderhook Farmers Market & Makers Market / Village Green", "8:30am - 2:00pm", "community", "Extended market hours"],
     ["2026-05-30", "Fyfe & Drumms Muster & Parade", "Broad Street", "Noon", "community", ""],
     ["2026-05-30", "Modus Operandi — Exhibition Opening", "The School / Jack Shainman Gallery", "2:00pm", "art", ""],
@@ -419,6 +420,7 @@ village_events = [
     ["2026-06-06", "OK 5K", "Kinderhook", "TBD", "community", ""],
     ["2026-06-06", "Persons of Color Cemetery Tour", "The Cultural Landscape Foundation", "TBD", "community", ""],
     ["2026-06-20", "Rising Star Dance Academy Performance", "Village Green / Market", "11:00am", "community", "At the market"],
+    ["2026-09-19", "Village-Wide Fall Yard Sale", "Village of Kinderhook", "9:00am until sold out", "community", ""],
     ["2026-06-27", "Kinderhook Pride Parade", "Hudson Street to Village Square", "2:00pm", "community", ""],
     ["2026-07-04", "People's Parade", "KBPA / Rothermel Park", "11:30am", "community", "Market extended to 1:30pm"],
     ["2026-10-10", "Fall Festival & Kinderhook Makers Market", "Kinderhook Farmers Market & Makers Market / Village Green", "8:30am - 2:00pm", "community", "Extended market hours"],
