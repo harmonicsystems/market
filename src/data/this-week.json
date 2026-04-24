@@ -1,17 +1,20 @@
 {
   "date": "2026-05-02",
   "displayDate": "Saturday, May 2, 2026",
-  "theme": "Opening Day!",
+  "theme": "Opening Day — Early Spring Market",
   "note": "Rain or Shine",
   "music": null,
   "specialEvents": [
     {
       "name": "Season Opening Celebration",
       "time": "8:30am",
-      "description": ""
+      "description": "Welcome back the market for the 2026 season!"
     }
   ],
-  "guestVendors": [],
+  "guestVendors": [
+    "Columbia Friends of the Electric Trail",
+    "Wild Lavender Crafts"
+  ],
   "communityPartners": [],
   "regularVendors": []
 }

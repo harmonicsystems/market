@@ -132,15 +132,85 @@ while current <= season_end:
     current += timedelta(weeks=1)
     row_num += 1
 
-# Fill in Opening Day as example
-ws1.cell(row=2, column=3, value="Opening Day!")
-ws1.cell(row=2, column=7, value="Season Opening Celebration")
-ws1.cell(row=2, column=8, value="8:30am")
-ws1.cell(row=2, column=9, value="Welcome back the market with local favorites")
-ws1.cell(row=2, column=10, value="Crème de la Crème Bakery, Peta's Pocket Caribbean BBQ")
-ws1.cell(row=2, column=11, value="Rise Against Hunger, Valatie Food Pantry")
-ws1.cell(row=2, column=12, value="River House Market, Grandaddy Weaves Honey, Samascott Orchards")
-ws1.cell(row=2, column=13, value="Ready")
+# 2026 weekly vendors (present every Saturday).
+weekly_vendors_list = (
+    "Albany Distilling, Cedar Ridge Farm Ghent, Damsel Garden, "
+    "Glencadia Greenhouses, Hamrah's Lebanese Foods & Takeaway, "
+    "Heritage Hill Pork (Formerly Lovers Leap Farm), Hickory Creek Farms, "
+    "Kipling & Raven Dog Treats, Mort's Maple, O'Boys Soaps, "
+    "Our Old House Bakery, River House Market, Valatie Food Pantry, "
+    "Worldling's Pleasure"
+)
+for row in range(2, row_num):
+    ws1.cell(row=row, column=12, value=weekly_vendors_list)
+
+# Pre-fill per-date themes, guest vendors, special events, and extended hours.
+# (Any remaining blanks are for the coordinator to fill in week by week.)
+weekly_overrides = {
+    "2026-05-02": {
+        "theme": "Opening Day — Early Spring Market",
+        "guest_vendors": "Columbia Friends of the Electric Trail, Wild Lavender Crafts",
+        "special_name": "Season Opening Celebration",
+        "special_time": "8:30am",
+        "special_desc": "Welcome back the market for the 2026 season!",
+        "status": "Ready",
+    },
+    "2026-05-09": {
+        "special_name": "Super Stories Open Maker Hours — Mother's Day Card Making",
+        "special_time": "10:00am - 12:00pm",
+        "special_desc": "Drop in to Super Stories and make a card for Mother's Day.",
+    },
+    "2026-05-30": {
+        "theme": "Kinderhook Makers Market — Extended Market Day",
+        "note": "Extended hours: 8:30am - 2:00pm. Rain or Shine",
+        "special_name": "Kinderhook Makers Market / Fyfe & Drumms Muster & Parade / Modus Operandi Opening",
+        "special_time": "8:30am - 2:00pm (market); Parade noon; Gallery 2pm",
+        "special_desc": "Extended market day. Fyfe & Drumms Muster & Parade on Broad Street at noon. Modus Operandi opens at The School (Jack Shainman) at 2pm.",
+    },
+    "2026-06-20": {
+        "special_name": "Rising Star Dance Academy Performance",
+        "special_time": "11:00am",
+        "special_desc": "Live performance at the market.",
+    },
+    "2026-07-04": {
+        "theme": "July 4th — Extended Market Day",
+        "note": "Extended hours: 8:30am - 1:30pm. Rain or Shine",
+        "special_name": "KBPA People's Parade",
+        "special_time": "11:30am",
+        "special_desc": "Parade kicks off from Rothermel Park. Market runs extended hours to 1:30pm.",
+    },
+    "2026-10-10": {
+        "theme": "Fall Festival — Extended Market Day",
+        "note": "Extended hours: 8:30am - 2:00pm. Rain or Shine",
+        "special_name": "Fall Festival & Kinderhook Makers Market",
+        "special_time": "8:30am - 2:00pm",
+        "special_desc": "Extended market day with the Kinderhook Makers Market.",
+    },
+    "2026-10-31": {
+        "theme": "Final Market Day of 2026 Season",
+    },
+}
+
+# Apply overrides.
+for row in range(2, row_num):
+    iso = ws1.cell(row=row, column=1).value
+    override = weekly_overrides.get(iso)
+    if not override:
+        continue
+    if "theme" in override:
+        ws1.cell(row=row, column=3, value=override["theme"])
+    if "note" in override:
+        ws1.cell(row=row, column=4, value=override["note"])
+    if "special_name" in override:
+        ws1.cell(row=row, column=7, value=override["special_name"])
+    if "special_time" in override:
+        ws1.cell(row=row, column=8, value=override["special_time"])
+    if "special_desc" in override:
+        ws1.cell(row=row, column=9, value=override["special_desc"])
+    if "guest_vendors" in override:
+        ws1.cell(row=row, column=10, value=override["guest_vendors"])
+    if "status" in override:
+        ws1.cell(row=row, column=13, value=override["status"])
 
 # Status dropdown validation
 status_val = DataValidation(type="list", formula1='"Draft,Ready,Published"', allow_blank=True)
@@ -309,7 +379,84 @@ style_headers(ws3, len(headers_3))
 style_data_rows(ws3, len(headers_3))
 
 
-# ─── Tab 4: Site Config ───
+# ─── Tab 4: Music Schedule ───
+
+ws_music = wb.create_sheet("Music Schedule")
+ws_music.sheet_properties.tabColor = "5D3C54"
+
+headers_music = ["Date", "Day", "Performer", "Time", "Notes"]
+ws_music.append(headers_music)
+for i, w in enumerate([14, 20, 32, 22, 30], 1):
+    ws_music.column_dimensions[get_column_letter(i)].width = w
+
+for iso, act in music_lineup.items():
+    d = date.fromisoformat(iso)
+    note = "Official title to come" if "(official title" in act else ""
+    act_clean = act.replace(" (official title to come)", "")
+    ws_music.append([iso, d.strftime("%A, %B %-d"), act_clean, "10:00am - 12:00pm", note])
+
+style_headers(ws_music, len(headers_music))
+style_data_rows(ws_music, len(headers_music))
+
+
+# ─── Tab 5: Village Events ───
+
+ws_events = wb.create_sheet("Village Events")
+ws_events.sheet_properties.tabColor = "B8860B"
+
+headers_events = ["Date", "Event", "Host / Location", "Time", "Category", "Notes"]
+ws_events.append(headers_events)
+for i, w in enumerate([14, 40, 30, 22, 14, 40], 1):
+    ws_events.column_dimensions[get_column_letter(i)].width = w
+
+village_events = [
+    ["2026-05-09", "Open Maker Hours — Mother's Day Card Making", "Super Stories", "10:00am - 12:00pm", "community", ""],
+    ["2026-05-30", "Kinderhook Makers Market (Extended Market Day)", "Kinderhook Farmers Market & Makers Market / Village Green", "8:30am - 2:00pm", "community", "Extended market hours"],
+    ["2026-05-30", "Fyfe & Drumms Muster & Parade", "Broad Street", "Noon", "community", ""],
+    ["2026-05-30", "Modus Operandi — Exhibition Opening", "The School / Jack Shainman Gallery", "2:00pm", "art", ""],
+    ["2026-06-05", "Seen Scenes — Exhibition Opens (runs through June 28)", "Kinderhook Knitting Mill / Create Council on the Arts", "", "art", ""],
+    ["2026-06-06", "Seen Scenes — Opening Reception", "Kinderhook Knitting Mill", "3:00pm - 5:00pm", "art", ""],
+    ["2026-06-06", "OK 5K", "Kinderhook", "TBD", "community", ""],
+    ["2026-06-06", "Persons of Color Cemetery Tour", "The Cultural Landscape Foundation", "TBD", "community", ""],
+    ["2026-06-20", "Rising Star Dance Academy Performance", "Village Green / Market", "11:00am", "community", "At the market"],
+    ["2026-06-27", "Kinderhook Pride Parade", "Hudson Street to Village Square", "2:00pm", "community", ""],
+    ["2026-07-04", "People's Parade", "KBPA / Rothermel Park", "11:30am", "community", "Market extended to 1:30pm"],
+    ["2026-10-10", "Fall Festival & Kinderhook Makers Market", "Kinderhook Farmers Market & Makers Market / Village Green", "8:30am - 2:00pm", "community", "Extended market hours"],
+    ["2026-10-31", "Final Market Day of 2026 Season", "Kinderhook Farmers Market / Village Green", "8:30am - 12:30pm", "food", ""],
+]
+for e in village_events:
+    ws_events.append(e)
+
+style_headers(ws_events, len(headers_events))
+style_data_rows(ws_events, len(headers_events))
+
+
+# ─── Tab 6: Sponsors ───
+
+ws_sponsors = wb.create_sheet("Sponsors")
+ws_sponsors.sheet_properties.tabColor = "F26A2A"
+
+headers_sponsors = ["Sponsor", "Website", "Logo Status", "Notes"]
+ws_sponsors.append(headers_sponsors)
+for i, w in enumerate([40, 40, 16, 40], 1):
+    ws_sponsors.column_dimensions[get_column_letter(i)].width = w
+
+sponsors_list = [
+    ["Berkshire Hathaway Home Services Blake Realty", "", "To come", ""],
+    ["Columbia County Tourism", "", "To come", ""],
+    ["Herringtons", "", "To come", ""],
+    ["Julia Jayne Pilates", "", "To come", ""],
+    ["Todd Farrell's Car Care Center", "", "To come", ""],
+    ["Valkin Properties", "", "To come", ""],
+]
+for s in sponsors_list:
+    ws_sponsors.append(s)
+
+style_headers(ws_sponsors, len(headers_sponsors))
+style_data_rows(ws_sponsors, len(headers_sponsors))
+
+
+# ─── Tab 7: Site Config ───
 
 ws4 = wb.create_sheet("Site Config")
 ws4.sheet_properties.tabColor = "1A1A1A"

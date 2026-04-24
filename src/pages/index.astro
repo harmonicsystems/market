@@ -8,6 +8,14 @@ import welcomeImage from '../assets/images/decorative/welcome-kinderhook.webp';
 import siteConfig from '../data/site-config.json';
 import thisWeek from '../data/this-week.json';
 import musicSchedule from '../data/music-schedule.json';
+import weeklyVendors from '../data/weekly-vendors.json';
+import sponsors from '../data/sponsors.json';
+
+// Default to the season's weekly vendor roster; per-week override in this-week.json wins if present.
+const regularVendorNames: string[] =
+  thisWeek.regularVendors.length > 0
+    ? thisWeek.regularVendors
+    : weeklyVendors.vendors.map((v) => v.name);
 
 // Look up this week's performer from the season schedule; fall back to this-week.json override.
 const scheduledMusic = musicSchedule.performances.find((p) => p.date === thisWeek.date);
@@ -187,9 +195,9 @@ const base = import.meta.env.BASE_URL;
             <span class="w-2 h-2 bg-orange rounded-full"></span>
             Weekly Vendors
           </h3>
-          {thisWeek.regularVendors.length > 0 ? (
+          {regularVendorNames.length > 0 ? (
             <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {thisWeek.regularVendors.map((vendor: string) => (
+              {regularVendorNames.map((vendor: string) => (
                 <li class="flex items-center gap-2 text-black">
                   <svg class="w-4 h-4 text-orange shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -229,6 +237,21 @@ const base = import.meta.env.BASE_URL;
       </div>
       -->
 
+    </div>
+  </section>
+
+  <!-- Sponsors -->
+  <section class="bg-cream py-12 border-t border-black/10">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h2 class="font-display font-bold text-2xl md:text-3xl text-black mb-2">Market Sponsors</h2>
+      <p class="text-black/70 text-sm mb-6 italic">{sponsors.note}</p>
+      <ul class="flex flex-wrap justify-center gap-3">
+        {sponsors.sponsors.map((s) => (
+          <li class="bg-white px-4 py-2 rounded-md text-black font-display text-sm md:text-base shadow-sm">
+            {s.name}
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 

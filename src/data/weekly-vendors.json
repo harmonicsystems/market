@@ -1,0 +1,44 @@
+{
+  "vendors": [
+    { "name": "Albany Distilling" },
+    { "name": "Cedar Ridge Farm Ghent" },
+    { "name": "Damsel Garden", "slug": "damsel-garden" },
+    { "name": "Glencadia Greenhouses" },
+    { "name": "Hamrah's Lebanese Foods & Takeaway" },
+    { "name": "Heritage Hill Pork", "note": "Formerly Lovers Leap Farm" },
+    { "name": "Hickory Creek Farms" },
+    { "name": "Kipling & Raven Dog Treats" },
+    { "name": "Mort's Maple" },
+    { "name": "O'Boys Soaps" },
+    { "name": "Our Old House Bakery" },
+    { "name": "River House Market", "slug": "river-house-market" },
+    { "name": "Valatie Food Pantry" },
+    { "name": "Worldling's Pleasure" }
+  ],
+  "returningInMayOrJune": [
+    "Overlook Farms",
+    "Meadowlark Farm",
+    "Roxbury Farm"
+  ],
+  "occasional": [
+    "Birdhouse Dude",
+    "Columbia Friends of the Electric Trail",
+    "Columbia Kitchen",
+    "Columbia Land Conservancy",
+    "Connie Pastorius",
+    "Courtney Aison",
+    "Four Corners Pop Up",
+    "Friends of the Kinderhook Memorial Library",
+    "Goodway Bakery",
+    "Jean Decker Pottery",
+    "Kinderhook Reformed Church",
+    "Neverstill Wines",
+    "Peta's Pocket",
+    "Pogliani Select",
+    "Pro Sharp Mobile Sharpening",
+    "Saint Paul's Episcopal Church",
+    "The Field Shop",
+    "Together for Youth",
+    "Wild Lavender Crafts"
+  ]
+}
