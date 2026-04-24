@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StructuredData from '../components/StructuredData.astro';
+import MarketIcon from '../components/MarketIcon.astro';
+import musicSchedule from '../data/music-schedule.json';
+
+const base = import.meta.env.BASE_URL;
+
+// Group performances by month for readable display.
+function formatDate(iso: string) {
+  return new Date(iso + 'T12:00:00').toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+function monthKey(iso: string) {
+  return new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+}
+
+const byMonth = musicSchedule.performances.reduce<Record<string, typeof musicSchedule.performances>>((acc, p) => {
+  const key = monthKey(p.date);
+  (acc[key] ||= []).push(p);
+  return acc;
+}, {});
+
+const todayIso = new Date().toISOString().slice(0, 10);
+---
+
+<BaseLayout
+  title="Live Music at the Market — 2026 Season"
+  description="Live music every Saturday at the Kinderhook Farmers Market from 10am to noon, May through October 2026. Featuring Alley Cats, Scott Stockman, Jasperoo, Mike Pagnani, Alejandra Maciel, and more."
+  canonicalPath="/music"
+>
+  <StructuredData slot="head" type="breadcrumb" data={{ items: [{ name: 'Home', url: '/' }, { name: 'Music', url: '/music' }] }} />
+
+  <!-- Hero -->
+  <section class="bg-cream py-10 md:py-12">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <div class="flex justify-center mb-4">
+        <span
+          class="social-icon-mask block w-16 h-16"
+          style={`background-color: #5D3C54; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png');`}
+          aria-hidden="true"
+        ></span>
+      </div>
+      <h1 class="font-display font-bold text-4xl md:text-5xl text-black mb-3">Live Music at the Market</h1>
+      <p class="text-black text-lg max-w-2xl mx-auto">
+        Every Saturday, May through October — performances from {musicSchedule.time} on the Village Green.
+      </p>
+    </div>
+  </section>
+
+  <!-- Schedule -->
+  <section class="bg-cream pb-16">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="space-y-10">
+        {Object.entries(byMonth).map(([month, performances]) => (
+          <div>
+            <h2 class="font-logo font-bold uppercase tracking-[0.08em] text-2xl text-black mb-4">{month}</h2>
+            <ul class="space-y-3">
+              {performances.map((p) => {
+                const past = p.date < todayIso;
+                return (
+                  <li
+                    class={`bg-white rounded-xl shadow-md p-5 flex items-start gap-4 ${past ? 'opacity-60' : ''}`}
+                  >
+                    <MarketIcon name="music" class="w-10 h-10 shrink-0 mt-1" />
+                    <div class="flex-1">
+                      <p class="text-xs uppercase tracking-widest text-orange font-semibold mb-1">
+                        {formatDate(p.date)}
+                      </p>
+                      <p class="font-display font-bold text-xl text-black">{p.act}</p>
+                      {p.note && <p class="text-black text-sm italic mt-1">{p.note}</p>}
+                      <p class="text-black text-sm mt-1">{musicSchedule.time}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <!-- Contact CTA -->
+      <div class="mt-12 bg-purple rounded-2xl p-8 text-center text-white">
+        <h2 class="font-display font-bold text-2xl mb-3">Want to play the market?</h2>
+        <p class="text-white/90 mb-5 max-w-xl mx-auto">
+          We book local musicians for each Saturday of the season. Reach out to share your sound.
+        </p>
+        <a href={`${base}/contact`} class="inline-block bg-white text-black font-display font-bold px-6 py-3 rounded-md hover:bg-white/90 transition-colors">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

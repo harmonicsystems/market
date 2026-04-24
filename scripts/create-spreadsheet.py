@@ -76,14 +76,46 @@ widths_1 = [14, 28, 20, 18, 20, 20, 24, 16, 34, 34, 30, 34, 12]
 for i, w in enumerate(widths_1, 1):
     ws1.column_dimensions[get_column_letter(i)].width = w
 
-# Pre-fill Saturdays for 2026 season (May 9 - Oct 10)
-season_start = date(2026, 5, 9)
-season_end = date(2026, 10, 10)
+# 2026 season music lineup (10am–12pm each Saturday).
+music_lineup = {
+    "2026-05-02": "Alley Cats",
+    "2026-05-09": "Scott Stockman",
+    "2026-05-16": "Mike Pagnani",
+    "2026-05-23": "Alejandra Maciel & Friend",
+    "2026-05-30": "Jasperoo",
+    "2026-06-06": "The Sound of Somewhere",
+    "2026-06-13": "Scott Stockman",
+    "2026-06-20": "Alejandra Maciel & Friend",
+    "2026-06-27": "Jasperoo",
+    "2026-07-04": "Brad & Friends (official title to come)",
+    "2026-07-11": "Scott Stockman",
+    "2026-07-18": "The Last Pangeans",
+    "2026-07-25": "Jasperoo",
+    "2026-08-01": "Alley Cats",
+    "2026-08-08": "Scott Stockman",
+    "2026-08-15": "Too Lazy Boys",
+    "2026-08-22": "Jasperoo",
+    "2026-08-29": "The Sound of Somewhere",
+    "2026-09-05": "Mike Pagnani",
+    "2026-09-12": "Scott Stockman",
+    "2026-09-19": "Jasperoo",
+    "2026-09-26": "Alley Cats",
+    "2026-10-03": "Mike Pagnani",
+    "2026-10-10": "Scott Stockman & Friends",
+    "2026-10-17": "Monty Bopp",
+    "2026-10-24": "Alejandra Maciel & Friend",
+    "2026-10-31": "TC",
+}
+
+# Pre-fill Saturdays for 2026 season (May 2 - Oct 31)
+season_start = date(2026, 5, 2)
+season_end = date(2026, 10, 31)
 current = season_start
 row_num = 2
 while current <= season_end:
-    ws1.cell(row=row_num, column=1, value=current.strftime("%Y-%m-%d"))
-    # Display date formula
+    iso = current.strftime("%Y-%m-%d")
+    ws1.cell(row=row_num, column=1, value=iso)
+    # Display date
     ws1.cell(
         row=row_num,
         column=2,
@@ -91,6 +123,10 @@ while current <= season_end:
     )
     # Default note
     ws1.cell(row=row_num, column=4, value="Rain or Shine")
+    # Pre-fill music from 2026 lineup
+    if iso in music_lineup:
+        ws1.cell(row=row_num, column=5, value=music_lineup[iso])
+        ws1.cell(row=row_num, column=6, value="10:00am - 12:00pm")
     # Default status
     ws1.cell(row=row_num, column=13, value="Draft")
     current += timedelta(weeks=1)
@@ -98,8 +134,6 @@ while current <= season_end:
 
 # Fill in Opening Day as example
 ws1.cell(row=2, column=3, value="Opening Day!")
-ws1.cell(row=2, column=5, value="Jasperoo")
-ws1.cell(row=2, column=6, value="10:00am - 12:00pm")
 ws1.cell(row=2, column=7, value="Season Opening Celebration")
 ws1.cell(row=2, column=8, value="8:30am")
 ws1.cell(row=2, column=9, value="Welcome back the market with local favorites")
@@ -289,8 +323,8 @@ ws4.append(["Setting", "Value", "Notes"])
 style_headers(ws4, 3)
 
 config_rows = [
-    ["Season Start", "2026-05-09", "First market Saturday"],
-    ["Season End", "2026-10-10", "Last market Saturday"],
+    ["Season Start", "2026-05-02", "First market Saturday"],
+    ["Season End", "2026-10-31", "Last market Saturday"],
     ["Market Day", "Saturday", ""],
     ["Start Time", "8:30 AM", ""],
     ["End Time", "12:30 PM", ""],

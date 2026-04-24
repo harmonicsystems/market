@@ -1,0 +1,32 @@
+{
+  "time": "10:00 AM – 12:00 PM",
+  "performances": [
+    { "date": "2026-05-02", "act": "Alley Cats" },
+    { "date": "2026-05-09", "act": "Scott Stockman" },
+    { "date": "2026-05-16", "act": "Mike Pagnani" },
+    { "date": "2026-05-23", "act": "Alejandra Maciel & Friend" },
+    { "date": "2026-05-30", "act": "Jasperoo" },
+    { "date": "2026-06-06", "act": "The Sound of Somewhere" },
+    { "date": "2026-06-13", "act": "Scott Stockman" },
+    { "date": "2026-06-20", "act": "Alejandra Maciel & Friend" },
+    { "date": "2026-06-27", "act": "Jasperoo" },
+    { "date": "2026-07-04", "act": "Brad & Friends", "note": "Official title to come" },
+    { "date": "2026-07-11", "act": "Scott Stockman" },
+    { "date": "2026-07-18", "act": "The Last Pangeans" },
+    { "date": "2026-07-25", "act": "Jasperoo" },
+    { "date": "2026-08-01", "act": "Alley Cats" },
+    { "date": "2026-08-08", "act": "Scott Stockman" },
+    { "date": "2026-08-15", "act": "Too Lazy Boys" },
+    { "date": "2026-08-22", "act": "Jasperoo" },
+    { "date": "2026-08-29", "act": "The Sound of Somewhere" },
+    { "date": "2026-09-05", "act": "Mike Pagnani" },
+    { "date": "2026-09-12", "act": "Scott Stockman" },
+    { "date": "2026-09-19", "act": "Jasperoo" },
+    { "date": "2026-09-26", "act": "Alley Cats" },
+    { "date": "2026-10-03", "act": "Mike Pagnani" },
+    { "date": "2026-10-10", "act": "Scott Stockman & Friends" },
+    { "date": "2026-10-17", "act": "Monty Bopp" },
+    { "date": "2026-10-24", "act": "Alejandra Maciel & Friend" },
+    { "date": "2026-10-31", "act": "TC" }
+  ]
+}

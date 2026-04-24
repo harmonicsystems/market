@@ -7,6 +7,12 @@ import HeroCore from '../components/HeroCore.astro';
 import welcomeImage from '../assets/images/decorative/welcome-kinderhook.webp';
 import siteConfig from '../data/site-config.json';
 import thisWeek from '../data/this-week.json';
+import musicSchedule from '../data/music-schedule.json';
+
+// Look up this week's performer from the season schedule; fall back to this-week.json override.
+const scheduledMusic = musicSchedule.performances.find((p) => p.date === thisWeek.date);
+const musicAct = scheduledMusic?.act ?? thisWeek.music?.name ?? null;
+const musicTime = scheduledMusic ? musicSchedule.time : thisWeek.music?.time ?? null;
 
 // Calculate days until next market
 function getNextMarketInfo() {
@@ -119,16 +125,21 @@ const base = import.meta.env.BASE_URL;
             <span class="social-icon-mask block w-12 h-12 shrink-0" style={`background-color: #5D3C54; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png');`} aria-hidden="true"></span>
             <div>
               <p class="font-display font-bold text-purple text-lg md:text-xl uppercase tracking-widest">Live Music</p>
-              {thisWeek.music ? (
-                <p class="font-display font-bold text-lg text-black">{thisWeek.music.name}</p>
+              {musicAct ? (
+                <p class="font-display font-bold text-lg text-black">{musicAct}</p>
               ) : (
                 <p class="font-display font-bold text-lg text-black italic">Lineup coming soon</p>
               )}
             </div>
           </div>
-          {thisWeek.music && (
-            <p class="text-black text-sm">{thisWeek.music.time}</p>
+          {musicTime && (
+            <p class="text-black text-sm">{musicTime}</p>
           )}
+          <p class="mt-3">
+            <a href={`${base}/music`} class="text-purple font-display font-bold text-sm underline decoration-2 underline-offset-4 hover:text-orange transition-colors">
+              See full season lineup →
+            </a>
+          </p>
         </div>
 
         <!-- Special Events -->
