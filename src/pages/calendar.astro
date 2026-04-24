@@ -5,53 +5,116 @@ import MarketIcon from '../components/MarketIcon.astro';
 import { getCollection } from 'astro:content';
 import siteConfig from '../data/site-config.json';
 import thisWeek from '../data/this-week.json';
+import musicSchedule from '../data/music-schedule.json';
 
 const base = import.meta.env.BASE_URL;
 
-// Build a synthetic "market" event so the market always anchors the calendar.
-const marketEvent = {
-  data: {
-    title: 'Kinderhook Farmers Market',
-    slug: '__market__',
-    host: 'Kinderhook Farmers Market',
-    hostLink: undefined,
-    date: thisWeek.date,
-    time: `${siteConfig.schedule.startTime} – ${siteConfig.schedule.endTime}`,
-    location: siteConfig.location.name,
-    address: siteConfig.location.address,
-    link: `${base}/`,
-    category: 'food' as const,
-    description: thisWeek.theme ? `${thisWeek.theme} — ${siteConfig.tagline}` : siteConfig.tagline,
-    featured: true,
-  },
+// ── Build the season's Saturdays as anchor events ───────────────────────────
+function saturdaysBetween(startIso: string, endIso: string): string[] {
+  const out: string[] = [];
+  const start = new Date(startIso + 'T12:00:00');
+  const end = new Date(endIso + 'T12:00:00');
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 7)) {
+    out.push(d.toISOString().slice(0, 10));
+  }
+  return out;
+}
+
+const musicByDate: Record<string, string> = {};
+for (const p of musicSchedule.performances) musicByDate[p.date] = p.act;
+
+// Per-date overrides: extended hours and custom themes for big market days.
+const dateOverrides: Record<string, { theme?: string; endTime?: string }> = {
+  '2026-05-02': { theme: 'Opening Day — Early Spring Market' },
+  '2026-05-30': { theme: 'Kinderhook Makers Market — Extended Market Day', endTime: '2:00 PM' },
+  '2026-07-04': { theme: 'July 4th — Extended Market Day', endTime: '1:30 PM' },
+  '2026-10-10': { theme: 'Fall Festival — Extended Market Day', endTime: '2:00 PM' },
+  '2026-10-31': { theme: 'Final Market Day of the 2026 Season' },
 };
 
-// Pull events, keep upcoming only, sort by date.
+// Community-event slugs that are fully absorbed by the market anchor — suppress to avoid duplication.
+const suppressedCommunitySlugs = new Set([
+  'kinderhook-makers-market-2026-05-30',
+  'fall-festival',
+  'final-market-day-2026',
+]);
+
+function marketAnchor(iso: string) {
+  const override = dateOverrides[iso];
+  const music = musicByDate[iso];
+  const theme = override?.theme ?? (iso === thisWeek.date ? thisWeek.theme : undefined);
+  const endTime = override?.endTime ?? siteConfig.schedule.endTime;
+  return {
+    kind: 'market' as const,
+    date: iso,
+    title: theme ? `Kinderhook Farmers Market — ${theme}` : 'Kinderhook Farmers Market',
+    host: 'Kinderhook Farmers Market',
+    time: `${siteConfig.schedule.startTime} – ${endTime}`,
+    location: siteConfig.location.name,
+    address: siteConfig.location.address,
+    music,
+    description: override?.endTime ? 'Extended market hours.' : undefined,
+  };
+}
+
+// ── Load community events and normalize them alongside market Saturdays ─────
 const todayIso = new Date().toISOString().slice(0, 10);
-const allEvents = await getCollection('events');
-const upcoming = [marketEvent, ...allEvents]
-  .filter((e) => (e.data.endDate || e.data.date) >= todayIso)
-  .sort((a, b) => a.data.date.localeCompare(b.data.date));
+const allCommunity = await getCollection('events');
 
-// Group into "This Saturday", "This Weekend" (Sun), "Upcoming".
-function dayOfWeek(iso: string) {
-  return new Date(iso + 'T12:00:00').getDay(); // 0 Sun .. 6 Sat
+type AnyEvent = {
+  kind: 'market' | 'community';
+  date: string;
+  title: string;
+  host?: string;
+  hostLink?: string;
+  time?: string;
+  location?: string;
+  address?: string;
+  link?: string;
+  category?: string;
+  description?: string;
+  music?: string;
+};
+
+const communityEvents: AnyEvent[] = allCommunity
+  .filter((e) => !suppressedCommunitySlugs.has(e.data.slug))
+  .map((e) => ({
+  kind: 'community',
+  date: e.data.date,
+  title: e.data.title,
+  host: e.data.host,
+  hostLink: e.data.hostLink,
+  time: e.data.time,
+  location: e.data.location,
+  address: e.data.address,
+  link: e.data.link,
+  category: e.data.category,
+  description: e.data.description,
+}));
+
+const marketSaturdays: AnyEvent[] = saturdaysBetween(siteConfig.season.start, siteConfig.season.end)
+  .map(marketAnchor);
+
+const allEvents = [...marketSaturdays, ...communityEvents]
+  .filter((e) => e.date >= todayIso)
+  .sort((a, b) => a.date.localeCompare(b.date));
+
+// ── Group by month for the primary view ─────────────────────────────────────
+function monthKey(iso: string) {
+  return new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 }
-function daysAway(iso: string) {
-  const a = new Date(iso + 'T12:00:00').getTime();
-  const b = new Date(todayIso + 'T12:00:00').getTime();
-  return Math.round((a - b) / 86_400_000);
+function dayOfMonth(iso: string) {
+  return new Date(iso + 'T12:00:00').getDate();
+}
+function formatWeekday(iso: string) {
+  return new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short' });
 }
 
-const thisSaturday = upcoming.filter((e) => dayOfWeek(e.data.date) === 6 && daysAway(e.data.date) <= 6);
-const thisSunday   = upcoming.filter((e) => dayOfWeek(e.data.date) === 0 && daysAway(e.data.date) <= 6);
-const later        = upcoming.filter((e) => !thisSaturday.includes(e) && !thisSunday.includes(e));
-
-const groups = [
-  { heading: 'This Saturday', events: thisSaturday },
-  { heading: 'This Sunday',   events: thisSunday },
-  { heading: 'Upcoming',      events: later },
-].filter((g) => g.events.length > 0);
+const byMonth: Record<string, AnyEvent[]> = {};
+for (const e of allEvents) {
+  const key = monthKey(e.date);
+  (byMonth[key] ||= []).push(e);
+}
 
 const categoryIcon: Record<string, string> = {
   art: 'brush',
@@ -61,20 +124,11 @@ const categoryIcon: Record<string, string> = {
   food: 'apple',
   other: 'star',
 };
-
-function formatDate(iso: string) {
-  return new Date(iso + 'T12:00:00').toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  });
-}
 ---
 
 <BaseLayout
   title="Calendar"
-  description="Upcoming events in and around Kinderhook, NY — the farmers market, Jack Shainman gallery openings, Kinderhook Memorial Library events, and more happening in our Hudson Valley village."
+  description="Every Saturday market plus gallery openings, parades, library programs, and community events happening around Kinderhook — Hudson Valley, Columbia County, NY."
   canonicalPath="/calendar"
 >
   <StructuredData slot="head" type="breadcrumb" data={{ items: [{ name: 'Home', url: '/' }, { name: 'Calendar', url: '/calendar' }] }} />
@@ -86,47 +140,77 @@ function formatDate(iso: string) {
         What's Happening in Kinderhook
       </h1>
       <p class="text-black text-lg max-w-2xl mx-auto">
-        The Saturday market plus gallery openings, library programs, and community events happening around the village.
+        The Saturday market plus gallery openings, library programs, parades, and community events happening around the village.
       </p>
     </div>
   </section>
 
-  <!-- Event list -->
+  <!-- Calendar -->
   <section class="bg-cream pb-16">
     <div class="max-w-4xl mx-auto px-4">
-      {groups.length === 0 ? (
+      {Object.keys(byMonth).length === 0 ? (
         <div class="bg-white rounded-xl shadow-md p-8 text-center">
           <p class="text-black">No upcoming events on the calendar yet. Check back soon — or <a href={`${base}/contact`} class="gold-link text-orange font-semibold">let us know</a> about one.</p>
         </div>
       ) : (
-        <div class="space-y-10">
-          {groups.map((group) => (
+        <div class="space-y-12">
+          {Object.entries(byMonth).map(([month, events]) => (
             <div>
-              <h2 class="font-logo font-bold uppercase tracking-[0.08em] text-2xl text-black mb-4">{group.heading}</h2>
+              <h2 class="font-logo font-bold uppercase tracking-[0.08em] text-3xl text-black mb-6 pb-2 border-b-2 border-black/20">
+                {month}
+              </h2>
               <div class="space-y-4">
-                {group.events.map((event) => (
-                  <article class="bg-white rounded-xl shadow-md p-5 md:p-6 flex items-start gap-4">
-                    <MarketIcon name={categoryIcon[event.data.category] || 'star'} class="w-10 h-10 shrink-0 mt-1" />
-                    <div class="flex-1">
-                      <p class="text-xs uppercase tracking-widest text-orange font-semibold mb-1">{formatDate(event.data.date)}</p>
-                      <h3 class="font-display font-bold text-xl text-black mb-1">
-                        {event.data.link ? (
-                          <a href={event.data.link} class="gold-link" rel="noopener" target="_blank">{event.data.title}</a>
-                        ) : (
-                          event.data.title
+                {events.map((event) => event.kind === 'market' ? (
+                  <article class="bg-white rounded-xl shadow-md overflow-hidden border-l-4 border-orange">
+                    <div class="flex items-stretch">
+                      {/* Date badge */}
+                      <div class="bg-orange text-white flex flex-col items-center justify-center px-5 py-4 min-w-[84px]">
+                        <span class="text-xs uppercase tracking-widest font-semibold">{formatWeekday(event.date)}</span>
+                        <span class="text-3xl font-display font-bold leading-none mt-1">{dayOfMonth(event.date)}</span>
+                      </div>
+                      {/* Body */}
+                      <div class="flex-1 p-5 md:p-6">
+                        <h3 class="font-display font-bold text-xl text-black mb-1">{event.title}</h3>
+                        <p class="text-sm text-black/80 mb-2">
+                          <span>{event.time}</span>
+                          {event.location && <span> · {event.location}</span>}
+                        </p>
+                        {event.music && (
+                          <p class="text-sm text-purple flex items-center gap-1">
+                            <span class="social-icon-mask inline-block w-4 h-4 shrink-0" style={`background-color: #5D3C54; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png');`} aria-hidden="true"></span>
+                            <span><strong>Live Music:</strong> {event.music}</span>
+                          </p>
                         )}
-                      </h3>
-                      <p class="text-sm text-black mb-2">
-                        {event.data.hostLink ? (
-                          <a href={event.data.hostLink} class="gold-link" rel="noopener" target="_blank">{event.data.host}</a>
-                        ) : (
-                          event.data.host
-                        )}
-                        {event.data.time && <span> · {event.data.time}</span>}
-                        {event.data.location && <span> · {event.data.location}</span>}
-                      </p>
-                      {event.data.description && <p class="text-black text-sm">{event.data.description}</p>}
-                      {event.data.address && <p class="text-black text-xs mt-2 italic">{event.data.address}</p>}
+                        {event.description && <p class="text-sm text-black mt-2">{event.description}</p>}
+                      </div>
+                    </div>
+                  </article>
+                ) : (
+                  <article class="bg-white rounded-xl shadow-md overflow-hidden ml-0 md:ml-8">
+                    <div class="flex items-start gap-4 p-5 md:p-6">
+                      <div class="flex flex-col items-center justify-center min-w-[60px]">
+                        <span class="text-[10px] uppercase tracking-widest text-black/70 font-semibold">{formatWeekday(event.date)}</span>
+                        <span class="text-2xl font-display font-bold text-black leading-none mt-0.5">{dayOfMonth(event.date)}</span>
+                      </div>
+                      <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                          <MarketIcon name={categoryIcon[event.category || 'other'] || 'star'} class="w-6 h-6 shrink-0" />
+                          <h3 class="font-display font-bold text-lg text-black">
+                            {event.link ? (
+                              <a href={event.link} class="gold-link" rel="noopener" target="_blank">{event.title}</a>
+                            ) : event.title}
+                          </h3>
+                        </div>
+                        <p class="text-sm text-black mb-1">
+                          {event.hostLink ? (
+                            <a href={event.hostLink} class="gold-link" rel="noopener" target="_blank">{event.host}</a>
+                          ) : event.host}
+                          {event.time && <span> · {event.time}</span>}
+                          {event.location && <span> · {event.location}</span>}
+                        </p>
+                        {event.description && <p class="text-sm text-black">{event.description}</p>}
+                        {event.address && <p class="text-xs text-black/70 italic mt-2">{event.address}</p>}
+                      </div>
                     </div>
                   </article>
                 ))}
@@ -136,7 +220,7 @@ function formatDate(iso: string) {
         </div>
       )}
 
-      <!-- Submit an event CTA -->
+      <!-- Submit CTA -->
       <div class="mt-12 bg-purple rounded-2xl p-8 text-center text-white">
         <h2 class="font-display font-bold text-2xl mb-3">Have something happening?</h2>
         <p class="text-white/90 mb-5 max-w-xl mx-auto">

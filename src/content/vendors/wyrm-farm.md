@@ -11,7 +11,7 @@ website: ""
 instagram: ""
 facebook: ""
 featured: true
-active: true
+active: false
 vendorType: "regular"
 ---
 

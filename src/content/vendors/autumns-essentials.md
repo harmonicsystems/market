@@ -11,7 +11,7 @@ website: ""
 instagram: ""
 facebook: ""
 featured: false
-active: true
+active: false
 vendorType: "guest"
 ---
 

@@ -11,7 +11,7 @@ website: "https://samascottorchards.com"
 instagram: "@samascottorchards"
 facebook: ""
 featured: true
-active: true
+active: false
 vendorType: "regular"
 ---
 
