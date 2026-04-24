@@ -20,8 +20,16 @@ function saturdaysBetween(startIso: string, endIso: string): string[] {
   return out;
 }
 
-const musicByDate: Record<string, string> = {};
-for (const p of musicSchedule.performances) musicByDate[p.date] = p.act;
+const musicByDate: Record<string, { act: string; performerSlug?: string }> = {};
+for (const p of musicSchedule.performances) {
+  musicByDate[p.date] = { act: p.act, performerSlug: p.performerSlug };
+}
+
+// Active performer slugs — for linking the act name through to its profile.
+const performerProfiles = await getCollection('performers');
+const activePerformerSlugs = new Set(
+  performerProfiles.filter((p) => p.data.active).map((p) => p.data.slug)
+);
 
 // Per-date overrides: extended hours and custom themes for big market days.
 const dateOverrides: Record<string, { theme?: string; endTime?: string }> = {
@@ -52,7 +60,8 @@ function marketAnchor(iso: string) {
     time: `${siteConfig.schedule.startTime} – ${endTime}`,
     location: siteConfig.location.name,
     address: siteConfig.location.address,
-    music,
+    music: music?.act,
+    musicSlug: music?.performerSlug,
     description: override?.endTime ? 'Extended market hours.' : undefined,
   };
 }
@@ -74,6 +83,7 @@ type AnyEvent = {
   category?: string;
   description?: string;
   music?: string;
+  musicSlug?: string;
 };
 
 const communityEvents: AnyEvent[] = allCommunity
@@ -182,7 +192,17 @@ const categoryIcon: Record<string, string> = {
                         {event.music && (
                           <p class="text-sm text-black flex items-center gap-1">
                             <span class="social-icon-mask inline-block w-4 h-4 shrink-0" style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png');`} aria-hidden="true"></span>
-                            <span><strong>Live Music:</strong> {event.music}</span>
+                            <span>
+                              <strong>Live Music:</strong>{' '}
+                              {event.musicSlug && activePerformerSlugs.has(event.musicSlug) ? (
+                                <a
+                                  href={`${base}/performers/${event.musicSlug}`}
+                                  class="underline decoration-2 underline-offset-4 [text-decoration-skip-ink:auto] hover:text-orange transition-colors"
+                                >
+                                  {event.music}
+                                </a>
+                              ) : event.music}
+                            </span>
                           </p>
                         )}
                         {event.description && <p class="text-sm text-black mt-2">{event.description}</p>}
