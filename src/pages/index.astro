@@ -115,9 +115,10 @@ const base = import.meta.env.BASE_URL;
       <p class="text-center font-logo font-bold text-cream uppercase tracking-[0.08em] text-[clamp(1.875rem,8.5vw,3rem)] leading-none">Next Market:</p>
     </div>
     <div class="max-w-2xl mx-auto px-4">
-      <!-- Primary info — the core screenshot-worthy block -->
-      <div class="text-center mb-8">
-        <h2 class="font-logo font-bold uppercase tracking-[0.08em] text-2xl md:text-3xl text-black mb-1">
+      <!-- Primary info — the core screenshot-worthy block. Sized larger than
+           default body content so a phone screenshot reads at a glance. -->
+      <div class="text-center mb-10">
+        <h2 class="font-logo font-bold uppercase tracking-[0.08em] text-3xl md:text-5xl text-black mb-2 leading-[1.05]">
           {(() => {
             const [day, ...rest] = thisWeek.displayDate.split(',');
             const date = rest.join(',').trim();
@@ -130,24 +131,24 @@ const base = import.meta.env.BASE_URL;
           })()}
         </h2>
         {thisWeek.theme && (
-          <p class="text-black font-display font-bold text-lg mt-2">{thisWeek.theme}</p>
+          <p class="text-black font-display font-bold italic text-xl md:text-2xl mt-3">{thisWeek.theme}</p>
         )}
-        <p class="text-black mt-3">
+        <p class="text-black font-display text-xl md:text-2xl mt-5">
           {siteConfig.schedule.startTime} – {siteConfig.schedule.endTime}
         </p>
-        <p class="mt-1">
+        <p class="mt-2">
           <a
             href="https://www.google.com/maps/search/?api=1&query=Kinderhook+Village+Green+Kinderhook+NY+12106"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-black underline decoration-2 underline-offset-[6px] [text-decoration-skip-ink:auto] hover:text-black transition-colors"
+            class="text-black font-display text-lg md:text-xl underline decoration-2 underline-offset-[6px] [text-decoration-skip-ink:auto] hover:text-orange transition-colors"
           >
             Village Green
           </a>
         </p>
         {marketInfo.inSeason && marketInfo.daysUntil <= 7 && (
-          <p id="weather-widget" class="text-black text-sm mt-2">
-            <span id="weather-temp">…</span> <span class="text-black">·</span> <span id="weather-desc">Loading forecast</span>
+          <p id="weather-widget" class="text-black/70 text-base mt-4">
+            <span id="weather-temp">…</span> <span class="text-black/70">·</span> <span id="weather-desc">Loading forecast</span>
           </p>
         )}
       </div>
@@ -156,16 +157,16 @@ const base = import.meta.env.BASE_URL;
            so the section reads as a single shareable info block. -->
       <div class="border-t border-b border-black/15 divide-y divide-black/10">
         <!-- Live Music -->
-        <div class="py-6 flex items-center gap-4">
+        <div class="py-7 flex items-center gap-5">
           <span
-            class="social-icon-mask block w-12 h-12 md:w-14 md:h-14 shrink-0"
+            class="social-icon-mask block w-14 h-14 md:w-16 md:h-16 shrink-0"
             style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png');`}
             aria-hidden="true"
           ></span>
           <div class="flex-1">
-            <p class="font-display font-bold text-black text-sm uppercase tracking-widest">Live Music</p>
+            <p class="font-display font-bold text-black text-base uppercase tracking-widest">Live Music</p>
             {musicAct ? (
-              <p class="font-display font-bold text-xl md:text-2xl text-black leading-tight">
+              <p class="font-display font-bold text-2xl md:text-3xl text-black leading-tight">
                 {musicHref ? (
                   <a href={musicHref} class="hover:text-orange transition-colors underline decoration-2 underline-offset-4 [text-decoration-skip-ink:auto]">
                     {musicAct}
@@ -173,29 +174,29 @@ const base = import.meta.env.BASE_URL;
                 ) : musicAct}
               </p>
             ) : (
-              <p class="font-display font-bold text-lg text-black italic">Lineup coming soon</p>
+              <p class="font-display font-bold text-xl text-black italic">Lineup coming soon</p>
             )}
             {musicTime && (
-              <p class="text-black text-sm mt-0.5">{musicTime}</p>
+              <p class="text-black text-base mt-1">{musicTime}</p>
             )}
           </div>
         </div>
 
         {thisWeek.specialEvents.length > 0 && (
-          <div class="py-6 flex items-center gap-4">
+          <div class="py-7 flex items-center gap-5">
             <span
-              class="social-icon-mask block w-12 h-12 md:w-14 md:h-14 shrink-0"
+              class="social-icon-mask block w-14 h-14 md:w-16 md:h-16 shrink-0"
               style={`background-color: #B8860B; -webkit-mask-image: url('${base}/icons/FM-STAR-ICON.png'); mask-image: url('${base}/icons/FM-STAR-ICON.png');`}
               aria-hidden="true"
             ></span>
             <div class="flex-1">
-              <p class="font-display font-bold text-orange text-sm uppercase tracking-widest">Special Event</p>
-              <p class="font-display font-bold text-xl md:text-2xl text-black leading-tight">{thisWeek.specialEvents[0].name}</p>
+              <p class="font-display font-bold text-orange text-base uppercase tracking-widest">Special Event</p>
+              <p class="font-display font-bold text-2xl md:text-3xl text-black leading-tight">{thisWeek.specialEvents[0].name}</p>
               {thisWeek.specialEvents[0].time && (
-                <p class="text-black text-sm mt-0.5">{thisWeek.specialEvents[0].time}</p>
+                <p class="text-black text-base mt-1">{thisWeek.specialEvents[0].time}</p>
               )}
               {thisWeek.specialEvents[0].description && (
-                <p class="text-black text-sm mt-1">{thisWeek.specialEvents[0].description}</p>
+                <p class="text-black text-base mt-1">{thisWeek.specialEvents[0].description}</p>
               )}
             </div>
           </div>
