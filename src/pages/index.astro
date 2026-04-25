@@ -147,9 +147,12 @@ const base = import.meta.env.BASE_URL;
           </a>
         </p>
         {marketInfo.inSeason && marketInfo.daysUntil <= 7 && (
-          <p id="weather-widget" class="text-black/70 text-base mt-4">
-            <span id="weather-temp">…</span> <span class="text-black/70">·</span> <span id="weather-desc">Loading forecast</span>
-          </p>
+          <div class="mt-4">
+            <p id="weather-widget" class="text-black/70 text-base">
+              <span id="weather-temp">…</span> <span class="text-black/70">·</span> <span id="weather-desc">Loading forecast</span>
+            </p>
+            <p id="weather-updated" class="text-black/50 text-xs italic mt-1"></p>
+          </div>
         )}
       </div>
 
@@ -310,7 +313,21 @@ const base = import.meta.env.BASE_URL;
     async function loadWeather() {
       const tempEl = document.getElementById('weather-temp');
       const descEl = document.getElementById('weather-desc');
+      const updatedEl = document.getElementById('weather-updated');
       if (!tempEl || !descEl) return;
+
+      function stampTimestamp() {
+        if (!updatedEl) return;
+        const now = new Date().toLocaleString('en-US', {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          timeZone: 'America/New_York',
+        });
+        updatedEl.textContent = `Forecast last updated ${now}`;
+      }
 
       try {
         const res = await fetch(
@@ -348,6 +365,7 @@ const base = import.meta.env.BASE_URL;
 
         tempEl.textContent = `${weather.icon} ${high}°F`;
         descEl.textContent = `${weather.desc} · Low ${low}°F`;
+        stampTimestamp();
       } catch {
         tempEl.textContent = '—';
         descEl.textContent = 'Forecast unavailable';
