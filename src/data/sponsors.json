@@ -1,35 +1,60 @@
 {
+  "intro": "These local businesses keep the Saturday market on the Village Green. Their support pays for performer fees, signage, and the year-round work that goes into running a community market. When you pick up something from one of them, please tell them you saw their name here.",
   "sponsors": [
     {
       "name": "Berkshire Hathaway HomeServices Blake Realtors",
       "shortName": "BHHS Blake Realtors",
+      "slug": "bhhs-blake-realtors",
       "url": "https://www.bhhsblakerealtors.com/columbia",
-      "logo": "/icons/sponsors/berkshire-hathaway.png"
+      "logo": "/icons/sponsors/berkshire-hathaway.png",
+      "since": 2026,
+      "tagline": "Real estate · Columbia County",
+      "description": "BHHS Blake's Kinderhook office has been part of the village fabric since 1922 — long before this current iteration of the market. Their agents know the houses, the streets, and the families."
     },
     {
       "name": "Columbia County Tourism",
+      "slug": "columbia-county-tourism",
       "url": "https://columbiacountytourism.org/",
-      "logo": "/icons/sponsors/columbia-county-tourism.png"
+      "logo": "/icons/sponsors/columbia-county-tourism.png",
+      "since": 2026,
+      "tagline": "Get out and explore",
+      "description": "Columbia County's official tourism office helps visitors find their way to the things that make the county worth visiting — including, in May through October, this market."
     },
     {
       "name": "Herrington's",
+      "slug": "herringtons",
       "url": "https://herringtons.com/",
-      "logo": "/icons/sponsors/herringtons.png"
+      "logo": "/icons/sponsors/herringtons.png",
+      "since": 2026,
+      "tagline": "Lumber, hardware, and home goods",
+      "description": "A family-owned building supply company over a century in. Five locations across the Hudson Valley, including just down Route 9 — the place locals go when a project actually needs to get done."
     },
     {
       "name": "Julia Jayne Pilates",
+      "slug": "julia-jayne-pilates",
       "url": "https://www.juliajaynepilates.com/",
-      "logo": "/icons/sponsors/julia-jayne-pilates.png"
+      "logo": "/icons/sponsors/julia-jayne-pilates.png",
+      "since": 2026,
+      "tagline": "Classical pilates · Broad Street",
+      "description": "A renovated barn studio on Broad Street offering small-group and private classical pilates. Run by Julia Joseph (formerly of Maple Hill Creamery) and a small team of certified instructors."
     },
     {
       "name": "Todd Farrell's Car Care Center",
+      "slug": "todd-farrells",
       "url": "https://www.toddfarrells.com/",
-      "logo": "/icons/sponsors/todd-farrells.png"
+      "logo": "/icons/sponsors/todd-farrells.png",
+      "since": 2026,
+      "tagline": "Auto repair and tires · Hudson",
+      "description": "A family-run car care center in business since 1995. Best of Columbia County winners. The local stop for tires, brakes, and the kind of honest service that comes with knowing your customers' first names."
     },
     {
       "name": "Valkin Properties",
+      "slug": "valkin-properties",
       "url": "https://www.valkinproperties.com/",
-      "logo": "/icons/sponsors/valkin-properties.png"
+      "logo": "/icons/sponsors/valkin-properties.png",
+      "since": 2026,
+      "tagline": "Real estate · Kinderhook & Valatie",
+      "description": "Bill Laraway's brokerage is rooted in the Kinderhook–Valatie area he grew up in. Specializing in this corner of Columbia County — the houses, the land, and the people who want to live here."
     }
   ]
 }

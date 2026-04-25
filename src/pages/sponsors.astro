@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StructuredData from '../components/StructuredData.astro';
+import sponsors from '../data/sponsors.json';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout
+  title="Market Sponsors"
+  description="The local businesses that support the Kinderhook Farmers Market — including BHHS Blake Realtors, Columbia County Tourism, Herrington's, Julia Jayne Pilates, Todd Farrell's Car Care Center, and Valkin Properties."
+  canonicalPath="/sponsors"
+>
+  <StructuredData
+    slot="head"
+    type="breadcrumb"
+    data={{ items: [{ name: 'Home', url: '/' }, { name: 'Sponsors', url: '/sponsors' }] }}
+  />
+
+  <!-- Hero -->
+  <section class="bg-cream py-10 md:py-14">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <p class="font-logo uppercase tracking-[0.08em] text-sm text-black/60 mb-3">Kinderhook Farmers Market</p>
+      <h1 class="font-display font-bold text-4xl md:text-5xl text-black mb-4">Our Sponsors</h1>
+      <p class="text-black text-lg leading-relaxed max-w-2xl mx-auto">{sponsors.intro}</p>
+    </div>
+  </section>
+
+  <!-- Sponsor cards -->
+  <section class="bg-cream pb-16">
+    <div class="max-w-3xl mx-auto px-4">
+      <ul class="space-y-6">
+        {sponsors.sponsors.map((s) => (
+          <li id={s.slug} class="scroll-mt-24">
+            <article class="bg-white rounded-xl shadow-md overflow-hidden">
+              <!-- Logo strip — aubergine background mirrors footer tile treatment -->
+              <a
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block bg-black hover:opacity-90 transition-opacity p-6 md:p-8"
+                aria-label={`Visit ${s.name}`}
+              >
+                <div class="flex items-center justify-center min-h-[120px]">
+                  <img
+                    src={`${base}${s.logo}`}
+                    alt={s.name}
+                    class="max-h-20 md:max-h-24 max-w-[70%] object-contain"
+                    loading="lazy"
+                  />
+                </div>
+              </a>
+
+              <div class="p-6 md:p-8">
+                <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2">
+                  <h2 class="font-display font-bold text-2xl text-black">{s.name}</h2>
+                  {s.since && (
+                    <p class="text-xs uppercase tracking-widest text-black/60 font-semibold">
+                      Sponsoring since {s.since}
+                    </p>
+                  )}
+                </div>
+                {s.tagline && (
+                  <p class="text-purple font-display font-semibold text-base mb-4">{s.tagline}</p>
+                )}
+                {s.description && (
+                  <p class="text-black leading-relaxed mb-5">{s.description}</p>
+                )}
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 text-orange font-display font-bold underline decoration-2 underline-offset-4 [text-decoration-skip-ink:auto] hover:text-purple transition-colors"
+                >
+                  Visit their site
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+          </li>
+        ))}
+      </ul>
+
+      <!-- Become a sponsor CTA -->
+      <div class="mt-12 bg-purple rounded-2xl p-8 text-center text-cream">
+        <h2 class="font-display font-bold text-2xl mb-3">Want to sponsor the market?</h2>
+        <p class="text-cream/90 mb-5 max-w-xl mx-auto">
+          We're always looking for local businesses who want to invest in keeping the Saturday market on the Village Green.
+        </p>
+        <a href={`${base}/contact`} class="inline-block bg-white text-black font-display font-bold px-6 py-3 rounded-md hover:bg-white/90 transition-colors">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
