@@ -104,7 +104,7 @@ if (d.email) links.push({ href: `mailto:${d.email}`, label: 'Email', iconBg: '#2
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 bg-white rounded-md px-4 py-2 shadow-sm hover:shadow-md transition-shadow text-black font-display font-medium"
+                class="inline-flex items-center gap-2 bg-black rounded-md px-4 py-2 hover:opacity-90 transition-opacity text-cream font-display font-medium"
               >
                 <span class="w-2 h-2 rounded-full" style={`background-color: ${link.iconBg};`} aria-hidden="true"></span>
                 {link.label}
@@ -130,13 +130,17 @@ if (d.email) links.push({ href: `mailto:${d.email}`, label: 'Email', iconBg: '#2
               <h3 class="font-display font-bold text-xl text-black mb-3">Upcoming</h3>
               <ul class="space-y-2">
                 {upcoming.map((d) => (
-                  <li class="bg-white rounded-md px-4 py-3 shadow-sm flex items-center gap-3">
-                    <MarketIcon name="music" class="w-5 h-5 shrink-0" />
+                  <li class="bg-black rounded-md px-4 py-3 flex items-center gap-3">
+                    <span
+                      class="block w-5 h-5 shrink-0"
+                      style={`background-color: var(--color-cream); -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
+                      aria-hidden="true"
+                    ></span>
                     <div class="flex-1">
-                      <p class="text-black font-display font-medium">{formatDate(d.date)}</p>
-                      <p class="text-black/70 text-sm">{musicSchedule.time} · Village Green</p>
+                      <p class="text-cream font-display font-medium">{formatDate(d.date)}</p>
+                      <p class="text-cream/70 text-sm">{musicSchedule.time} · Village Green</p>
                       {d.act !== performer.data.name && (
-                        <p class="text-black/60 text-xs italic mt-0.5">Listed as: {d.act}</p>
+                        <p class="text-cream/60 text-xs italic mt-0.5">Listed as: {d.act}</p>
                       )}
                     </div>
                   </li>
@@ -150,13 +154,17 @@ if (d.email) links.push({ href: `mailto:${d.email}`, label: 'Email', iconBg: '#2
               <h3 class="font-display font-bold text-xl text-black mb-3">Previously this season</h3>
               <ul class="space-y-2">
                 {past.map((d) => (
-                  <li class="bg-white rounded-md px-4 py-3 shadow-sm flex items-center gap-3 opacity-60">
-                    <MarketIcon name="music" class="w-5 h-5 shrink-0" />
+                  <li class="bg-black rounded-md px-4 py-3 flex items-center gap-3 opacity-60">
+                    <span
+                      class="block w-5 h-5 shrink-0"
+                      style={`background-color: var(--color-cream); -webkit-mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); mask-image: url('${base}/icons/FM-MUSIC-ICON.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;`}
+                      aria-hidden="true"
+                    ></span>
                     <div class="flex-1">
-                      <p class="text-black font-display font-medium">{formatDate(d.date)}</p>
-                      <p class="text-black/70 text-sm">{musicSchedule.time} · Village Green</p>
+                      <p class="text-cream font-display font-medium">{formatDate(d.date)}</p>
+                      <p class="text-cream/70 text-sm">{musicSchedule.time} · Village Green</p>
                       {d.act !== performer.data.name && (
-                        <p class="text-black/60 text-xs italic mt-0.5">Listed as: {d.act}</p>
+                        <p class="text-cream/60 text-xs italic mt-0.5">Listed as: {d.act}</p>
                       )}
                     </div>
                   </li>
