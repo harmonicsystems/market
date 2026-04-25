@@ -1,5 +1,5 @@
 {
-  "intro": "These local businesses keep the Saturday market on the Village Green. Their support pays for performer fees, signage, and the year-round work that goes into running a community market. When you pick up something from one of them, please tell them you saw their name here.",
+  "intro": "These local businesses keep the Saturday market on the Village Green. Their support pays for performer fees, signage, and the year-round work that goes into running a community market.",
   "sponsors": [
     {
       "name": "Berkshire Hathaway HomeServices Blake Realtors",
@@ -9,7 +9,7 @@
       "logo": "/icons/sponsors/berkshire-hathaway.png",
       "since": 2026,
       "tagline": "Real estate · Columbia County",
-      "description": "BHHS Blake's Kinderhook office has been part of the village fabric since 1922 — long before this current iteration of the market. Their agents know the houses, the streets, and the families."
+      "description": "BHHS Blake's Kinderhook office has been part of the village fabric since 1922, long before this current iteration of the market. Their agents know the houses, the streets, and the families."
     },
     {
       "name": "Columbia County Tourism",
@@ -18,7 +18,7 @@
       "logo": "/icons/sponsors/columbia-county-tourism.png",
       "since": 2026,
       "tagline": "Get out and explore",
-      "description": "Columbia County's official tourism office helps visitors find their way to the things that make the county worth visiting — including, in May through October, this market."
+      "description": "Columbia County's official tourism office helps visitors find their way to the things that make the county worth visiting, including the Saturday market from May through October."
     },
     {
       "name": "Herrington's",
@@ -27,7 +27,7 @@
       "logo": "/icons/sponsors/herringtons.png",
       "since": 2026,
       "tagline": "Lumber, hardware, and home goods",
-      "description": "A family-owned building supply company over a century in. Five locations across the Hudson Valley, including just down Route 9 — the place locals go when a project actually needs to get done."
+      "description": "A family-owned building supply company over a century in. Five locations across the Hudson Valley, including just down Route 9. The place locals go when a project actually needs to get done."
     },
     {
       "name": "Julia Jayne Pilates",
@@ -54,7 +54,7 @@
       "logo": "/icons/sponsors/valkin-properties.png",
       "since": 2026,
       "tagline": "Real estate · Kinderhook & Valatie",
-      "description": "Bill Laraway's brokerage is rooted in the Kinderhook–Valatie area he grew up in. Specializing in this corner of Columbia County — the houses, the land, and the people who want to live here."
+      "description": "Bill Laraway's brokerage is rooted in the Kinderhook and Valatie area he grew up in. Specializing in this corner of Columbia County: the houses, the land, and the people who want to live here."
     }
   ]
 }

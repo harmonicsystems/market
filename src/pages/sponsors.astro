@@ -52,14 +52,7 @@ const base = import.meta.env.BASE_URL;
               </a>
 
               <div class="p-6 md:p-8">
-                <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2">
-                  <h2 class="font-display font-bold text-2xl text-black">{s.name}</h2>
-                  {s.since && (
-                    <p class="text-xs uppercase tracking-widest text-black/60 font-semibold">
-                      Sponsoring since {s.since}
-                    </p>
-                  )}
-                </div>
+                <h2 class="font-display font-bold text-2xl text-black mb-2">{s.name}</h2>
                 {s.tagline && (
                   <p class="text-purple font-display font-semibold text-base mb-4">{s.tagline}</p>
                 )}
@@ -70,7 +63,7 @@ const base = import.meta.env.BASE_URL;
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 text-orange font-display font-bold underline decoration-2 underline-offset-4 [text-decoration-skip-ink:auto] hover:text-purple transition-colors"
+                  class="inline-flex items-center gap-2 text-orange font-display font-bold hover:text-purple transition-colors"
                 >
                   Visit their site
                   <span aria-hidden="true">→</span>
