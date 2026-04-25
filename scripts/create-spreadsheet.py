@@ -479,7 +479,7 @@ config_rows = [
     ["End Time", "12:30 PM", ""],
     ["Location Name", "Village Green", ""],
     ["Address", "Broad Street, Kinderhook, NY 12106", ""],
-    ["Email", "info@kinderhookfarmersmarket.com", ""],
+    ["Email", "khookfarmersmarket@icloud.com", ""],
     ["Facebook", "https://www.facebook.com/KinderhookFarmersMarket", ""],
     ["Instagram", "https://www.instagram.com/kinderhookfarmersmarket", ""],
     ["Sponsor", "Kinderhook Business and Professional Association", ""],
