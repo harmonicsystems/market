@@ -100,8 +100,7 @@ const categoryLabels: Record<string, string> = {
 
       {/* ── Weekly Vendors — grouped by category ───────────────────────── */}
       <div class="mb-16">
-        <h2 class="font-display font-bold text-2xl text-black mb-2 flex items-center gap-3">
-          <span class="text-sm px-3 py-1 rounded-md bg-orange text-cream">Weekly</span>
+        <h2 class="font-display font-bold text-2xl text-black mb-2">
           Weekly Vendors
         </h2>
         <p class="text-black/80 text-sm mb-8">Here every Saturday of the 2026 season.</p>
@@ -169,28 +168,23 @@ const categoryLabels: Record<string, string> = {
         </div>
       </div>
 
-      {/* ── Returning / Occasional — flat lists ─────────────────────────── */}
+      {/* ── Returning / Guest — flat lists ──────────────────────────────── */}
       {[
         {
           heading: 'Returning in May / June',
           subheading: 'Favorites returning as their seasons get underway.',
-          badge: 'Returning',
-          badgeClass: 'bg-purple text-cream',
           rich: returning.filter((e) => e.kind === 'rich'),
           plain: returning.filter((e) => e.kind === 'plain'),
         },
         {
-          heading: 'Occasional Vendors Throughout the Season',
-          subheading: "Watch the weekly lineup to see who's dropping in.",
-          badge: 'Rotating',
-          badgeClass: 'bg-black text-cream',
+          heading: 'Guest Vendors',
+          subheading: "Vendors who drop in throughout the season. Watch the weekly lineup to see who's coming.",
           rich: occasional.filter((e) => e.kind === 'rich'),
           plain: occasional.filter((e) => e.kind === 'plain'),
         },
       ].map((section) => (
         <div class="mb-16">
-          <h2 class="font-display font-bold text-2xl text-black mb-2 flex items-center gap-3">
-            <span class={`text-sm px-3 py-1 rounded-md ${section.badgeClass}`}>{section.badge}</span>
+          <h2 class="font-display font-bold text-2xl text-black mb-2">
             {section.heading}
           </h2>
           <p class="text-black/80 text-sm mb-6">{section.subheading}</p>
