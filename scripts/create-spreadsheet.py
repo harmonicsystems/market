@@ -132,33 +132,45 @@ while current <= season_end:
     current += timedelta(weeks=1)
     row_num += 1
 
-# 2026 weekly vendors (present every Saturday).
+# 2026 weekly vendors (present every Saturday). Source: weekly-vendors.json.
 weekly_vendors_list = (
-    "Albany Distilling, Cedar Ridge Farm Ghent, Damsel Garden, "
-    "Glencadia Greenhouses, Hamrah's Lebanese Foods & Takeaway, "
+    "Cedar Ridge Farm Ghent, Damsel Garden, Glencadia Greenhouses, "
     "Heritage Hill Pork (Formerly Lovers Leap Farm), Hickory Creek Farms, "
-    "Kipling & Raven Dog Treats, Mort's Maple, O'Boys Soaps, "
-    "Our Old House Bakery, River House Market, Valatie Food Pantry, "
-    "Worldling's Pleasure"
+    "Mort's Maple, River House Market, "
+    "Albany Distilling, Hamrah's Lebanese Foods & Takeaway, "
+    "Our Old House Bakery, Worldling's Pleasure, "
+    "Kipling & Raven Dog Treats, O'Boys Soaps, "
+    "Valatie Food Pantry"
 )
 for row in range(2, row_num):
     ws1.cell(row=row, column=12, value=weekly_vendors_list)
 
 # Pre-fill per-date themes, guest vendors, special events, and extended hours.
-# (Any remaining blanks are for the coordinator to fill in week by week.)
+# Special-event headlines pulled from src/content/events/. The full event
+# inventory lives on the Village Events tab; one headline per market day here.
 weekly_overrides = {
     "2026-05-02": {
         "theme": "Opening Day — Early Spring Market",
         "guest_vendors": "Columbia Friends of the Electric Trail, Wild Lavender Crafts",
         "special_name": "Season Opening Celebration",
         "special_time": "8:30am",
-        "special_desc": "Welcome back the market for the 2026 season!",
+        "special_desc": "Welcome back the market for the 2026 season! (Library: Stories for Pups, 1–2pm.)",
         "status": "Ready",
     },
     "2026-05-09": {
         "special_name": "Super Stories Open Maker Hours — Mother's Day Card Making",
         "special_time": "10:00am - 12:00pm",
-        "special_desc": "Drop in to Super Stories and make a card for Mother's Day.",
+        "special_desc": "Drop in to Super Stories and make a card for Mother's Day. (Library: Travel Planning Made Easy, 2–3pm.)",
+    },
+    "2026-05-16": {
+        "special_name": "Festival of the Unknown",
+        "special_time": "11:00am - 2:00pm",
+        "special_desc": "Library lectures on cryptozoology, ufology, parapsychology, plus authors and a documentary on local cryptids.",
+    },
+    "2026-05-23": {
+        "special_name": "Village-Wide Spring Yard Sale",
+        "special_time": "9:00am until sold out",
+        "special_desc": "Treasures scattered across Kinderhook.",
     },
     "2026-05-30": {
         "theme": "Kinderhook Makers Market — Extended Market Day",
@@ -167,10 +179,25 @@ weekly_overrides = {
         "special_time": "8:30am - 2:00pm (market); Parade noon; Gallery 2pm",
         "special_desc": "Extended market day. Fyfe & Drumms Muster & Parade on Broad Street at noon. Modus Operandi opens at The School (Jack Shainman) at 2pm.",
     },
+    "2026-06-06": {
+        "special_name": "Seen Scenes Opening / OK 5K / Persons of Color Cemetery Tour",
+        "special_time": "Reception 3–5pm; 5K & tour times TBD",
+        "special_desc": "Seen Scenes opening reception at Kinderhook Knitting Mill. OK 5K in the village. Persons of Color Cemetery Tour. (Library: Stories for Pups, 1–2pm.)",
+    },
+    "2026-06-13": {
+        "special_name": "Volunteer Fair",
+        "special_time": "10:00am - 2:00pm",
+        "special_desc": "Library's inaugural volunteer fair — meet local nonprofits.",
+    },
     "2026-06-20": {
         "special_name": "Rising Star Dance Academy Performance",
         "special_time": "11:00am",
         "special_desc": "Live performance at the market.",
+    },
+    "2026-06-27": {
+        "special_name": "Kinderhook Pride Parade",
+        "special_time": "2:00pm",
+        "special_desc": "Hudson Street to Kinderhook Village Square.",
     },
     "2026-07-04": {
         "theme": "July 4th — Extended Market Day",
@@ -178,6 +205,11 @@ weekly_overrides = {
         "special_name": "KBPA People's Parade",
         "special_time": "11:30am",
         "special_desc": "Parade kicks off from Rothermel Park. Market runs extended hours to 1:30pm.",
+    },
+    "2026-09-19": {
+        "special_name": "Village-Wide Fall Yard Sale",
+        "special_time": "9:00am until sold out",
+        "special_desc": "Treasures scattered across Kinderhook.",
     },
     "2026-10-10": {
         "theme": "Fall Festival — Extended Market Day",
@@ -257,23 +289,69 @@ widths_2 = [24, 14, 28, 24, 40, 30, 20, 30, 12, 10]
 for i, w in enumerate(widths_2, 1):
     ws2.column_dimensions[get_column_letter(i)].width = w
 
-# Example vendors
+# Vendors. Source: src/content/vendors/*.md (entries with profile pages) +
+# src/data/weekly-vendors.json (weekly regulars without profile pages).
+# Type maps vendorType=regular → "Weekly", vendorType=guest → "Rotating".
 vendors = [
-    ["Samascott Orchards", "Weekly", "Family-owned since 1821", "produce, fruit, cider",
-     "Six generations of family farming in the Hudson Valley", "https://samascottorchards.com",
-     "@samascottorchards", "", "Yes", "Yes"],
-    ["River House Market", "Weekly", "Farm-fresh local goods", "produce, prepared foods",
-     "Local market featuring Hudson Valley produce", "",
-     "", "", "Yes", "Yes"],
-    ["Grandaddy Weaves Honey", "Weekly", "Pure local honey", "honey, preserves",
-     "Raw honey and beeswax products from local hives", "",
-     "", "", "No", "Yes"],
-    ["Crème de la Crème Bakery", "Rotating", "Artisan baked goods", "baked goods",
-     "Fresh-baked breads, pastries, and seasonal treats", "",
-     "", "", "No", "Yes"],
-    ["Peta's Pocket Caribbean BBQ", "Rotating", "Island flavors, local ingredients", "prepared foods",
-     "Caribbean-inspired dishes made with market-fresh produce", "",
-     "", "", "No", "Yes"],
+    # ── Weekly regulars without profile pages (from weekly-vendors.json) ──
+    ["Albany Distilling", "Weekly", "", "spirits, food & drink", "", "", "", "", "No", "Yes"],
+    ["Cedar Ridge Farm Ghent", "Weekly", "", "produce, farm", "", "", "", "", "No", "Yes"],
+    ["Glencadia Greenhouses", "Weekly", "", "plants, produce, farm", "", "", "", "", "No", "Yes"],
+    ["Hamrah's Lebanese Foods & Takeaway", "Weekly", "", "prepared foods, food & drink", "", "", "", "", "No", "Yes"],
+    ["Heritage Hill Pork (Formerly Lovers Leap Farm)", "Weekly", "", "meat, farm", "", "", "", "", "No", "Yes"],
+    ["Hickory Creek Farms", "Weekly", "", "produce, farm", "", "", "", "", "No", "Yes"],
+    ["Kipling & Raven Dog Treats", "Weekly", "", "pet, home & body", "", "", "", "", "No", "Yes"],
+    ["Mort's Maple", "Weekly", "", "maple, farm", "", "", "", "", "No", "Yes"],
+    ["O'Boys Soaps", "Weekly", "", "soap, home & body", "", "", "", "", "No", "Yes"],
+    ["Our Old House Bakery", "Weekly", "", "baked goods, food & drink", "", "", "", "", "No", "Yes"],
+    ["Valatie Food Pantry", "Weekly", "", "community", "", "", "", "", "No", "Yes"],
+    ["Worldling's Pleasure", "Weekly", "", "food & drink", "", "", "", "", "No", "Yes"],
+
+    # ── Vendors with profile pages (from src/content/vendors/) ──
+    ["Autumn's Essentials", "Rotating", "Natural wellness products",
+     "wellness, body-care, handmade",
+     "Handcrafted soaps, lotions, and wellness products made with natural ingredients.",
+     "", "", "", "No", "No"],
+    ["Courtney Aison Pottery", "Rotating", "Functional ceramics for everyday life",
+     "crafts, pottery, home-goods",
+     "Handmade functional pottery: mugs, bowls, plates, and vases. Wheel-thrown and uniquely glazed.",
+     "", "", "", "No", "No"],
+    ["Crème de la Crème Bakery", "Rotating", "Mother/daughter bakers and entrepreneurs",
+     "baked-goods, sweets",
+     "A mother-daughter baking duo bringing artisan pastries, fresh bread, and sweet treats.",
+     "", "", "", "Yes", "No"],
+    ["Damsel Garden", "Weekly", "Sweet peas, peonies & seasonal blooms",
+     "flowers, plants, bouquets",
+     "Locally grown cut flowers and seasonal bouquets from Columbia County.",
+     "", "", "", "Yes", "No"],
+    ["Grandaddy Weaves Honey", "Weekly", "Local honey from happy bees",
+     "honey, specialty-foods",
+     "Pure, raw honey harvested from hives in the Hudson Valley.",
+     "", "", "", "Yes", "No"],
+    ["Oona Montalvo Pottery", "Rotating", "Handcrafted ceramics for everyday beauty",
+     "crafts, pottery, home-goods",
+     "Handmade pottery: mugs, bowls, vases, and decorative pieces. Fired locally.",
+     "", "", "", "No", "No"],
+    ["Peta's Pocket Caribbean BBQ", "Rotating", "Caribbean flavors in the Hudson Valley",
+     "prepared-foods, bbq, international",
+     "Authentic Caribbean BBQ. Jerk chicken, rice and peas, plantains, and more.",
+     "", "", "", "Yes", "No"],
+    ["Reagan Rose Chocolate-Chip Cookies", "Rotating", "Homemade cookies with love",
+     "baked-goods, sweets, cookies",
+     "Classic chocolate chip cookies and other homemade treats baked fresh for market day.",
+     "", "", "", "No", "No"],
+    ["River House Market", "Weekly", "Farm fresh from the Hudson",
+     "produce, farm",
+     "Fresh seasonal produce grown along the Hudson River. Vegetables, herbs, and specialty crops.",
+     "", "", "", "Yes", "No"],
+    ["Samascott Orchards", "Weekly", "Six generations of family farming",
+     "produce, fruit, cider",
+     "Hudson Valley institution since 1821. Seasonal fruits, vegetables, cider, and farm-fresh eggs.",
+     "https://samascottorchards.com", "@samascottorchards", "", "Yes", "No"],
+    ["Wyrm Farm", "Weekly", "Regenerative farming for a better future",
+     "produce, farm, vegetables",
+     "Vegetables grown using regenerative farming practices. Building healthy soil for healthy food.",
+     "", "", "", "Yes", "No"],
 ]
 for v in vendors:
     ws2.append(v)
@@ -321,37 +399,44 @@ widths_3 = [28, 20, 26, 14, 14, 10, 12, 12, 24, 24, 40, 50, 12]
 for i, w in enumerate(widths_3, 1):
     ws3.column_dimensions[get_column_letter(i)].width = w
 
-# Example recipes
+# Recipes. Source: src/content/recipes/*.md. Ingredients/Instructions
+# bodies live in the markdown files; metadata only is mirrored here so the
+# coordinator can sweep over status without having to open each file.
 recipes = [
-    ["Spring Asparagus Salad", "Community Recipe", "", "15 minutes", "5 minutes", 4,
-     "easy", "spring", "asparagus, radishes, spring greens",
-     "vegetarian, quick, spring",
-     "1 bunch asparagus\n4 radishes, sliced\n2 cups spring greens\nLemon vinaigrette",
-     "1. Blanch asparagus 2 min\n2. Toss with greens and radishes\n3. Dress with vinaigrette",
+    ["Spring Asparagus Salad with Lemon Vinaigrette", "Market Kitchen", "",
+     "15 minutes", "5 minutes", 4, "easy", "spring",
+     "asparagus, radishes, spring greens",
+     "vegetarian, gluten-free, quick, spring",
+     "See src/content/recipes/spring-asparagus-salad.md",
+     "See src/content/recipes/spring-asparagus-salad.md",
      "Published"],
-    ["Samascott Orchard Apple Crisp", "Samascott Orchards", "https://samascottorchards.com",
-     "20 minutes", "45 minutes", 6, "easy", "fall", "apples",
-     "dessert, fall, family-friendly",
-     "6 Samascott apples, sliced\n1 cup oats\n1/2 cup brown sugar\n1/4 cup butter\nCinnamon",
-     "1. Slice apples into baking dish\n2. Mix topping ingredients\n3. Spread over apples\n4. Bake 375°F for 45 min",
+    ["Samascott Orchard Apple Crisp", "The Samascott Family", "",
+     "20 min", "45 min", 8, "easy", "fall",
+     "Apples, Oats",
+     "dessert, fall-favorite, comfort-food, vegetarian",
+     "See src/content/recipes/samascott-apple-crisp.md",
+     "See src/content/recipes/samascott-apple-crisp.md",
      "Published"],
-    ["Peta's Market Day Jerk Chicken Bowl", "Peta's Pocket Caribbean BBQ", "",
-     "30 minutes", "25 minutes", 4, "medium", "summer", "peppers, tomatoes, corn",
-     "caribbean, bowls, summer",
-     "4 chicken thighs\nJerk seasoning\nRice\nGrilled corn\nPeppers\nMango salsa",
-     "1. Marinate chicken in jerk seasoning\n2. Grill chicken 25 min\n3. Prepare rice and toppings\n4. Assemble bowls",
+    ["Peta's Market Day Jerk Chicken Bowl", "Peta, Peta's Pocket Caribbean BBQ", "",
+     "30 min (plus marinating)", "25 min", 4, "medium", "summer",
+     "Peppers, Tomatoes, Greens, Fresh Herbs",
+     "main-dish, caribbean, grilled, gluten-free",
+     "See src/content/recipes/petas-jerk-chicken-bowl.md",
+     "See src/content/recipes/petas-jerk-chicken-bowl.md",
      "Published"],
-    ["Kinderhook Dutch Baby Pancake", "Community Recipe", "",
-     "10 minutes", "20 minutes", 4, "easy", "all", "",
-     "breakfast, dutch heritage, family-friendly",
-     "3 eggs\n1/2 cup flour\n1/2 cup milk\n2 tbsp butter\nPowdered sugar\nLemon",
-     "1. Preheat oven to 425°F\n2. Melt butter in cast iron\n3. Whisk eggs, flour, milk\n4. Pour in pan, bake 20 min\n5. Top with sugar and lemon",
+    ["Kinderhook Dutch Baby Pancake", "Margaret Van Dyke, Kinderhook Resident", "",
+     "10 min", "20 min", 4, "easy", "spring",
+     "Eggs, Berries, Maple Syrup",
+     "breakfast, dutch-heritage, weekend-brunch, vegetarian",
+     "See src/content/recipes/kinderhook-dutch-pancake.md",
+     "See src/content/recipes/kinderhook-dutch-pancake.md",
      "Published"],
-    ["Grandaddy's Honey Glazed Carrots", "Grandaddy Weaves Honey", "",
-     "10 minutes", "20 minutes", 4, "easy", "fall", "carrots",
-     "side dish, honey, fall",
-     "1 lb carrots\n3 tbsp Grandaddy's honey\n2 tbsp butter\nSalt, thyme",
-     "1. Peel and slice carrots\n2. Simmer in butter and honey\n3. Cook until glazed, 20 min\n4. Season with salt and thyme",
+    ["Grandaddy's Honey Glazed Carrots", "Dave from Grandaddy Weaves Honey", "",
+     "10 min", "25 min", 4, "easy", "spring",
+     "Carrots, Honey, Fresh Thyme",
+     "side-dish, vegetarian, local-honey, kid-friendly",
+     "See src/content/recipes/grandaddys-honey-glazed-carrots.md",
+     "See src/content/recipes/grandaddys-honey-glazed-carrots.md",
      "Published"],
 ]
 for r in recipes:
@@ -409,22 +494,27 @@ ws_events.append(headers_events)
 for i, w in enumerate([14, 40, 30, 22, 14, 40], 1):
     ws_events.column_dimensions[get_column_letter(i)].width = w
 
+# Village events. Source: src/content/events/*.md. Sorted by date.
 village_events = [
-    ["2026-05-09", "Open Maker Hours — Mother's Day Card Making", "Super Stories", "10:00am - 12:00pm", "community", ""],
-    ["2026-05-23", "Village-Wide Spring Yard Sale", "Village of Kinderhook", "9:00am until sold out", "community", ""],
-    ["2026-05-30", "Kinderhook Makers Market (Extended Market Day)", "Kinderhook Farmers Market & Makers Market / Village Green", "8:30am - 2:00pm", "community", "Extended market hours"],
-    ["2026-05-30", "Fyfe & Drumms Muster & Parade", "Broad Street", "Noon", "community", ""],
-    ["2026-05-30", "Modus Operandi — Exhibition Opening", "The School / Jack Shainman Gallery", "2:00pm", "art", ""],
-    ["2026-06-05", "Seen Scenes — Exhibition Opens (runs through June 28)", "Kinderhook Knitting Mill / Create Council on the Arts", "", "art", ""],
-    ["2026-06-06", "Seen Scenes — Opening Reception", "Kinderhook Knitting Mill", "3:00pm - 5:00pm", "art", ""],
-    ["2026-06-06", "OK 5K", "Kinderhook", "TBD", "community", ""],
+    ["2026-05-02", "Stories for Pups", "Kinderhook Memorial Library / 18 Hudson Street", "1–2 PM", "library", "Read aloud to a therapy dog."],
+    ["2026-05-09", "Open Maker Hours — Mother's Day Card Making", "Super Stories", "10 AM – 12 PM", "community", ""],
+    ["2026-05-09", "Travel Planning Made Easy", "Kinderhook Memorial Library / 18 Hudson Street", "2–3 PM", "library", ""],
+    ["2026-05-16", "Festival of the Unknown", "Kinderhook Memorial Library / 18 Hudson Street", "11 AM – 2 PM", "library", "Cryptozoology, ufology, parapsychology lectures + documentary."],
+    ["2026-05-23", "Village-Wide Spring Yard Sale", "Village of Kinderhook", "9 AM until sold out", "community", ""],
+    ["2026-05-30", "Kinderhook Makers Market — Extended Market Day", "Kinderhook Farmers Market & Makers Market / Village Green", "8:30 AM – 2:00 PM", "community", "Extended market hours"],
+    ["2026-05-30", "Fyfe & Drumms Muster & Parade", "Village of Kinderhook / Broad Street", "Noon", "community", ""],
+    ["2026-05-30", "Modus Operandi — Opening Reception", "The School / Jack Shainman Gallery / 25 Broad Street", "2 PM", "art", "Group show: El Anatsui, Nick Cave, Faith Ringgold, et al."],
+    ["2026-06-06", "Stories for Pups", "Kinderhook Memorial Library / 18 Hudson Street", "1–2 PM", "library", "Read aloud to a therapy dog."],
+    ["2026-06-06", "Seen Scenes — Opening Reception", "Kinderhook Knitting Mill / Create Council on the Arts", "3 – 5 PM", "art", "Members Show 2026, on view June 5–28."],
+    ["2026-06-06", "OK 5K", "Village of Kinderhook", "TBD", "community", ""],
     ["2026-06-06", "Persons of Color Cemetery Tour", "The Cultural Landscape Foundation", "TBD", "community", ""],
-    ["2026-06-20", "Rising Star Dance Academy Performance", "Village Green / Market", "11:00am", "community", "At the market"],
-    ["2026-09-19", "Village-Wide Fall Yard Sale", "Village of Kinderhook", "9:00am until sold out", "community", ""],
-    ["2026-06-27", "Kinderhook Pride Parade", "Hudson Street to Village Square", "2:00pm", "community", ""],
-    ["2026-07-04", "People's Parade", "KBPA / Rothermel Park", "11:30am", "community", "Market extended to 1:30pm"],
-    ["2026-10-10", "Fall Festival & Kinderhook Makers Market", "Kinderhook Farmers Market & Makers Market / Village Green", "8:30am - 2:00pm", "community", "Extended market hours"],
-    ["2026-10-31", "Final Market Day of 2026 Season", "Kinderhook Farmers Market / Village Green", "8:30am - 12:30pm", "food", ""],
+    ["2026-06-13", "Volunteer Fair", "Kinderhook Memorial Library / 18 Hudson Street", "10 AM – 2 PM", "library", "Library's inaugural volunteer fair — meet local nonprofits."],
+    ["2026-06-20", "Rising Star Dance Academy Performance", "Village Green / At the Market", "11 AM", "community", "Live performance at the market."],
+    ["2026-06-27", "Kinderhook Pride Parade", "Hudson Street to Kinderhook Village Square", "2 PM", "community", ""],
+    ["2026-07-04", "People's Parade", "KBPA / Rothermel Park", "11:30 AM", "community", "Market extended to 1:30 PM"],
+    ["2026-09-19", "Village-Wide Fall Yard Sale", "Village of Kinderhook", "9 AM until sold out", "community", ""],
+    ["2026-10-10", "Fall Festival & Kinderhook Makers Market", "Kinderhook Farmers Market & Makers Market / Village Green", "8:30 AM – 2:00 PM", "community", "Extended market hours"],
+    ["2026-10-31", "Final Market Day of 2026 Season", "Kinderhook Farmers Market / Village Green", "8:30 AM – 12:30 PM", "food", ""],
 ]
 for e in village_events:
     ws_events.append(e)
@@ -438,18 +528,30 @@ style_data_rows(ws_events, len(headers_events))
 ws_sponsors = wb.create_sheet("Sponsors")
 ws_sponsors.sheet_properties.tabColor = "F26A2A"
 
-headers_sponsors = ["Sponsor", "Website", "Logo Status", "Notes"]
+headers_sponsors = ["Sponsor", "Website", "Logo File", "Tagline", "Notes"]
 ws_sponsors.append(headers_sponsors)
-for i, w in enumerate([40, 40, 16, 40], 1):
+for i, w in enumerate([40, 40, 36, 36, 40], 1):
     ws_sponsors.column_dimensions[get_column_letter(i)].width = w
 
+# Sponsors. Source: src/data/sponsors.json.
 sponsors_list = [
-    ["Berkshire Hathaway Home Services Blake Realty", "", "To come", ""],
-    ["Columbia County Tourism", "", "To come", ""],
-    ["Herringtons", "", "To come", ""],
-    ["Julia Jayne Pilates", "", "To come", ""],
-    ["Todd Farrell's Car Care Center", "", "To come", ""],
-    ["Valkin Properties", "", "To come", ""],
+    ["Berkshire Hathaway HomeServices Blake Realtors", "https://www.bhhsblakerealtors.com/columbia",
+     "/icons/sponsors/berkshire-hathaway.png", "Real estate · Columbia County",
+     "Kinderhook office in the village since 1922."],
+    ["Columbia County Tourism", "https://columbiacountytourism.org/",
+     "/icons/sponsors/columbia-county-tourism.png", "Get out and explore", ""],
+    ["Herrington's", "https://herringtons.com/",
+     "/icons/sponsors/herringtons.png", "Lumber, hardware, and home goods",
+     "Family-owned. Five locations across the Hudson Valley."],
+    ["Julia Jayne Pilates", "https://www.juliajaynepilates.com/",
+     "/icons/sponsors/julia-jayne-pilates.png", "Classical pilates · Broad Street",
+     "Renovated barn studio on Broad Street."],
+    ["Todd Farrell's Car Care Center", "https://www.toddfarrells.com/",
+     "/icons/sponsors/todd-farrells.png", "Auto repair and tires · Hudson",
+     "Family-run since 1995. Best of Columbia County winners."],
+    ["Valkin Properties", "https://www.valkinproperties.com/",
+     "/icons/sponsors/valkin-properties.png", "Real estate · Kinderhook & Valatie",
+     "Bill Laraway's brokerage — rooted in Kinderhook and Valatie."],
 ]
 for s in sponsors_list:
     ws_sponsors.append(s)
@@ -478,12 +580,13 @@ config_rows = [
     ["Start Time", "8:30 AM", ""],
     ["End Time", "12:30 PM", ""],
     ["Location Name", "Village Green", ""],
-    ["Address", "Broad Street, Kinderhook, NY 12106", ""],
+    ["Address", "Village Green, Broad Street & Albany Avenue, Kinderhook, NY 12106", ""],
+    ["Coordinates", "42.3951, -73.6981", ""],
     ["Email", "khookfarmersmarket@icloud.com", ""],
     ["Facebook", "https://www.facebook.com/KinderhookFarmersMarket", ""],
     ["Instagram", "https://www.instagram.com/kinderhookfarmersmarket", ""],
     ["Sponsor", "Kinderhook Business and Professional Association", ""],
-    ["Tagline", "It's OK!", "Martin Van Buren / Old Kinderhook reference"],
+    ["Tagline", "Fresh local produce, artisan goods, and live music in the heart of the Hudson Valley.", ""],
 ]
 for r in config_rows:
     ws4.append(r)
