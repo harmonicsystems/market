@@ -100,6 +100,32 @@ const events = defineCollection({
   }),
 });
 
+// Weeks — one entry per Saturday market in the season. The homepage selects
+// the next upcoming week (date >= today in America/New_York), and the
+// /share/[week] route generates one image-ready page per entry. File names
+// must match the date field (YYYY-MM-DD.md). All per-week fields are
+// optional — empty stubs are fine and just render the date + base info.
+const weeks = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/weeks' }),
+  schema: z.object({
+    date: z.string(),                                    // ISO Saturday, e.g. 2026-05-09
+    theme: optionalString,                               // e.g. "Opening Day"
+    note: optionalString,                                // e.g. "Rain or Shine"
+    music: z.object({                                    // optional override; default lookup is music-schedule.json
+      name: z.string(),
+      time: z.string(),
+    }).optional(),
+    specialEvents: z.array(z.object({
+      name: z.string(),
+      time: optionalString,
+      description: optionalString,
+    })).default([]),
+    guestVendors: z.array(z.string()).default([]),
+    communityPartners: z.array(z.string()).default([]),
+    regularVendors: z.array(z.string()).default([]),     // override; empty = use weekly-vendors.json roster
+  }),
+});
+
 // Performers — music acts that play the market. Each entity gets a durable
 // profile page at /performers/[slug] that auto-aggregates appearances from
 // the season schedule, plus optional streaming / tip-jar / contact links.
@@ -124,4 +150,4 @@ const performers = defineCollection({
   }),
 });
 
-export const collections = { vendors, businesses, recipes, landmarks, events, performers };
+export const collections = { vendors, businesses, recipes, landmarks, events, performers, weeks };

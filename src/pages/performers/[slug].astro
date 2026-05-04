@@ -4,6 +4,7 @@ import StructuredData from '../../components/StructuredData.astro';
 import MarketIcon from '../../components/MarketIcon.astro';
 import { getCollection, render } from 'astro:content';
 import musicSchedule from '../../data/music-schedule.json';
+import { todayInET } from '../../lib/weeks';
 
 export async function getStaticPaths() {
   const performers = await getCollection('performers');
@@ -17,7 +18,7 @@ export async function getStaticPaths() {
 
 const { performer } = Astro.props;
 const base = import.meta.env.BASE_URL;
-const todayIso = new Date().toISOString().slice(0, 10);
+const todayIso = todayInET();
 
 // Auto-aggregate every market date this performer is on the schedule.
 const dates = musicSchedule.performances

@@ -4,6 +4,7 @@ import StructuredData from '../components/StructuredData.astro';
 import MarketIcon from '../components/MarketIcon.astro';
 import { getCollection } from 'astro:content';
 import musicSchedule from '../data/music-schedule.json';
+import { todayInET } from '../lib/weeks';
 
 const base = import.meta.env.BASE_URL;
 
@@ -29,7 +30,7 @@ const byMonth = musicSchedule.performances.reduce<Record<string, typeof musicSch
   return acc;
 }, {});
 
-const todayIso = new Date().toISOString().slice(0, 10);
+const todayIso = todayInET();
 ---
 
 <BaseLayout

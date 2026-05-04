@@ -4,8 +4,21 @@ import SEO from '../components/SEO.astro';
 import StructuredData from '../components/StructuredData.astro';
 import ShareableMarketCard from '../components/ShareableMarketCard.astro';
 import siteConfig from '../data/site-config.json';
-import thisWeek from '../data/this-week.json';
+import musicSchedule from '../data/music-schedule.json';
 import sponsors from '../data/sponsors.json';
+import { getCurrentMarketWeek, formatDisplayDate } from '../lib/weeks';
+
+// Footer share card reflects the next upcoming market. Hidden off-season —
+// nothing useful to share when the market is closed.
+const currentWeek = await getCurrentMarketWeek();
+const footerWeek = currentWeek?.data;
+const footerDisplayDate = footerWeek ? formatDisplayDate(footerWeek.date) : null;
+const footerScheduledMusic = footerWeek
+  ? musicSchedule.performances.find((p) => p.date === footerWeek.date)
+  : undefined;
+const footerMusicAct = footerWeek?.music?.name ?? footerScheduledMusic?.act ?? null;
+const footerMusicTime = footerWeek?.music?.time ?? (footerScheduledMusic ? musicSchedule.time : null);
+const footerCardMusic = footerMusicAct && footerMusicTime ? { name: footerMusicAct, time: footerMusicTime } : undefined;
 
 interface Props {
   title: string;
@@ -106,16 +119,19 @@ const base = import.meta.env.BASE_URL;
 
     <footer class="bg-black text-cream mt-auto">
       <div class="max-w-xl mx-auto px-4 py-12 text-center">
-        <!-- Share the market — Facebook / Nextdoor / Instagram / Download, light tone for dark footer -->
-        <div class="mb-10">
-          <ShareableMarketCard
-            date={thisWeek.date}
-            displayDate={thisWeek.displayDate}
-            theme={thisWeek.theme}
-            music={thisWeek.music}
-            tone="light"
-          />
-        </div>
+        <!-- Share the market — Facebook / Nextdoor / Instagram / Download, light tone for dark footer.
+             Hidden off-season since there's no upcoming market to share. -->
+        {footerWeek && footerDisplayDate && (
+          <div class="mb-10">
+            <ShareableMarketCard
+              date={footerWeek.date}
+              displayDate={footerDisplayDate}
+              theme={footerWeek.theme}
+              music={footerCardMusic}
+              tone="light"
+            />
+          </div>
+        )}
 
         <!-- Market Sponsors — tiles link out to each sponsor. Logo slot is ready
              for a swap once logo files arrive; until then the sponsor name is

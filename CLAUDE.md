@@ -16,13 +16,13 @@ A modern, community-centered website for the Kinderhook Farmers' Market in Kinde
 
 | Section | Pages | Route | Content Source |
 |---------|-------|-------|----------------|
-| Homepage | 1 | `/` | `this-week.json` |
+| Homepage | 1 | `/` | `content/weeks/*.md` (auto-selects next upcoming week) |
 | Vendors | 12 | `/vendors/`, `/vendors/[slug]` | `content/vendors/*.md` (11 vendors) |
 | Business Directory | 18 | `/businesses/`, `/businesses/[slug]` | `content/businesses/*.md` (17 KBPA members) |
 | Discover Kinderhook | 9 | `/discover/`, `/discover/[slug]` | `content/landmarks/*.md` (8 landmarks) |
 | Recipes | 6 | `/recipes/`, `/recipes/[slug]` | `content/recipes/*.md` (5 recipes) |
 | Core pages | 4 | `/about`, `/visit`, `/whats-fresh`, `/contact` | Inline + JSON data |
-| Share cards | 1+ | `/share/[week]` | `this-week.json` (will move to content collection) |
+| Share cards | 27 | `/share/[week]` | `content/weeks/*.md` (one route per Saturday) |
 | Dev tools | 1 | `/styleguide` | Inline (noindex) |
 
 ---
@@ -51,8 +51,10 @@ src/
 │   └── ...
 ├── layouts/
 │   └── BaseLayout.astro       # Sitewide layout with nav, footer (share bar + designer signature), SEO, Organization schema
+├── lib/
+│   └── weeks.ts               # getCurrentMarketWeek(), todayInET(), formatDisplayDate() — ET-aware week selection
 ├── pages/
-│   ├── index.astro            # Homepage with weekly lineup from this-week.json
+│   ├── index.astro            # Homepage — auto-advances to next upcoming week; off-season fallback message
 │   ├── vendors/
 │   │   ├── index.astro        # Vendor directory (regular + guest)
 │   │   └── [slug].astro       # Vendor detail pages with vendor schema + related vendors/recipes
@@ -66,7 +68,7 @@ src/
 │   │   ├── index.astro        # Recipe collection
 │   │   └── [slug].astro       # Recipe detail pages with Recipe schema
 │   ├── share/
-│   │   └── [week].astro       # 1080×1080 share-card route (HeroCore + per-week info, noindex)
+│   │   └── [week].astro       # 1080×1080 share-card route — one path per week from content/weeks/ (noindex)
 │   ├── styleguide.astro       # Design reference page (noindex, dev tool)
 │   ├── about.astro            # Market story, history, KBPA member listing
 │   ├── visit.astro            # Plan your visit + dynamic landmarks from collection
@@ -76,10 +78,15 @@ src/
 │   ├── vendors/*.md           # 11 market vendors (regular + guest)
 │   ├── businesses/*.md        # 17 KBPA member businesses
 │   ├── landmarks/*.md         # 8 Kinderhook landmarks and attractions
-│   └── recipes/*.md           # 5 community recipes
+│   ├── recipes/*.md           # 5 community recipes
+│   ├── events/*.md            # 19 community events (parades, library programs, gallery openings)
+│   ├── performers/*.md        # 11 music acts with profile pages
+│   └── weeks/*.md             # 27 Saturdays of the season (one file per market day)
 ├── data/
 │   ├── site-config.json       # Market hours, location, season dates, contact info
-│   └── this-week.json         # This week's lineup (music, vendors, events)
+│   ├── music-schedule.json    # Per-Saturday music lineup for the season
+│   ├── weekly-vendors.json    # Default weekly-regular vendor roster (homepage fallback)
+│   └── sponsors.json          # Sponsor list with logos and links
 └── content.config.ts          # Zod schemas for all content collections
 ```
 
@@ -87,6 +94,7 @@ src/
 
 - **Hosting:** GitHub Pages (harmonicsystems/market repo)
 - **CI/CD:** `.github/workflows/deploy.yml` — builds with Astro on push to `main`
+- **Scheduled rebuild:** Every Sunday at 11:00 UTC (7am EDT / 6am EST) via cron — advances "Next Market" to the upcoming Saturday after each market day, no manual edit needed
 - **Pages source:** Must be set to "GitHub Actions" in repo Settings > Pages (not "Deploy from branch")
 - **Base URL:** `/market` (configured in `astro.config.mjs`)
 - **Future domain:** `kinderhookfarmersmarket.com` — update `site` in astro.config.mjs and `robots.txt` when ready
@@ -250,28 +258,25 @@ Schedule: Saturdays 8:30 AM – 12:30 PM, May through October
 
 ---
 
-## HeroCore Architecture
+## Weekly Schedule + Auto-Advance
 
-`HeroCore.astro` extracts the market's visual identity into a reusable component shared between the homepage hero and the `/share/[week]` share-card route. This is stage 1 of a plan to unify the hero and the shareable image so they can never drift.
+The "Next Market" block on the homepage and the footer share card are both driven by the `weeks` content collection (`src/content/weeks/YYYY-MM-DD.md`, one file per Saturday) via `src/lib/weeks.ts`.
 
-**Props:**
-- `fluid` (default `true`) — `true` uses `clamp()`-based fluid sizes for the homepage; `false` uses fixed pixel sizes calibrated for a 1080×1080 share canvas
-- `scheduleText` (default `'Every Saturday, May – October'`) — the homepage keeps the generic season line; the share page overrides with the specific market date (e.g. `week.displayDate`)
+**Selection logic** — `getCurrentMarketWeek()` returns the first week where `date >= today` (today computed in `America/New_York` so the UTC build server doesn't drift). On Saturday morning the page still shows today's market; the Sunday-morning cron rebuild advances it to the next Saturday.
 
-**Homepage hero layout:**
-- `<HeroCore />` (fluid, default schedule text)
-- Tagline ("Fresh local produce...") in white
-- Follow for Weekly Updates block (hearts + Facebook + Instagram)
+**Off-season fallback** — when no future market remains in the collection, `getCurrentMarketWeek()` returns `undefined` and the homepage swaps the "Next Market:" block for a "See you in May:" closed-for-the-season message. The footer share card is hidden across the site. Weather widget is hidden anytime the next market is more than 7 days out (Open-Meteo's forecast window).
 
-**Share card layout** (`/share/[week]`):
-- `<HeroCore fluid={false} scheduleText={week.displayDate} />`
-- Theme text in purple (e.g. "Opening Day!")
-- Optional music line
-- Location footer + URL
-- Rendered in a standalone 1080×1080 HTML page (no nav/footer)
+**Weather widget** — wired to the actual selected market date via a `data-market-date` attribute, so it can never disagree with the displayed date regardless of the visitor's timezone.
 
-**Remaining stages:**
-- **Stage 2:** Move `this-week.json` → `content/weeks/*.md` collection; `getStaticPaths` generates one `/share/<date>` per week
+**Per-week info** — each week file's frontmatter can carry `theme`, `note`, `specialEvents[]`, `guestVendors[]`, `communityPartners[]`, and `regularVendors[]` (override). All optional — empty stubs are fine. Music is normally pulled from `music-schedule.json` automatically; a per-week `music: { name, time }` override is supported.
+
+**Share-card route** — `/share/[week].astro` generates one route per entry in the weeks collection (27 paths). All routes have `noindex,nofollow` and are sized for a Playwright snapshot at 1080×1080.
+
+### HeroCore.astro
+
+The shared market identity block (sunflower banner / title / divider / schedule line) used by both the homepage hero and `/share/[week]`. Props: `fluid` (default `true` for homepage, `false` for fixed-size share canvas) and `scheduleText` (homepage uses a generic season line; share page uses the specific market date).
+
+**Remaining share-card stages:**
 - **Stage 3:** GitHub Action runs Playwright to screenshot each `/share/<date>` at 1080×1080 and commits PNGs to `public/share/`
 - **Stage 4:** Wire hero download button to static PNGs; retire `ShareableMarketCard.astro` canvas code; use PNGs as `og:image`
 
@@ -280,18 +285,17 @@ Schedule: Saturdays 8:30 AM – 12:30 PM, May through October
 ## Key Features Still on Roadmap
 
 ### Near-term
-- **Share-card unification stages 2–4** — Content collection, Playwright snapshots, retire canvas code (see HeroCore Architecture above)
-- **Multi-week schedule system** — Replace single `this-week.json` with a full season schedule, generating per-week Event schemas (overlaps with stage 2 above)
+- **Share-card unification stages 3–4** — Playwright snapshots of `/share/[week]` to PNG; retire `ShareableMarketCard.astro` canvas code
 - **Interactive Leaflet map** on Visit page (placeholder currently shown)
 - **Vendor/business photos** — Photo fields exist in schemas but no images yet
 - **OG image and logo assets** — `og-image.png` and `logo.png` referenced in schemas but not yet created
+- **2027 season prep** — Add `content/weeks/2027-*.md` and update `music-schedule.json` before May 2027; otherwise the homepage falls into off-season mode after Oct 31, 2026
 
 ### Future
 - **Events calendar** with iCal export
 - **Newsletter integration** (Mailchimp or similar)
 - **Local currency tie-in** (heritage currency project)
 - **QR scavenger hunt** for historical locations
-- **GitHub Actions cron builds** — Auto-rebuild on schedule during market season
 - **Google Search Console** registration + indexing API pings
 - **Google Business Profile** integration
 
@@ -299,8 +303,8 @@ Schedule: Saturdays 8:30 AM – 12:30 PM, May through October
 
 ## Content Update Guide
 
-### Updating This Week's Market
-Edit `src/data/this-week.json` — update date, theme, music, vendors, events.
+### Updating an Upcoming Market
+Edit (or create) `src/content/weeks/YYYY-MM-DD.md`. Frontmatter fields: `theme`, `note`, `specialEvents[]`, `guestVendors[]`, `communityPartners[]`, `regularVendors[]` (override the season roster), and `music: { name, time }` (override the schedule lookup). All optional. The homepage, footer share card, calendar headlines, and `/share/<week>/` route all update together. The Sunday-morning cron auto-advances the homepage to the next upcoming market — no manual edit needed for the date roll.
 
 ### Adding a Vendor
 1. Create `src/content/vendors/vendor-name.md` with frontmatter

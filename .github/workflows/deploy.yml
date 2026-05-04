@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # Sundays at 11:00 UTC (7am EDT / 6am EST). Rebuilds the site so the
+    # "Next Market" auto-advances to the upcoming Saturday after each
+    # market day. Runs year-round — off-season builds are harmless.
+    - cron: '0 11 * * 0'
 
 permissions:
   contents: read

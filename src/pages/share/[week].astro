@@ -5,22 +5,33 @@
  * single source of truth for social share images: a build step will snapshot
  * this page with Playwright and save the PNG to `public/share/<week>.png`.
  *
- * For stage 1 of the migration this route is driven by `this-week.json`
- * (one path, the current week). Later stages will switch to a content
- * collection with one entry per market week.
+ * One path is generated per entry in the `weeks` content collection.
  */
 
 import '../../styles/global.css';
 import HeroCore from '../../components/HeroCore.astro';
-import thisWeek from '../../data/this-week.json';
+import musicSchedule from '../../data/music-schedule.json';
+import { getAllWeeks, formatDisplayDate } from '../../lib/weeks';
 
 export async function getStaticPaths() {
-  return [
-    {
-      params: { week: thisWeek.date },
-      props: { week: thisWeek },
-    },
-  ];
+  const weeks = await getAllWeeks();
+  return weeks.map((entry) => {
+    const w = entry.data;
+    const scheduled = musicSchedule.performances.find((p) => p.date === w.date);
+    const musicName = w.music?.name ?? scheduled?.act ?? null;
+    const musicTime = w.music?.time ?? (scheduled ? musicSchedule.time : null);
+    return {
+      params: { week: w.date },
+      props: {
+        week: {
+          date: w.date,
+          displayDate: formatDisplayDate(w.date),
+          theme: w.theme,
+          music: musicName && musicTime ? { name: musicName, time: musicTime } : undefined,
+        },
+      },
+    };
+  });
 }
 
 interface WeekInfo {

@@ -8,21 +8,32 @@ import ShareableMarketCard from '../components/ShareableMarketCard.astro';
 import { getCollection } from 'astro:content';
 import welcomeImage from '../assets/images/decorative/welcome-kinderhook.webp';
 import siteConfig from '../data/site-config.json';
-import thisWeek from '../data/this-week.json';
 import musicSchedule from '../data/music-schedule.json';
 import weeklyVendors from '../data/weekly-vendors.json';
+import { getCurrentMarketWeek, formatDisplayDate, todayInET } from '../lib/weeks';
 
-// Default to the season's weekly vendor roster; per-week override in this-week.json wins if present.
-const usingRosterDefault = thisWeek.regularVendors.length === 0;
-const regularVendorNames: string[] = usingRosterDefault
-  ? weeklyVendors.vendors.map((v) => v.name)
-  : thisWeek.regularVendors;
+// Pick the next upcoming market (date >= today in ET). Returns undefined
+// once the season has wrapped — we fall through to an off-season message
+// instead of stale "Next Market" info.
+const currentWeek = await getCurrentMarketWeek();
+const thisWeek = currentWeek?.data;
+const displayDate = thisWeek ? formatDisplayDate(thisWeek.date) : null;
+const base = import.meta.env.BASE_URL;
+
+// Computed only when we have a current week. All bound to be undefined /
+// empty during off-season so the template can safely skip the in-season block.
+const usingRosterDefault = thisWeek ? thisWeek.regularVendors.length === 0 : true;
+const regularVendorNames: string[] = !thisWeek
+  ? []
+  : usingRosterDefault
+    ? weeklyVendors.vendors.map((v) => v.name)
+    : thisWeek.regularVendors;
 
 // Group the default roster by category so the homepage can render columns.
 // Order preserved from weekly-vendors.json.
 const weeklyCategoryOrder: string[] = [];
 const weeklyByCategory: Record<string, string[]> = {};
-if (usingRosterDefault) {
+if (thisWeek && usingRosterDefault) {
   for (const v of weeklyVendors.vendors) {
     const cat = v.category ?? 'Other';
     if (!weeklyByCategory[cat]) {
@@ -33,10 +44,15 @@ if (usingRosterDefault) {
   }
 }
 
-// Look up this week's performer from the season schedule; fall back to this-week.json override.
-const scheduledMusic = musicSchedule.performances.find((p) => p.date === thisWeek.date);
-const musicAct = scheduledMusic?.act ?? thisWeek.music?.name ?? null;
-const musicTime = scheduledMusic ? musicSchedule.time : thisWeek.music?.time ?? null;
+// Look up this week's performer from the season schedule; per-week override wins if present.
+const scheduledMusic = thisWeek
+  ? musicSchedule.performances.find((p) => p.date === thisWeek.date)
+  : undefined;
+const musicAct = thisWeek?.music?.name ?? scheduledMusic?.act ?? null;
+const musicTime = thisWeek?.music?.time ?? (scheduledMusic ? musicSchedule.time : null);
+
+// Unified music object for the share card (which expects {name, time}).
+const cardMusic = musicAct && musicTime ? { name: musicAct, time: musicTime } : undefined;
 
 // Link the act name to /performers/[slug] when a profile exists.
 const performerProfiles = await getCollection('performers');
@@ -45,32 +61,18 @@ const activePerformerSlugs = new Set(
 );
 const musicHref =
   scheduledMusic?.performerSlug && activePerformerSlugs.has(scheduledMusic.performerSlug)
-    ? `${import.meta.env.BASE_URL}/performers/${scheduledMusic.performerSlug}`
+    ? `${base}/performers/${scheduledMusic.performerSlug}`
     : null;
 
-// Calculate days until next market
-function getNextMarketInfo() {
-  const now = new Date();
-  const dayOfWeek = now.getDay();
-  const daysUntilSaturday = (6 - dayOfWeek + 7) % 7 || 7;
-
-  const seasonStart = new Date(siteConfig.season.start);
-  const seasonEnd = new Date(siteConfig.season.end);
-
-  const nextSaturday = new Date(now);
-  nextSaturday.setDate(now.getDate() + daysUntilSaturday);
-
-  const inSeason = nextSaturday >= seasonStart && nextSaturday <= seasonEnd;
-
-  return {
-    daysUntil: daysUntilSaturday,
-    inSeason,
-    seasonStart: seasonStart.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
-  };
-}
-
-const marketInfo = getNextMarketInfo();
-const base = import.meta.env.BASE_URL;
+// Show the weather forecast only when the selected market falls in the
+// 7-day Open-Meteo window (today through 7 days out). Hidden off-season.
+const todayIso = todayInET();
+const daysUntilMarket = thisWeek
+  ? Math.round(
+      (new Date(thisWeek.date + 'T12:00:00').getTime() - new Date(todayIso + 'T12:00:00').getTime()) / 86_400_000
+    )
+  : -1;
+const showWeather = daysUntilMarket >= 0 && daysUntilMarket <= 7;
 ---
 
 <BaseLayout
@@ -78,7 +80,9 @@ const base = import.meta.env.BASE_URL;
   description="Visit the Kinderhook Farmers Market every Saturday on the Village Green in Kinderhook, NY. Fresh local produce, artisan goods, baked goods, live music, and community events in the heart of the Hudson Valley. Columbia County's favorite outdoor market, May through October."
   canonicalPath="/"
 >
-  <StructuredData slot="head" type="event" data={{ date: thisWeek.date, theme: thisWeek.theme, music: thisWeek.music }} />
+  {thisWeek && (
+    <StructuredData slot="head" type="event" data={{ date: thisWeek.date, theme: thisWeek.theme, music: cardMusic }} />
+  )}
   <!-- Hero: Market-Forward Identity (mobile-first, fluid scaling) -->
   <section id="homepage-hero" class="bg-cream py-10 sm:py-14">
     <div class="max-w-xl mx-auto px-4 text-center">
@@ -108,7 +112,8 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 
-  <!-- THIS WEEK'S LINEUP - The Main Event -->
+  <!-- THIS WEEK'S LINEUP - The Main Event (in-season only) -->
+  {thisWeek && displayDate && (
   <section class="bg-cream pt-[15px] pb-8 md:pb-12">
     <!-- Purple "NEXT MARKET:" banner — full-bleed across the page -->
     <div class="bg-purple py-3 md:py-4 mb-6 md:mb-8">
@@ -120,7 +125,7 @@ const base = import.meta.env.BASE_URL;
       <div class="text-center mb-10">
         <h2 class="font-logo font-bold uppercase tracking-[0.08em] text-3xl md:text-5xl text-black mb-2 leading-[1.05]">
           {(() => {
-            const [day, ...rest] = thisWeek.displayDate.split(',');
+            const [day, ...rest] = displayDate.split(',');
             const date = rest.join(',').trim();
             return (
               <>
@@ -146,9 +151,9 @@ const base = import.meta.env.BASE_URL;
             Village Green
           </a>
         </p>
-        {marketInfo.inSeason && marketInfo.daysUntil <= 7 && (
+        {showWeather && (
           <div class="mt-4">
-            <p id="weather-widget" class="text-black/70 text-base">
+            <p id="weather-widget" data-market-date={thisWeek.date} class="text-black/70 text-base">
               <span id="weather-temp">…</span> <span class="text-black/70">·</span> <span id="weather-desc">Loading forecast</span>
             </p>
             <p id="weather-updated" class="text-black/50 text-xs italic mt-1"></p>
@@ -212,15 +217,15 @@ const base = import.meta.env.BASE_URL;
       <div class="my-8 md:my-10 text-center">
         <ShareableMarketCard
           date={thisWeek.date}
-          displayDate={thisWeek.displayDate}
+          displayDate={displayDate}
           theme={thisWeek.theme}
-          music={thisWeek.music}
+          music={cardMusic}
           tone="dark"
         />
       </div>
 
       <!-- Weekly Vendors — categorized columns (default season roster) or
-           flat list (per-week override from this-week.json). -->
+           flat list (per-week override from the current week's frontmatter). -->
       <div>
         <h3 class="font-display font-bold text-black text-lg md:text-xl uppercase tracking-widest mb-4 flex items-center gap-2">
           <span class="w-2 h-2 bg-orange rounded-full"></span>
@@ -283,6 +288,39 @@ const base = import.meta.env.BASE_URL;
       )}
     </div>
   </section>
+  )}
+
+  <!-- Off-season message — shown once the season has wrapped and no future
+       weeks remain in the collection. Replaces the NEXT MARKET block so the
+       homepage doesn't display a stale past date. -->
+  {!thisWeek && (
+    <section class="bg-cream pt-[15px] pb-12 md:pb-16">
+      <div class="bg-purple py-3 md:py-4 mb-8 md:mb-10">
+        <p class="text-center font-logo font-bold text-cream uppercase tracking-[0.08em] text-[clamp(1.875rem,8.5vw,3rem)] leading-none">See you in May:</p>
+      </div>
+      <div class="max-w-xl mx-auto px-4 text-center">
+        <h2 class="font-display font-bold text-black text-3xl md:text-4xl mb-4 leading-tight">
+          The market is closed for the season.
+        </h2>
+        <p class="text-black font-body text-lg md:text-xl mb-8">
+          Thank you to everyone who came out this year. We'll be back on the Village Green every Saturday from May through October — see you next spring.
+        </p>
+        <div class="flex flex-wrap justify-center items-center gap-3">
+          <a href={siteConfig.contact.facebook} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center hover:opacity-80 transition-opacity" aria-label="Follow on Facebook for the 2027 announcement">
+            <span class="social-icon-mask block w-10 h-10 md:w-12 md:h-12" style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-FACEBOOK-ICON.png'); mask-image: url('${base}/icons/FM-FACEBOOK-ICON.png');`}></span>
+          </a>
+          <a href={siteConfig.contact.instagram} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center hover:opacity-80 transition-opacity" aria-label="Follow on Instagram for the 2027 announcement">
+            <span class="social-icon-mask block w-10 h-10 md:w-12 md:h-12" style={`background-color: #2E1F2F; -webkit-mask-image: url('${base}/icons/FM-INSTAGRAM-ICON.png'); mask-image: url('${base}/icons/FM-INSTAGRAM-ICON.png');`}></span>
+          </a>
+        </div>
+        <p class="mt-8">
+          <a href={`${base}/vendors`} class="text-purple font-display font-bold underline decoration-2 underline-offset-4 [text-decoration-skip-ink:auto] hover:text-orange transition-colors">
+            Browse vendors →
+          </a>
+        </p>
+      </div>
+    </section>
+  )}
 
   <!-- Weather Widget Script — Open-Meteo (free, no API key) -->
   <script>
@@ -311,10 +349,17 @@ const base = import.meta.env.BASE_URL;
     };
 
     async function loadWeather() {
+      const widgetEl = document.getElementById('weather-widget');
       const tempEl = document.getElementById('weather-temp');
       const descEl = document.getElementById('weather-desc');
       const updatedEl = document.getElementById('weather-updated');
-      if (!tempEl || !descEl) return;
+      if (!widgetEl || !tempEl || !descEl) return;
+
+      // The market date the page is showing — set at build time so the
+      // forecast always matches the displayed date, regardless of the
+      // visitor's timezone or any drift between build and view.
+      const marketDate = widgetEl.dataset.marketDate;
+      if (!marketDate) return;
 
       function stampTimestamp() {
         if (!updatedEl) return;
@@ -331,36 +376,22 @@ const base = import.meta.env.BASE_URL;
 
       try {
         const res = await fetch(
-          'https://api.open-meteo.com/v1/forecast?latitude=42.3951&longitude=-73.6981&daily=temperature_2m_max,temperature_2m_min,weathercode&temperature_unit=fahrenheit&timezone=America/New_York&forecast_days=7'
+          'https://api.open-meteo.com/v1/forecast?latitude=42.3951&longitude=-73.6981&daily=temperature_2m_max,temperature_2m_min,weathercode&temperature_unit=fahrenheit&timezone=America/New_York&forecast_days=8'
         );
         const data = await res.json();
 
-        // Find the next Saturday (day 6 = Saturday)
-        const today = new Date();
         const dates = data.daily.time as string[];
-        let satIdx = -1;
-        for (let i = 0; i < dates.length; i++) {
-          const d = new Date(dates[i] + 'T12:00:00');
-          if (d.getDay() === 6 && d >= today) {
-            satIdx = i;
-            break;
-          }
-        }
+        const idx = dates.indexOf(marketDate);
 
-        // If today IS Saturday, use today
-        if (satIdx === -1 && today.getDay() === 6) {
-          satIdx = 0;
-        }
-
-        if (satIdx === -1) {
-          descEl.textContent = 'Check back soon';
+        if (idx === -1) {
+          descEl.textContent = 'Forecast available closer to market day';
           tempEl.textContent = '—';
           return;
         }
 
-        const high = Math.round(data.daily.temperature_2m_max[satIdx]);
-        const low = Math.round(data.daily.temperature_2m_min[satIdx]);
-        const code = data.daily.weathercode[satIdx];
+        const high = Math.round(data.daily.temperature_2m_max[idx]);
+        const low = Math.round(data.daily.temperature_2m_min[idx]);
+        const code = data.daily.weathercode[idx];
         const weather = WMO_CODES[code] || { desc: 'Variable', icon: '🌤️' };
 
         tempEl.textContent = `${weather.icon} ${high}°F`;

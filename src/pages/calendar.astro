@@ -4,10 +4,18 @@ import StructuredData from '../components/StructuredData.astro';
 import MarketIcon from '../components/MarketIcon.astro';
 import { getCollection } from 'astro:content';
 import siteConfig from '../data/site-config.json';
-import thisWeek from '../data/this-week.json';
 import musicSchedule from '../data/music-schedule.json';
+import { getAllWeeks, todayInET } from '../lib/weeks';
 
 const base = import.meta.env.BASE_URL;
+
+// Pull per-week themes from the weeks collection so calendar headlines stay
+// in sync with the homepage / share cards without duplicating the data.
+const allWeeks = await getAllWeeks();
+const themeByDate: Record<string, string | undefined> = {};
+for (const w of allWeeks) {
+  themeByDate[w.data.date] = w.data.theme;
+}
 
 // ── Build the season's Saturdays as anchor events ───────────────────────────
 function saturdaysBetween(startIso: string, endIso: string): string[] {
@@ -31,13 +39,12 @@ const activePerformerSlugs = new Set(
   performerProfiles.filter((p) => p.data.active).map((p) => p.data.slug)
 );
 
-// Per-date overrides: extended hours and custom themes for big market days.
-const dateOverrides: Record<string, { theme?: string; endTime?: string }> = {
-  '2026-05-02': { theme: 'Opening Day — Early Spring Market' },
-  '2026-05-30': { theme: 'Kinderhook Makers Market — Extended Market Day', endTime: '2:00 PM' },
-  '2026-07-04': { theme: 'July 4th — Extended Market Day', endTime: '1:30 PM' },
-  '2026-10-10': { theme: 'Fall Festival — Extended Market Day', endTime: '2:00 PM' },
-  '2026-10-31': { theme: 'Final Market Day of the 2026 Season' },
+// Per-date extended-hours overrides. Themes live in the weeks collection;
+// only the display-only end-time override stays here.
+const endTimeOverrides: Record<string, string> = {
+  '2026-05-30': '2:00 PM',
+  '2026-07-04': '1:30 PM',
+  '2026-10-10': '2:00 PM',
 };
 
 // Community-event slugs that are fully absorbed by the market anchor — suppress to avoid duplication.
@@ -48,10 +55,10 @@ const suppressedCommunitySlugs = new Set([
 ]);
 
 function marketAnchor(iso: string) {
-  const override = dateOverrides[iso];
   const music = musicByDate[iso];
-  const theme = override?.theme ?? (iso === thisWeek.date ? thisWeek.theme : undefined);
-  const endTime = override?.endTime ?? siteConfig.schedule.endTime;
+  const theme = themeByDate[iso];
+  const endOverride = endTimeOverrides[iso];
+  const endTime = endOverride ?? siteConfig.schedule.endTime;
   return {
     kind: 'market' as const,
     date: iso,
@@ -62,12 +69,12 @@ function marketAnchor(iso: string) {
     address: siteConfig.location.address,
     music: music?.act,
     musicSlug: music?.performerSlug,
-    description: override?.endTime ? 'Extended market hours.' : undefined,
+    description: endOverride ? 'Extended market hours.' : undefined,
   };
 }
 
 // ── Load community events and normalize them alongside market Saturdays ─────
-const todayIso = new Date().toISOString().slice(0, 10);
+const todayIso = todayInET();
 const allCommunity = await getCollection('events');
 
 type AnyEvent = {
